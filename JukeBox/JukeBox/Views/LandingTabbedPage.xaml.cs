@@ -20,27 +20,23 @@ namespace JukeBox.Views
             this.Children.Add(
                 new FeaturedPage()
                 {
-                    Title = "Store",
-                    BackgroundColor = Color.White
+                    Title = "Store"
                 });
             this.Children.Add(
     new PlaylistPage(playlistItem)
     {
-        Title = "My Music",
-        BackgroundColor = Color.FromHex("#16171D")
+        Title = "My Music"
     });
             this.Children.Add(
   new PromoPage()
   {
-      Title = "Promo",
-      BackgroundColor = Color.White
+      Title = "Promo"
   });
 
             this.Children.Add(
              new RechargePage()
              {
-                 Title = "Recharge",
-                 BackgroundColor = Color.White
+                 Title = "Recharge"
              });
             this.CurrentPageChanged += tabChanged;
         }

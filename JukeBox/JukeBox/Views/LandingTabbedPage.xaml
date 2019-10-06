@@ -2,8 +2,7 @@
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:mypages="clr-namespace:JukeBox.Views.MusicLibrary"
-            x:Class="JukeBox.Views.LandingTabbedPage"
-            BackgroundColor="#232323">
+            x:Class="JukeBox.Views.LandingTabbedPage">
     <!--<TabbedPage.Children>
         
         <mypages:ArtistPage Title="Artists"/>

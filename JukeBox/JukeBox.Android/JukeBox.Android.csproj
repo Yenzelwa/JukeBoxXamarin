@@ -217,10 +217,6 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\pause_w.jpg">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-xhdpi\home.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
@@ -234,10 +230,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xhdpi\no_image.png">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\pause_w.jpg">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -261,10 +253,6 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\pause_w.jpg">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxhdpi\prev.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
@@ -282,10 +270,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\no_image.png">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\pause_w.jpg">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -328,19 +312,37 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\play_w.jpg">
+    <AndroidResource Include="Resources\drawable-hdpi\dots_w.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\launcher_foreground.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
     </AndroidResource>
-    <Content Include="Resources\drawable-xxhdpi\play_w.jpg">
+    <AndroidResource Include="Resources\drawable-hdpi\pause_w.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\play_w.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\dots_w.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\launcher_foreground.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\play_w.jpg">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\play_w.jpg">
+    <AndroidResource Include="Resources\drawable-xhdpi\pause_w.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\play_w.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\dots_w.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\launcher_foreground.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\pause_w.png" />
+    <AndroidResource Include="Resources\drawable\dots_w.png" />
+    <AndroidResource Include="Resources\drawable\pause_w.png" />
+    <AndroidResource Include="Resources\drawable\play_w.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\play_w.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\dots_w.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\launcher_foreground.png">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\pause_w.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\play_w.png" />
     <Content Include="Resources\mipmap-anydpi-v26\play_w.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -39,7 +39,7 @@ namespace JukeBox.Views
             LandingTabbedPage page = new LandingTabbedPage(PlaylistItems[0]);
             Detail = new NavigationPage(page)
             {
-                BarBackgroundColor = Color.DarkGreen,
+                BarBackgroundColor = Color.FromHex("#2f3037"),
                 BarTextColor = Color.White,
                 Title = "Home"
             };

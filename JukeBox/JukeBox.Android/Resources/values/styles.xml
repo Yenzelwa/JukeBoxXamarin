@@ -19,7 +19,7 @@
     <!-- colorPrimary is used for the default action bar background -->
     <item name="colorPrimary">#FF8C00</item>
     <!-- colorPrimaryDark is used for the status bar -->
-    <item name="colorPrimaryDark">#006400</item>
+    <item name="colorPrimaryDark">#2f3037</item>
     <!-- colorAccent is used as the default value for colorControlActivated
          which is used to tint widgets -->
     <item name="colorAccent">#FF4081</item>
@@ -35,6 +35,6 @@
   </style>
   <color name="ListViewSelected">#FF8C00</color>
   <color name="ListViewHighlighted">#FF8C00</color>
-  <color name="SpashColor1">#ffffff</color>
-  <color name="SpashColor">#ffffff</color>
+  <color name="SpashColor1">#2f3037</color>
+  <color name="SpashColor">#2f3037</color>
 </resources>

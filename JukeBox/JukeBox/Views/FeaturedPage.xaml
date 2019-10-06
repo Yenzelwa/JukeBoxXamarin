@@ -5,12 +5,12 @@
              xmlns:renderedViews="clr-namespace:Sharpnado.Presentation.Forms.RenderedViews;assembly=Sharpnado.Presentation.Forms"
              xmlns:controls="clr-namespace:JukeBox.RenderedViews"
              x:Class="JukeBox.Views.FeaturedPage" 
-  
              x:Name="BrowseFeaturedPage"
              Title="Store"
+                        BackgroundColor="#2f3037"
        BindingContext="{Binding Main, Source={StaticResource Locator}}" >
-    <StackLayout>
-        <Grid   BindingContext="{Binding LibraryModel ,Mode=TwoWay}">
+    <StackLayout BackgroundColor="#2f3037">
+        <Grid   BindingContext="{Binding LibraryModel ,Mode=TwoWay}"  BackgroundColor="#2f3037">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
@@ -18,8 +18,8 @@
                 <RowDefinition Height="0.1*" />
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackLayout Grid.Row="0"  Grid.Column="0" BackgroundColor="Wheat" >
-                <Frame>
+            <StackLayout Grid.Row="0"  Grid.Column="0" BackgroundColor="#2f3037" >
+                <Frame BackgroundColor="#2f3037">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -27,12 +27,13 @@
                         <controls:TLScrollView  x:Name="genreList"
 				Orientation="Horizontal" 
 				ItemsSource="{Binding LibraryType ,Mode=TwoWay}" 
+                BackgroundColor="#2f3037"
 				HeightRequest="100">
                             <controls:TLScrollView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
                                         <StackLayout Padding="-5">
-                                            <Button Text="{Binding TypeName}"  BackgroundColor="Transparent"  HorizontalOptions="FillAndExpand"  Command="{Binding LibraryCommand}" TextColor="Black"></Button>
+                                            <Button Text="{Binding TypeName}"  BackgroundColor="Transparent"  HorizontalOptions="FillAndExpand"  Command="{Binding LibraryCommand}" TextColor="White"></Button>
                                         </StackLayout>
                                     </ViewCell>
                                 </DataTemplate>
@@ -41,26 +42,27 @@
                     </Grid>
                 </Frame>
             </StackLayout>
-            <StackLayout x:Name="SLMovies" Grid.Row="1"  AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,0,0">
-                <ListView x:Name="MovieListView" Grid.Row="1" HasUnevenRows="True" SeparatorVisibility="Default"  ItemsSource="{Binding Library,Mode=TwoWay}" ItemSelected="MovieListView_OnItemSelected">
+            <StackLayout x:Name="SLMovies" Grid.Row="1"  AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,0,0" BackgroundColor="#2f3037">
+                <ListView x:Name="MovieListView" Grid.Row="1" HasUnevenRows="True" SeparatorVisibility="Default"  BackgroundColor="#2f3037"
+                  SeparatorColor="Gray" ItemsSource="{Binding Library,Mode=TwoWay}" ItemSelected="MovieListView_OnItemSelected">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <StackLayout>
-                                    <Frame>
-                                        <Grid>
+                                    <Frame BackgroundColor="#2f3037">
+                                        <Grid BackgroundColor="#2f3037">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
                                             <Image Source="{Binding CoverFilePath}" Grid.Column="0" />
                                             <StackLayout Grid.Column="1">
-                                                <Label Text="{Binding Name ,Mode=TwoWay}"  TextColor="#E91E63" FontAttributes="Bold"/>
-                                                <Label Text="{Binding ShowTime}"/>
-                                                <Label Text="{Binding Type}"/>
+                                                <Label Text="{Binding Name ,Mode=TwoWay}"  TextColor="#006400" FontAttributes="Bold"/>
+                                                <Label Text="{Binding ShowTime}" TextColor="Wheat"/>
+                                                <Label Text="{Binding Type} " TextColor="Wheat"/>
                                                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                                                    <Label Text="{Binding Artist}"/>
-                                                    <Label HorizontalOptions="EndAndExpand" Text="{Binding Price ,StringFormat='{0:C}' }"/>
+                                                    <Label Text="{Binding Artist}" TextColor="Wheat"/>
+                                                    <Label HorizontalOptions="EndAndExpand"  TextColor="Wheat" Text="{Binding Price ,StringFormat='{0:C}' }"/>
                                                 </StackLayout>
                                             </StackLayout>
                                         </Grid>
