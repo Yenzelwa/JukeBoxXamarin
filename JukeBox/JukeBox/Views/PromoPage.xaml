@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="JukeBox.Views.PromoPage"
+             Title="Store"
+       BindingContext="{Binding Main, Source={StaticResource Locator}}" >
+    <StackLayout>
+        <Grid   BindingContext="{Binding LibraryPromoModel ,Mode=TwoWay}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackLayout x:Name="SLMovies" Grid.Row="0" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,0,0">
+                <ListView x:Name="MovieListView" Grid.Row="0" HasUnevenRows="True" SeparatorVisibility="Default"  ItemsSource="{Binding Library,Mode=TwoWay}" ItemSelected="MovieListView_OnItemSelected">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout>
+                                    <Frame  Padding="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.4*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Image Source="{Binding CoverFilePath}" Grid.Column="0" />
+                                            <StackLayout Grid.Column="1">
+                                                <Label Text="{Binding Name ,Mode=TwoWay}"  TextColor="#E91E63" FontAttributes="Bold"/>
+                                                <Label Text="{Binding ShowTime}"/>
+                                                <Label Text="{Binding Type}"/>
+                                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                                    <Label Text="{Binding Artist}"/>
+                                                    <Label HorizontalOptions="EndAndExpand" Text="{Binding Price ,StringFormat='{0:C}' }"/>
+                                                </StackLayout>
+                                            </StackLayout>
+                                        </Grid>
+                                    </Frame>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsRunning, Mode=TwoWay}" Padding="12" Grid.Row="0" 
+                     AbsoluteLayout.LayoutFlags="PositionProportional"
+                     AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1">
+
+                <ActivityIndicator IsRunning="{Binding IsRunning, Mode=TwoWay}" Color ="#80000000"/>
+
+                <Label Text="Loading..." HorizontalOptions="Center" TextColor="Red"/>
+
+            </StackLayout>
+        </Grid>
+    </StackLayout>
+</ContentPage>

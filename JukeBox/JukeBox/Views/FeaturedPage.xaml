@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:dlcontrols="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+             xmlns:renderedViews="clr-namespace:Sharpnado.Presentation.Forms.RenderedViews;assembly=Sharpnado.Presentation.Forms"
+             xmlns:controls="clr-namespace:JukeBox.RenderedViews"
+             x:Class="JukeBox.Views.FeaturedPage" 
+  
+             x:Name="BrowseFeaturedPage"
+             Title="Store"
+       BindingContext="{Binding Main, Source={StaticResource Locator}}" >
+    <StackLayout>
+        <Grid   BindingContext="{Binding LibraryModel ,Mode=TwoWay}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*" />
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0"  Grid.Column="0" BackgroundColor="Wheat" >
+                <Frame>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <controls:TLScrollView  x:Name="genreList"
+				Orientation="Horizontal" 
+				ItemsSource="{Binding LibraryType ,Mode=TwoWay}" 
+				HeightRequest="100">
+                            <controls:TLScrollView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <StackLayout Padding="-5">
+                                            <Button Text="{Binding TypeName}"  BackgroundColor="Transparent"  HorizontalOptions="FillAndExpand"  Command="{Binding LibraryCommand}" TextColor="Black"></Button>
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </controls:TLScrollView.ItemTemplate>
+                        </controls:TLScrollView>
+                    </Grid>
+                </Frame>
+            </StackLayout>
+            <StackLayout x:Name="SLMovies" Grid.Row="1"  AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,0,0">
+                <ListView x:Name="MovieListView" Grid.Row="1" HasUnevenRows="True" SeparatorVisibility="Default"  ItemsSource="{Binding Library,Mode=TwoWay}" ItemSelected="MovieListView_OnItemSelected">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout>
+                                    <Frame>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Image Source="{Binding CoverFilePath}" Grid.Column="0" />
+                                            <StackLayout Grid.Column="1">
+                                                <Label Text="{Binding Name ,Mode=TwoWay}"  TextColor="#E91E63" FontAttributes="Bold"/>
+                                                <Label Text="{Binding ShowTime}"/>
+                                                <Label Text="{Binding Type}"/>
+                                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                                    <Label Text="{Binding Artist}"/>
+                                                    <Label HorizontalOptions="EndAndExpand" Text="{Binding Price ,StringFormat='{0:C}' }"/>
+                                                </StackLayout>
+                                            </StackLayout>
+                                        </Grid>
+                                    </Frame>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsRunning, Mode=TwoWay}" Padding="12" Grid.Row="1" 
+                     AbsoluteLayout.LayoutFlags="PositionProportional"
+                     AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1">
+
+                <ActivityIndicator IsRunning="{Binding IsRunning, Mode=TwoWay}" Color ="#80000000"/>
+
+                <Label Text="Loading..." HorizontalOptions="Center" TextColor="Red"/>
+
+            </StackLayout>
+        </Grid>
+    </StackLayout>
+</ContentPage>

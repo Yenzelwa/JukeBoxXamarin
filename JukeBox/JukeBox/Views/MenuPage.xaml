@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             x:Class="JukeBox.Views.MenuPage"
+                 BindingContext="{Binding Main, Source={StaticResource Locator}}"
+                   BackgroundColor="White"
+    Title="Menu">
+    <ContentPage.Content>
+        <StackLayout >
+            
+            <StackLayout BackgroundColor="DarkOrange">
+
+                <controls:CircleImage 
+                Aspect="AspectFill"
+                HeightRequest="100"
+            Source="no_image.png"
+               >   
+            </controls:CircleImage>
+            <Label
+                FontSize="Large"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                Text="{Binding User.FullName}"
+                TextColor="White">
+            </Label>
+                
+        </StackLayout>
+        <ListView 
+                BackgroundColor="White"
+                ItemsSource="{Binding Menus}"
+                HasUnevenRows="True"
+                SeparatorVisibility="Default" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding NavigateCommand}"/>
+                                </Grid.GestureRecognizers>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Image 
+                                    Source="{Binding Icon}"
+                                    WidthRequest="50"
+                                    HeightRequest="50">
+                                </Image>
+                                <Label 
+                                    Grid.Column="1"
+                                    VerticalOptions="Center"
+                                    TextColor="Black"
+                                    Text="{Binding Title}">
+                                </Label>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+    <!--<StackLayout>
+        <ListView x:Name="ListViewMenuItems"
+              SeparatorVisibility="Default"
+                  SeparatorColor="#FFA500"
+                  BackgroundColor="White"
+              HasUnevenRows="true"
+              ItemsSource="{Binding PlaylistItems}">
+            <ListView.Header>
+                <Grid>
+                    <Grid.BackgroundColor>
+                        <OnPlatform x:TypeArguments="Color"
+                                    Android="DarkGreen"
+                                    iOS="Transparent" />
+                    </Grid.BackgroundColor>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="0"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="2"/>
+                        <RowDefinition Height="2" />
+                    </Grid.RowDefinitions>
+                    <StackLayout Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+                        <Label 
+                            HorizontalOptions="StartAndExpand"
+                        Text="JukeBox Music"
+                        TextColor="Black"
+                        FontSize="Large"
+                         
+                        FontAttributes="Bold"/>
+                        <Switch HorizontalOptions="End"
+                                IsToggled="False"
+                                Toggled="Switch_Toggled"/>
+                    </StackLayout>
+                    
+                    <BoxView Grid.Row="4" Grid.ColumnSpan="3" BackgroundColor="White"  HeightRequest="2" HorizontalOptions="FillAndExpand" VerticalOptions="End"/>
+                </Grid>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="15,10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <Label
+                                HorizontalOptions="StartAndExpand"
+                                VerticalOptions="FillAndExpand" 
+                                VerticalTextAlignment="Center" 
+                                Text="{Binding Playlist.Title}" 
+                                TextColor="Black"
+                                FontSize="24"/>
+                            <Image VerticalOptions="Center" HorizontalOptions="End" Source="add_button_t.png" IsVisible="{Binding CanAdd}"
+                                   HeightRequest="30" WidthRequest="30">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                                    <TapGestureRecognizer Command="{Binding AddSong}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+     
+            
+    <ListView.Footer>
+                <StackLayout Orientation="Horizontal">
+                    <Button VerticalOptions="Center" HorizontalOptions="FillAndExpand" Text="Create Playlist" TextColor="#2287CA" BorderColor="#2287CA" BorderWidth="1" BackgroundColor="Transparent"
+                        Clicked="Button_Clicked" Margin="10">
+                        <Button.Opacity>
+                            <OnPlatform x:TypeArguments="x:Double" Android="1" iOS="1"/>
+                        </Button.Opacity>
+                    </Button>
+                </StackLayout>
+            </ListView.Footer>
+    
+        </ListView>
+    </StackLayout>-->
+</ContentPage>

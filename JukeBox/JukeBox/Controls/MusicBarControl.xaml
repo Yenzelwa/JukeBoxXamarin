@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+    xmlns:controls="clr-namespace:JukeBox.Controls;assembly=JukeBox"
+    xmlns:effects="clr-namespace:JukeBox.Effects"
+    x:Class="JukeBox.Controls.MusicBarControl"
+    x:Name="MusicBar" Margin="0,0,0,0" Padding="0,0,0,0" BackgroundColor="White">
+  <ContentView.Content>
+    <Grid Margin="0,0,0,0" Padding="0,0,0,0" ColumnSpacing="0" RowSpacing="0" BackgroundColor="White">
+      <!--<Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>-->
+
+      <cv:CarouselViewControl x:Name="Carousel" ItemsSource="{Binding Queue}" Margin="0,0,0,0" Position="{Binding QueuePos, Mode=TwoWay}">
+        <cv:CarouselViewControl.ItemTemplate>
+          <DataTemplate>
+            <Grid BackgroundColor="Black" Margin="0,0,0,0" Padding="0,0,0,0" ColumnSpacing="6" RowSpacing="0">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <ProgressBar Grid.Row="0"  BindingContext="{Binding Source={x:Reference MusicBar}, Path=BindingContext}" Progress="1" Margin="0,0,0,0" Grid.ColumnSpan="4">
+                <ProgressBar.Effects>
+                  <effects:BlueProgressBarEffect />
+                </ProgressBar.Effects>
+              </ProgressBar>
+              <StackLayout Grid.Row="1" Orientation="Vertical" Spacing="12" VerticalOptions="Center">
+                <Grid>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                  </Grid.RowDefinitions>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <controls:PrevControl   Grid.Column="0" HorizontalOptions="End"  />
+                  <controls:PlayPauseControl    Grid.Column="1" HorizontalOptions="Center"  />
+                  <controls:NextControl   Grid.Column="2" HorizontalOptions="Start" />
+                </Grid>
+              </StackLayout>
+              <StackLayout Grid.Row="2">
+                <Grid>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                  </Grid.RowDefinitions>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <controls:ArtworkImage  Grid.Column="0" x:Name="ArtworkImage" Margin="0,0,0,0" Artwork="{Binding Artwork}" BackgroundColor="Black" IsVisible="{Binding HasArtwork}" HeightRequest="45" WidthRequest="45"/>
+                  <StackLayout Grid.Column="1" Orientation="Vertical"  BackgroundColor="Black" HorizontalOptions="Start" VerticalOptions="Center">
+                    <Label Text="{Binding Title}"  Font="16" FontAttributes="Bold" LineBreakMode="TailTruncation"  HorizontalOptions="Start" TextColor="White"/>
+                    <Label Text="{Binding Artist}" LineBreakMode="TailTruncation"    HorizontalOptions="Start" TextColor="Gray"/>
+                  </StackLayout>
+                  <!--<controls:PlayPauseControl Grid.Column="2" HeightRequest="30" WidthRequest="30"/>
+                                    <Image Source="play_w.png"  Grid.Column="2" BindingContext="{Binding Source={x:Reference MusicBar}, Path=BindingContext}" IsVisible="{Binding IsNotPlaying}" HeightRequest="40" WidthRequest="40">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding PlayCommand}" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                    <Image Source="pause_w.png"  Grid.Column="2" BindingContext="{Binding Source={x:Reference MusicBar}, Path=BindingContext}" IsVisible="{Binding IsPlaying}" HeightRequest="40" WidthRequest="40">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding PauseCommand}" />
+                                        </Image.GestureRecognizers>
+                                    </Image>-->
+                </Grid>
+
+              </StackLayout>
+
+
+              <!--<Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="4" Clicked="OpenNowPlayingPopup" BackgroundColor="Black" BorderColor="Transparent" BorderWidth="0" /-->
+
+            </Grid>
+          </DataTemplate>
+        </cv:CarouselViewControl.ItemTemplate> 
+    </cv:CarouselViewControl>
+    </Grid>
+  </ContentView.Content>
+</ContentView>

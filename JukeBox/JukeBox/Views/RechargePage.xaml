@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="JukeBox.Views.RechargePage"
+             BackgroundColor="White"
+             BindingContext="{Binding Main, Source={StaticResource Locator}}">
+    <ContentPage.Content>
+        <StackLayout   HorizontalOptions="StartAndExpand" VerticalOptions='StartAndExpand'>
+            <Label  Text="Top Up Flash Voucher" 
+                           FontAttributes="Bold" FontSize="Medium" 
+                           Margin="10, 0, 0, 0" TextColor="Black"/>
+            <Image Source="icon.jpg"
+                                   x:Name="ImgDetail"  
+                                   Grid.Column="0" 
+                                   HeightRequest="180"
+                                   WidthRequest="300"/>
+            <Entry
+                        Keyboard="Telephone"
+                        Placeholder="Enter Voucher Here"
+                x:Name="txtpin">
+            </Entry>
+            <Button
+                        BackgroundColor="DarkGreen"
+                        BorderRadius="23"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Submit"   Clicked="BtnTopUp_OnClicked"
+                        TextColor="White">
+            </Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
