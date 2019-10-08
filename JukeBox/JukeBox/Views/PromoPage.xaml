@@ -22,8 +22,8 @@
                         <DataTemplate>
                             <ViewCell>
                                 <StackLayout>
-                                    <Frame  Padding="0">
-                                        <Grid>
+                                    <Frame Padding="0" BackgroundColor="#2f3037">
+                                        <Grid BackgroundColor="#2f3037">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="0.4*"/>
                                                 <ColumnDefinition Width="*"/>
@@ -31,12 +31,12 @@
 
                                             <Image Source="{Binding CoverFilePath}" Grid.Column="0" />
                                             <StackLayout Grid.Column="1">
-                                                <Label Text="{Binding Name ,Mode=TwoWay}"  TextColor="#E91E63" FontAttributes="Bold"/>
-                                                <Label Text="{Binding ShowTime}"/>
-                                                <Label Text="{Binding Type}"/>
+                                                <Label Text="{Binding Name ,Mode=TwoWay}"  TextColor="White" FontAttributes="Bold"/>
+                                                <Label Text="{Binding ShowTime}" TextColor="Gray"/>
+                                                <Label Text="{Binding Type} " TextColor="Gray"/>
                                                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                                                    <Label Text="{Binding Artist}"/>
-                                                    <Label HorizontalOptions="EndAndExpand" Text="{Binding Price ,StringFormat='{0:C}' }"/>
+                                                    <Label Text="{Binding Artist}" TextColor="Gray"/>
+                                                    <Label HorizontalOptions="EndAndExpand"  TextColor="White" Text="{Binding Price ,StringFormat='{0:C}' }"/>
                                                 </StackLayout>
                                             </StackLayout>
                                         </Grid>

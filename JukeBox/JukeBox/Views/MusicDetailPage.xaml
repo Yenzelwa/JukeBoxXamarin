@@ -24,7 +24,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Frame Grid.Row="0" Padding="0">
+                <Frame Grid.Row="0" Padding="0" BackgroundColor="#2f3037">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.5*"/>
@@ -37,12 +37,12 @@
                                    HeightRequest="180"
                                    WidthRequest="300"/>
                         <StackLayout HeightRequest="200" Grid.Column="1" >
-                            <Label x:Name="LblMovieName"  TextColor="#E91E63" FontAttributes="Bold"/>
-                            <Label x:Name="LblLanguage" />
-                            <Label x:Name="LblType" />
-                            <Label x:Name="LblPrice"/>
+                            <Label x:Name="LblMovieName"  TextColor="White" FontAttributes="Bold"/>
+                            <Label x:Name="LblLanguage" TextColor="Gray"/>
+                            <Label x:Name="LblType"  TextColor="Gray"/>
+                            <Label x:Name="LblPrice" TextColor="Gray"/>
                             <Button x:Name="BtnTrailor" Text="Purchase"
-                                        BackgroundColor="#048c0d" TextColor="White"
+                                        BackgroundColor="Black" TextColor="White" BorderColor="#048c0d" BorderWidth="1"
                                         Clicked="BtnTrailor_OnClicked"/>
                         </StackLayout>
 
@@ -53,9 +53,9 @@
                 <StackLayout Grid.Row="1">
                     <Label Text="Description"
                                HorizontalTextAlignment="Center"
-                               TextColor="#E91E63" 
+                               TextColor="White" 
                                FontAttributes="Bold"/>
-                    <Label x:Name="LblDescription"></Label>
+                    <Label x:Name="LblDescription" TextColor="Gray"></Label>
                 </StackLayout>
 
 
@@ -63,18 +63,18 @@
 
                     <Label Text="Songs" x:Name="lblSongs" IsVisible="False"
                                HorizontalTextAlignment="Start" 
-                               TextColor="#E91E63" 
+                               TextColor="White" 
                                FontAttributes="Bold"/>
 
                     <StackLayout Grid.Row="0" Padding="0"   AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
 
 
-                        <ListView x:Name="SongListView" HasUnevenRows="True" SeparatorVisibility="Default" ItemsSource="{Binding LibraryDetail}">
+                        <ListView x:Name="SongListView" HasUnevenRows="True" SeparatorVisibility="Default" ItemsSource="{Binding LibraryDetail}" SeparatorColor="Gray">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
                                         <StackLayout>
-                                            <Frame>
+                                            <Frame BackgroundColor="#2f3037">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="0.5*"/>
@@ -87,13 +87,13 @@
                                                     </Image.GestureRecognizers>
                                                 </Image>
                                                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Column="1" >
-                                                    <Label  Text="{Binding Name}"  
+                                                        <Label  Text="{Binding Name}"  TextColor="Gray"
                                    HorizontalTextAlignment="Center" />
                                                     <Button  Text="{Binding Price ,StringFormat='{0:C}'}" 
-                                         BackgroundColor="DarkOrange" TextColor="White"
+                                         BackgroundColor="Black" TextColor="White"
                                          HorizontalOptions="EndAndExpand" 
                                         Clicked="BtnSingleDownload_OnClicked"
-                                         BorderColor="DarkOrange"      
+                                         BorderColor="DarkOrange"     BorderWidth="1"  
                                          />
 
                                                 </StackLayout>

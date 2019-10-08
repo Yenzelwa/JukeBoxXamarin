@@ -6,9 +6,9 @@ xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselV
     xmlns:controls="clr-namespace:JukeBox.Controls;assembly=JukeBox"
     xmlns:effects="clr-namespace:JukeBox.Effects"
     x:Class="JukeBox.Controls.MusicBarControl"
-    x:Name="MusicBar" Margin="0,0,0,0" Padding="0,0,0,0" BackgroundColor="White">
+    x:Name="MusicBar" Margin="0,0,0,0" Padding="0,0,0,0" BackgroundColor="Transparent">
   <ContentView.Content>
-    <Grid Margin="0,0,0,0" Padding="0,0,0,0" ColumnSpacing="0" RowSpacing="0" BackgroundColor="White">
+    <Grid Margin="0,0,0,0" Padding="0,0,0,0" ColumnSpacing="0" RowSpacing="0" BackgroundColor="Transparent">
       <!--<Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>

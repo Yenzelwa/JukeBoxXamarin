@@ -21,6 +21,7 @@ namespace JukeBox.Views
                 new FeaturedPage()
                 {
                     Title = "Store"
+                    
                 });
             this.Children.Add(
     new PlaylistPage(playlistItem)

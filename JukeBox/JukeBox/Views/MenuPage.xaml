@@ -4,12 +4,12 @@
              xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
              x:Class="JukeBox.Views.MenuPage"
                  BindingContext="{Binding Main, Source={StaticResource Locator}}"
-                   BackgroundColor="White"
+                  BackgroundColor="#2f3037"
     Title="Menu">
     <ContentPage.Content>
         <StackLayout >
-            
-            <StackLayout BackgroundColor="DarkOrange">
+
+            <StackLayout BackgroundColor="#f5deb3">
 
                 <controls:CircleImage 
                 Aspect="AspectFill"
@@ -22,12 +22,12 @@
                 FontAttributes="Bold"
                 HorizontalOptions="Center"
                 Text="{Binding User.FullName}"
-                TextColor="White">
+                TextColor="Black">
             </Label>
                 
         </StackLayout>
         <ListView 
-                BackgroundColor="White"
+                BackgroundColor="#2f3037"
                 ItemsSource="{Binding Menus}"
                 HasUnevenRows="True"
                 SeparatorVisibility="Default" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
@@ -50,7 +50,7 @@
                                 <Label 
                                     Grid.Column="1"
                                     VerticalOptions="Center"
-                                    TextColor="Black"
+                                    TextColor="White"
                                     Text="{Binding Title}">
                                 </Label>
                             </Grid>
