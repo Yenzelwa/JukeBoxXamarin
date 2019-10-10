@@ -4,7 +4,7 @@
              xmlns:controls="clr-namespace:JukeBox.Controls"
              x:Class="JukeBox.Views.PlaylistPage"
              x:Name="Playlist"
-              BindingContext="{Binding Main, Source={StaticResource Locator}}"
+              BindingContext="{Binding Main,  Source={StaticResource Locator}}"
              Title="{Binding Title}"
              BackgroundColor="#2f3037">
     <ContentPage.ToolbarItems>

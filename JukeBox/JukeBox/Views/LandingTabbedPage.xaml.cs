@@ -14,8 +14,6 @@ namespace JukeBox.Views
 
         public LandingTabbedPage(PlaylistItem playlistItem)
         {
-            _vm = new PlaylistViewModel(playlistItem);
-            this.BindingContext = _vm;
             InitializeComponent();
             this.Children.Add(
                 new FeaturedPage()

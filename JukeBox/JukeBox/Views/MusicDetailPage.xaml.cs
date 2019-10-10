@@ -318,9 +318,6 @@ namespace JukeBox.Views
             });
             if (!isDownloading)
             {
-                var a = MusicStateViewModel.Instance;
-                var b = QueuePopup.Instance;
-                var c = SliderControl.Instance;
                 var main = MainViewModel.GetInstance();
                main.PlaylistItems = new ObservableCollection<PlaylistItem>();
                 main.PlaylistItems.Add(new PlaylistItem(

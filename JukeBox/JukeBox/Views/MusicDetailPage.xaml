@@ -75,33 +75,33 @@
                                     <ViewCell>
                                         <StackLayout>
                                             <Frame BackgroundColor="#2f3037">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="0.1*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                     <ColumnDefinition Width="Auto"/>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="0.8*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
-                                                <Image Grid.Column="0"  Source="play_w.png" HeightRequest="20" WidthRequest="20">
+                                                    <Image Grid.Column="0"  Source="play_w.png" HeightRequest="20" WidthRequest="20">
 
-                                                    <Image.GestureRecognizers>
-                                                        <TapGestureRecognizer x:Name="TapPausePlay" Tapped="TapPausePlay_OnTapped" ></TapGestureRecognizer>
-                                                    </Image.GestureRecognizers>
-                                                </Image>
-                                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Column="1" >
+                                                        <Image.GestureRecognizers>
+                                                            <TapGestureRecognizer x:Name="TapPausePlay" Tapped="TapPausePlay_OnTapped" ></TapGestureRecognizer>
+                                                        </Image.GestureRecognizers>
+                                                    </Image>
+                                                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Column="1" >
                                                         <Label  Text="{Binding Name}"  TextColor="Gray"
                                    HorizontalTextAlignment="Center" />
                                                     </StackLayout>
                                                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Column="2" >
-                                                            <Button  Text="{Binding Price ,StringFormat='{0:C}'}" 
+                                                        <Button  Text="{Binding Price ,StringFormat='{0:C}'}" 
                                          BackgroundColor="Black" TextColor="White"
                                          HorizontalOptions="EndAndExpand" 
                                         Clicked="BtnSingleDownload_OnClicked"
                                          BorderColor="DarkOrange"     BorderWidth="1"  
                                          />
 
-                                                </StackLayout>
+                                                    </StackLayout>
 
-                                            </Grid>
+                                                </Grid>
                                             </Frame>
                                         </StackLayout>
                                     </ViewCell>

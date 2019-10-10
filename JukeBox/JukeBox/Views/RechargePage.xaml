@@ -8,7 +8,7 @@
         <StackLayout   HorizontalOptions="CenterAndExpand" VerticalOptions='CenterAndExpand'>
             <Label  Text="Top Up Flash Voucher" 
                            FontAttributes="Bold" FontSize="Medium" 
-                           Margin="10, 0, 0, 0" TextColor="Black"/>
+                           Margin="2, 0, 0, 0" TextColor="Black"/>
             <Image 
                                    x:Name="ImgDetail"  
                                    Grid.Column="0" 
@@ -22,7 +22,7 @@
             <Button
                         BackgroundColor="DarkGreen"
                         HorizontalOptions="CenterAndExpand"
-                        Text="Submit"   Clicked="BtnTopUp_OnClicked"
+                        Text="Submit"   Clicked="BtnTopUp_OnClicked" WidthRequest="100"
                         TextColor="White">
             </Button>
         </StackLayout>
