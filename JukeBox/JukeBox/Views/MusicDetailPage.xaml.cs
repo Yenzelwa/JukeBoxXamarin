@@ -3,6 +3,7 @@ using Android.Media;
 using Android.Provider;
 using Java.IO;
 using JukeBox.BLL.Library;
+using JukeBox.Controls;
 using JukeBox.Helpers;
 using JukeBox.Models;
 using JukeBox.Services;
@@ -317,14 +318,17 @@ namespace JukeBox.Views
             });
             if (!isDownloading)
             {
+                var a = MusicStateViewModel.Instance;
+                var b = QueuePopup.Instance;
+                var c = SliderControl.Instance;
                 var main = MainViewModel.GetInstance();
                main.PlaylistItems = new ObservableCollection<PlaylistItem>();
                 main.PlaylistItems.Add(new PlaylistItem(
                 new Playlist { Title = "Home", IsDynamic = false }));
                 main.PlaylistViewModel = new PlaylistViewModel(main.PlaylistItems[0]);
-              //  new  PlaylistPage(PlaylistItems[0]);
+             //  var page= new  PlaylistPage(main.PlaylistItems[0]);
                 // await App.Master.NavigateAsync(0);
-                //  await ((App.Current.MainPage as MasterDetailPage).Detail as NavigationPage).Navigation.PushAsync(page);
+                // await ((App.Current.MainPage as MasterDetailPage).Detail as NavigationPage).Navigation.PushAsync(page);
                 await DisplayAlert("File Status", "File Downloaded", "OK");
             }
         }

@@ -14,8 +14,8 @@
 
         <controls:ArtworkImage Artwork="{Binding Artwork,Mode=TwoWay}" Grid.Row="0" Grid.Column="0" HeightRequest="20" WidthRequest="20" Margin="1"/>
         <StackLayout Orientation="Vertical" Grid.Column="1" Spacing="0" Padding="0, 3, 0, 3">
-            <Label Text="{Binding Title,Mode=TwoWay}" LineBreakMode="TailTruncation" TextColor="Black"/>
-            <Label Text="{Binding Artist,Mode=TwoWay}" LineBreakMode="TailTruncation" TextColor="Black"/>
+            <Label Text="{Binding Title,Mode=TwoWay}" LineBreakMode="TailTruncation" TextColor="Gray"/>
+            <Label Text="{Binding Artist,Mode=TwoWay}" LineBreakMode="TailTruncation" TextColor="Gray"/>
         </StackLayout>
 
         

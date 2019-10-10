@@ -77,9 +77,10 @@
                                             <Frame BackgroundColor="#2f3037">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="0.5*"/>
+                                                    <ColumnDefinition Width="0.1*"/>
                                                     <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
+                                                     <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
                                                 <Image Grid.Column="0"  Source="play_w.png" HeightRequest="20" WidthRequest="20">
 
                                                     <Image.GestureRecognizers>
@@ -89,7 +90,9 @@
                                                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Column="1" >
                                                         <Label  Text="{Binding Name}"  TextColor="Gray"
                                    HorizontalTextAlignment="Center" />
-                                                    <Button  Text="{Binding Price ,StringFormat='{0:C}'}" 
+                                                    </StackLayout>
+                                                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Column="2" >
+                                                            <Button  Text="{Binding Price ,StringFormat='{0:C}'}" 
                                          BackgroundColor="Black" TextColor="White"
                                          HorizontalOptions="EndAndExpand" 
                                         Clicked="BtnSingleDownload_OnClicked"

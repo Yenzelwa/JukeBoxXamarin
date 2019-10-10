@@ -5,11 +5,11 @@
                      BackgroundColor="#2f3037"
              BindingContext="{Binding Main, Source={StaticResource Locator}}">
     <ContentPage.Content>
-        <StackLayout   HorizontalOptions="StartAndExpand" VerticalOptions='StartAndExpand'>
+        <StackLayout   HorizontalOptions="CenterAndExpand" VerticalOptions='CenterAndExpand'>
             <Label  Text="Top Up Flash Voucher" 
                            FontAttributes="Bold" FontSize="Medium" 
                            Margin="10, 0, 0, 0" TextColor="Black"/>
-            <Image Source="icon.jpg"
+            <Image 
                                    x:Name="ImgDetail"  
                                    Grid.Column="0" 
                                    HeightRequest="180"
@@ -21,8 +21,7 @@
             </Entry>
             <Button
                         BackgroundColor="DarkGreen"
-                        BorderRadius="23"
-                        HorizontalOptions="FillAndExpand"
+                        HorizontalOptions="CenterAndExpand"
                         Text="Submit"   Clicked="BtnTopUp_OnClicked"
                         TextColor="White">
             </Button>

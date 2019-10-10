@@ -14,7 +14,7 @@ xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselV
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>-->
 
-      <cv:CarouselViewControl x:Name="Carousel" ItemsSource="{Binding Queue}" Margin="0,0,0,0" Position="{Binding QueuePos, Mode=TwoWay}">
+            <cv:CarouselViewControl x:Name="Carousel" ItemsSource="{Binding Queue,Mode=TwoWay}" Margin="0,0,0,0" Position="{Binding QueuePos, Mode=TwoWay}">
         <cv:CarouselViewControl.ItemTemplate>
           <DataTemplate>
             <Grid BackgroundColor="Black" Margin="0,0,0,0" Padding="0,0,0,0" ColumnSpacing="6" RowSpacing="0">
