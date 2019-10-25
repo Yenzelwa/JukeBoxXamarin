@@ -15,6 +15,22 @@ namespace JukeBox.Models
         public decimal? Price { get; set; }
         public string Type { get; set; }
         public string Artist { get; set; }
+        public bool AlbumDownload { get; set; }
         public DateTime DateCreated { get; set; }
+
+        public string Purchase
+        {
+            get
+            {
+                if (AlbumDownload == true)
+                {
+                    return "Download";
+                }
+                else
+                {
+                     return "Purchase";
+                }
+            }
+        }
     }
 }

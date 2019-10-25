@@ -6,7 +6,7 @@ namespace JukeBox.Models.Profile
 
     public class UserLocal
     {
-        [PrimaryKey, AutoIncrement]
+        [PrimaryKey]
         public int UserId { get; set; }
 
         public string FirstName { get; set; }

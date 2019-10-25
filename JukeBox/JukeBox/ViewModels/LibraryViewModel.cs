@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using JukeBox.Views;
 using System.ComponentModel;
+using System;
 
 namespace JukeBox.ViewModels
 {
@@ -65,7 +66,7 @@ namespace JukeBox.ViewModels
         }
         #endregion
 
- 
+
 
 
         private async void GetLibrary(int filter)
@@ -85,7 +86,14 @@ namespace JukeBox.ViewModels
                 return;
             }
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
-            var response = await BLL.Library.Library.GetLibrary(filter);
+            var main = MainViewModel.GetInstance();
+            var client = 0;
+            if (main.User != null)
+            { 
+            var id = Convert.ToInt32(main.User.ImagePath);
+            client = id > 0 ? id: 0;
+           }
+            var response = await BLL.Library.Library.GetLibrary(filter , client );
 
 
 

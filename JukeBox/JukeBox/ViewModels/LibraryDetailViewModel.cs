@@ -75,7 +75,9 @@ namespace JukeBox.ViewModels
                 return;
             }
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
-            var response = await BLL.Library.Library.GetLibraryDetail(this.LibraryId);
+            var main = MainViewModel.GetInstance();
+            var client = main.User.UserId > 0 ? main.User.UserId : 0;
+            var response = await BLL.Library.Library.GetLibraryDetail(this.LibraryId ,client);
 
 
 

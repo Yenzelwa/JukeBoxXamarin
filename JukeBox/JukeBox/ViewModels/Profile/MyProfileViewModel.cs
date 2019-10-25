@@ -245,7 +245,7 @@
                 MainViewModel.GetInstance().Token.TokenType,
                 MainViewModel.GetInstance().Token.AccessToken,
                 this.User.Email);
-            var userLocal = Converter.ToUserLocal(userApi);
+            var userLocal = Converter.ToUserLocal(userApi, Convert.ToInt32(MainViewModel.GetInstance().Token.UserName));
 
             MainViewModel.GetInstance().User = userLocal;
             this.dataService.Update(userLocal);

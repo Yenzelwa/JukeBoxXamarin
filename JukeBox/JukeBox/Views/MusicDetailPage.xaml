@@ -41,7 +41,7 @@
                             <Label x:Name="LblLanguage" TextColor="Gray"/>
                             <Label x:Name="LblType"  TextColor="Gray"/>
                             <Label x:Name="LblPrice" TextColor="Gray"/>
-                            <Button x:Name="BtnTrailor" Text="Purchase"
+                            <Button x:Name="BtnBuy" 
                                         BackgroundColor="Black" TextColor="White" BorderColor="#048c0d" BorderWidth="1"
                                         Clicked="BtnTrailor_OnClicked"/>
                         </StackLayout>
@@ -92,7 +92,7 @@
                                    HorizontalTextAlignment="Center" />
                                                     </StackLayout>
                                                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Column="2" >
-                                                        <Button  Text="{Binding Price ,StringFormat='{0:C}'}" 
+                                                        <Button  Text="{Binding SinglePurchase ,StringFormat='{0:C}'}" 
                                          BackgroundColor="Black" TextColor="White"
                                          HorizontalOptions="EndAndExpand" 
                                         Clicked="BtnSingleDownload_OnClicked"

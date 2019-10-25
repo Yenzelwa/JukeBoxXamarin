@@ -62,8 +62,9 @@ namespace JukeBox.Views
             try
             {
                 //SLLoader.IsVisible = true;
-
-                var response = await Library.GetLibraryDetail(library.Id);
+                var main = MainViewModel.GetInstance();
+                var clientId = main.User.UserId > 0 ? main.User.UserId : 0;
+                var response = await Library.GetLibraryDetail(library.Id , clientId);
                 libraryId = library.Id;
                 var songs = response.ResponseObject;
                 LblMovieName.Text = library.Artist;
@@ -73,6 +74,7 @@ namespace JukeBox.Views
                 LblLanguage.Text = library.Type;
                 LblDescription.Text = library.Description;
                 ImgDetail.Source = library.CoverFilePath;
+                BtnBuy.Text = library.Purchase;
                 filePath = library.FilePath;
                 
 
@@ -122,11 +124,13 @@ namespace JukeBox.Views
             var items = apiLibraryDetails;
             if (items != null)
             {
+                var mainViewModel = MainViewModel.GetInstance();
+                
                 var request = new PurchaseOrderRequest
                 {
                     LibraryId = libraryId,
                     LibraryDetailId = 0,
-                    ClientId = 2,
+                    ClientId = mainViewModel.User.UserId,
                     UserId = 1
                 };
 
@@ -180,14 +184,16 @@ namespace JukeBox.Views
         private async void BtnSingleDownload_OnClicked(object sender, EventArgs e)
         {
             var img = ((Button)sender);
+            
             if (img.BindingContext is ApiLibraryDetail song)
             {
+                var mainViewModel = MainViewModel.GetInstance();
 
                 var request = new PurchaseOrderRequest
                 {
                      LibraryId = 0,
                      LibraryDetailId = song.Id,
-                     ClientId= 2,
+                     ClientId= mainViewModel.User.UserId,
                      UserId= 1
                 };
 

@@ -67,7 +67,7 @@ namespace JukeBox.Views
                     main.Token.TokenType,
                     main.Token.AccessToken,
                     main.User.UserId.ToString());
-                    var userLocal = Converter.ToUserLocal(user);
+                    var userLocal = Converter.ToUserLocal(user,Convert.ToInt32(main.Token.UserName));
                     userLocal.Password = main.User.Password;
                     main.User = userLocal;
                     this.IsEnabled = true;

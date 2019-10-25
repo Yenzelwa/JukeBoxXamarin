@@ -118,7 +118,7 @@ namespace JukeBox
             UserLocal userLocal = null;
             if (user != null)
             {
-                userLocal = Converter.ToUserLocal(user);
+                userLocal = Converter.ToUserLocal(user , Convert.ToInt32(token.UserName));
                 dataService.Delete(userLocal);
                 dataService.Insert(userLocal);
                 dataService.Delete(token);

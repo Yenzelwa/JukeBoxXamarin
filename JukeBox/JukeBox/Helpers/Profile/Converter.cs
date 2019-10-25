@@ -7,7 +7,7 @@
 
 	public static class Converter
     {
-        public static UserLocal ToUserLocal(User user)
+        public static UserLocal ToUserLocal(User user , int userId)
         {
             return new UserLocal
             {
@@ -16,8 +16,8 @@
                 ImagePath = user.ImagePath,
                 LastName = user.LastName,
                 Telephone = user.Telephone,
-                UserId = user.UserId,
-                UserTypeId = user.UserTypeId,
+                UserId = userId,
+                UserTypeId = user.UserId,
                 BalanceAvailable = user.BalanceAvailable
 
             };

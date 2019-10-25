@@ -11,6 +11,7 @@
     using JukeBox.Domain;
     using JukeBox.Views;
     using JukeBox.Views.Profile;
+    using System;
 
     public class LoginViewModel : BaseViewModel
     {
@@ -193,8 +194,10 @@
             }
            
 
-            var userLocal = Converter.ToUserLocal(user);
-           userLocal.Password = this.Password;
+            var userLocal = Converter.ToUserLocal(user, Convert.ToInt32(token.UserName));
+           userLocal.Password = token.UserName;
+            userLocal.ImagePath = token.UserName;
+            userLocal.UserId = 2;
 
             this.dataService.Delete(userLocal);
             this.dataService.Delete(token);

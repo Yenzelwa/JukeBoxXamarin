@@ -49,7 +49,7 @@ namespace JukeBox.BLL.Library
 
             }
         }
-        public static async Task<LibraryResponse> GetLibrary(int filter)
+        public static async Task<LibraryResponse> GetLibrary(int filter , int? clientId)
         {
          
 
@@ -61,7 +61,7 @@ namespace JukeBox.BLL.Library
                 {
                     client.Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite);
 
-                    HttpResponseMessage response = await client.GetAsync($"http://igagasimediaweb.co.za/api/library/{filter}", HttpCompletionOption.ResponseHeadersRead);
+                    HttpResponseMessage response = await client.GetAsync($"http://igagasimediaweb.co.za/api/library/{filter}?clientid={clientId}", HttpCompletionOption.ResponseHeadersRead);
                     
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
@@ -108,7 +108,7 @@ namespace JukeBox.BLL.Library
 
             }
         }
-        public static async Task<LibraryDetailResponse> GetLibraryDetail(long libraryId)
+        public static async Task<LibraryDetailResponse> GetLibraryDetail(long libraryId , int? clientId)
         {
 
 
@@ -118,7 +118,7 @@ namespace JukeBox.BLL.Library
                 // Call asynchronous network methods in a try/catch block to handle exceptions
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"http://igagasimediaweb.co.za/api/library/detail/{libraryId}");
+                    HttpResponseMessage response = await client.GetAsync($"http://igagasimediaweb.co.za/api/library/detail/{libraryId}?clientid={clientId}");
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                   //  Console.WriteLine(responseBody);

@@ -84,7 +84,8 @@ namespace JukeBox.ViewModels
                 return;
             }
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
-            var response = await BLL.Library.Library.GetLibrary(filter);
+
+            var response = await BLL.Library.Library.GetLibrary(filter,0);
 
 
 
