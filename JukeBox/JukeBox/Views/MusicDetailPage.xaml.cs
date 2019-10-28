@@ -130,7 +130,7 @@ namespace JukeBox.Views
                 {
                     LibraryId = libraryId,
                     LibraryDetailId = 0,
-                    ClientId = mainViewModel.User.UserId,
+                    ClientId = Convert.ToInt32(mainViewModel.User.ImageFullPath),
                     UserId = 1
                 };
 
@@ -193,7 +193,7 @@ namespace JukeBox.Views
                 {
                      LibraryId = 0,
                      LibraryDetailId = song.Id,
-                     ClientId= mainViewModel.User.UserId,
+                     ClientId=Convert.ToInt32( mainViewModel.User.ImageFullPath),
                      UserId= 1
                 };
 
@@ -292,6 +292,7 @@ namespace JukeBox.Views
                     _player?.Start();
                     //slider.Maximum = _player.Duration;
                     img.Source = ImageSource.FromFile("pause_w.png");
+                    
                 }
                 else
                 {
@@ -324,11 +325,15 @@ namespace JukeBox.Views
             });
             if (!isDownloading)
             {
+                var a = MusicStateViewModel.Instance;
+                var b = QueuePopup.Instance;
+                var c = SliderControl.Instance;
                 var main = MainViewModel.GetInstance();
                main.PlaylistItems = new ObservableCollection<PlaylistItem>();
                 main.PlaylistItems.Add(new PlaylistItem(
                 new Playlist { Title = "Home", IsDynamic = false }));
                 main.PlaylistViewModel = new PlaylistViewModel(main.PlaylistItems[0]);
+                var reload = new MusicBarControl();
              //  var page= new  PlaylistPage(main.PlaylistItems[0]);
                 // await App.Master.NavigateAsync(0);
                 // await ((App.Current.MainPage as MasterDetailPage).Detail as NavigationPage).Navigation.PushAsync(page);

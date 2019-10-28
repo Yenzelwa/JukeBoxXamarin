@@ -5,7 +5,7 @@
              x:Class="JukeBox.Controls.PrevControl">
   <ContentView.Content>
       <StackLayout>
-            <ffimageloading:CachedImage Source="prev.png" HeightRequest="40" WidthRequest="40">
+            <ffimageloading:CachedImage Source="prev.png" HeightRequest="30" WidthRequest="30">
                 <ffimageloading:CachedImage.GestureRecognizers>
                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
                     <TapGestureRecognizer Command="{Binding PrevCommand}" />

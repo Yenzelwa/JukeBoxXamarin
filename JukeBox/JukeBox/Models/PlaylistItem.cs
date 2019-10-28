@@ -41,7 +41,7 @@ namespace JukeBox.Models
         public PlaylistItem(Playlist playlist)
         {
             Playlist = playlist;
-            if (Playlist.IsDynamic)
+            if (Playlist.IsDynamic || !playlist.IsDynamic)
             {
                 AddSong = new Command(() =>
                 {

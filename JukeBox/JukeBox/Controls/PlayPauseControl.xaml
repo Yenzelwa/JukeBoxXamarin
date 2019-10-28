@@ -5,13 +5,13 @@
              x:Class="JukeBox.Controls.PlayPauseControl">
   <ContentView.Content>
       <StackLayout>
-            <ffimageloading:CachedImage Source="play_w.jpg" IsVisible="{Binding IsNotPlaying}" HeightRequest="40" WidthRequest="40">
+            <ffimageloading:CachedImage Source="play_w.jpg" IsVisible="{Binding IsNotPlaying}" HeightRequest="30" WidthRequest="30">
                 <ffimageloading:CachedImage.GestureRecognizers>
                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
                     <TapGestureRecognizer Command="{Binding PlayCommand}" />
                 </ffimageloading:CachedImage.GestureRecognizers>
             </ffimageloading:CachedImage>
-            <ffimageloading:CachedImage Source="pause_w.jpg" IsVisible="{Binding IsPlaying}" HeightRequest="40" WidthRequest="40">
+            <ffimageloading:CachedImage Source="pause_w.jpg" IsVisible="{Binding IsPlaying}" HeightRequest="30" WidthRequest="30">
                 <ffimageloading:CachedImage.GestureRecognizers>
                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
                     <TapGestureRecognizer Command="{Binding PauseCommand}" />

@@ -26,12 +26,12 @@ xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselV
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
               </Grid.ColumnDefinitions>
-              <ProgressBar Grid.Row="0"  BindingContext="{Binding Source={x:Reference MusicBar}, Path=BindingContext}" Progress="1" Margin="0,0,0,0" Grid.ColumnSpan="4">
-                <ProgressBar.Effects>
-                  <effects:BlueProgressBarEffect />
-                </ProgressBar.Effects>
-              </ProgressBar>
-              <StackLayout Grid.Row="1" Orientation="Vertical" Spacing="12" VerticalOptions="Center">
+                            <ProgressBar Grid.Row="0" BindingContext="{Binding Source={x:Reference MusicBar}, Path=BindingContext}" Progress="{Binding Progress}" Margin="0,0,0,0" Grid.ColumnSpan="4">
+                                <ProgressBar.Effects>
+                                    <effects:BlueProgressBarEffect />
+                                </ProgressBar.Effects>
+                            </ProgressBar>
+                            <StackLayout Grid.Row="1" Orientation="Vertical" Spacing="12" VerticalOptions="Center">
                 <Grid>
                   <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

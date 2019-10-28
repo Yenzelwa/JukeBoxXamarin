@@ -5,7 +5,7 @@
              x:Class="JukeBox.Controls.NextControl">
   <ContentView.Content>
       <StackLayout>
-            <ffimageloading:CachedImage Source="next.png" HeightRequest="40" WidthRequest="40">
+            <ffimageloading:CachedImage Source="next.png" HeightRequest="30" WidthRequest="30">
                 <ffimageloading:CachedImage.GestureRecognizers>
                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
                     <TapGestureRecognizer Command="{Binding NextCommand}" />
