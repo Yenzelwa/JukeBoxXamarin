@@ -17,7 +17,7 @@
     {
         #region Services
         private ApiService apiService;
-        private DataService dataService;
+        public DataService dataService;
         #endregion
 
         #region Attributes
@@ -178,21 +178,6 @@
                 token.TokenType,
                 token.AccessToken,
                 token.UserName);
-            if(user == null)
-            {
-                 user = new User
-                {
-                    Email = this.Email,
-                    FirstName = "Nokukhanya",
-                    LastName = "Dumakude",
-                    UserId = 2,
-                    Password = this.password,
-                    UserTypeId = 1,
-
-
-                };
-            }
-           
 
             var userLocal = Converter.ToUserLocal(user, Convert.ToInt32(token.UserName));
            userLocal.Password = token.UserName;

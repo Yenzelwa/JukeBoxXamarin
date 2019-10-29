@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JukeBox.Android", "JukeBox\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JukeBox.iOS", "JukeBox\JukeBox.iOS\JukeBox.iOS.csproj", "{9DFFC224-B39D-4DCF-8AB0-300BF6D7B2C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JukeBox", "JukeBox\JukeBox\JukeBox.csproj", "{D38EB5C4-A04C-4A19-A3DB-E8C928018823}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JukeBox", "JukeBox\JukeBox\JukeBox.csproj", "{D38EB5C4-A04C-4A19-A3DB-E8C928018823}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
