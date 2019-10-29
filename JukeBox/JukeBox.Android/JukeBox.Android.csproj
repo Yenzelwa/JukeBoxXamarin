@@ -179,7 +179,6 @@
     <AndroidResource Include="Resources\layout\Toolbar.xml" />
     <AndroidResource Include="Resources\values\styles.xml" />
     <AndroidResource Include="Resources\values\colors.xml" />
-    <AndroidResource Include="Resources\mipmap-hdpi\launcher_foreground.png" />
     <AndroidResource Include="Resources\mipmap-mdpi\launcher_foreground.png" />
     <AndroidResource Include="Resources\mipmap-xhdpi\launcher_foreground.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\launcher_foreground.png" />
@@ -196,9 +195,6 @@
     <AndroidResource Include="Resources\mipmap-anydpi-v26\home.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\mipmap-anydpi-v26\icon.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\mipmap-anydpi-v26\next.png" />
   </ItemGroup>
   <ItemGroup>
@@ -212,10 +208,6 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\icon.jpg">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable\next.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
@@ -225,10 +217,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xhdpi\home.png">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\icon.jpg">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -248,10 +236,6 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\icon.jpg">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxhdpi\next.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
@@ -265,10 +249,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\home.png">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\icon.jpg">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -289,10 +269,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\home.png">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\icon.jpg">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -335,6 +311,15 @@
     <AndroidResource Include="Resources\drawable-xhdpi\launcher_foreground.jpg" />
     <AndroidResource Include="Resources\drawable-xxhdpi\launcher_foreground.jpg" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\launcher_foreground.jpg" />
+    <AndroidResource Include="Resources\mipmap-anydpi-v26\icon.jpg">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icon.png" />
     <Content Include="Resources\mipmap-anydpi-v26\play_w.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
