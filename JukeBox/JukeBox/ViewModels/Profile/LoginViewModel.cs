@@ -12,12 +12,13 @@
     using JukeBox.Views;
     using JukeBox.Views.Profile;
     using System;
+    using JukeBox.Models.Profile;
 
     public class LoginViewModel : BaseViewModel
     {
         #region Services
         private ApiService apiService;
-        public DataService dataService;
+        private DataService dataService;
         #endregion
 
         #region Attributes
@@ -179,21 +180,8 @@
                 token.AccessToken,
                 token.UserName);
 
-            var userLocal = Converter.ToUserLocal(user, Convert.ToInt32(token.UserName));
-           userLocal.Password = token.UserName;
-            userLocal.ImagePath = token.UserName;
-            userLocal.UserId = 2;
-
-            this.dataService.Delete(userLocal);
-            this.dataService.Delete(token);
-          
-
-            var mainViewModel = MainViewModel.GetInstance();
-            mainViewModel.Token = token;
-            mainViewModel.User = userLocal;
-
-            this.dataService.Insert(userLocal);
-            this.dataService.Insert(token);
+            user.Password = this.Password;
+            registerDataService(user, token);
 
             if (this.IsRemembered)
             {
@@ -214,6 +202,23 @@
 
             this.Email = string.Empty;
             this.Password = string.Empty;
+        }
+        public void registerDataService(User user , TokenResponse token)
+        {
+            var userLocal = Converter.ToUserLocal(user, Convert.ToInt32(token.UserName));
+
+
+            this.dataService.Delete(userLocal);
+            this.dataService.Delete(token);
+
+
+            var mainViewModel = MainViewModel.GetInstance();
+            mainViewModel.Token = token;
+            mainViewModel.User = userLocal;
+
+            this.dataService.Insert(userLocal);
+            this.dataService.Insert(token);
+
         }
 
         public ICommand RegisterCommand

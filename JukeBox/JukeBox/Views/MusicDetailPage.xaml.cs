@@ -60,6 +60,8 @@ namespace JukeBox.Views
         {
             // GridMoviesDetail.IsVisible = false;
 
+            this.dataService = new DataService();
+
             try
             {
                 //SLLoader.IsVisible = true;
@@ -223,7 +225,6 @@ namespace JukeBox.Views
                 {
                     if(orderResponse.ResponseType == 1)
                     {
-                        
                         DowloadFile(song.FilePath, "Songs", null);
                     }
                     else
@@ -340,25 +341,13 @@ namespace JukeBox.Views
                 var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
                 var mainViewModel = MainViewModel.GetInstance();
                 var user = await apiService.GetUserByEmail(
-              apiSecurity,
-              "/api/account",
-              "/customer/getcustomer",
-              mainViewModel.Token.TokenType,
-              mainViewModel.Token.AccessToken,
-              mainViewModel.Token.UserName);
-                var dataService = new DataService();
-                var userLocal = Converter.ToUserLocal(user, Convert.ToInt32(mainViewModel.Token.UserName));
-                
-                dataService.Delete(userLocal);
-               // this.dataService.Delete(mainViewModel.Token);
-
-                mainViewModel.User = userLocal;
-
-                dataService.Insert(userLocal);
-                //this.dataService.Insert(mainViewModel.Token);
-                //  var page= new  PlaylistPage(main.PlaylistItems[0]);
-                // await App.Master.NavigateAsync(0);
-                // await ((App.Current.MainPage as MasterDetailPage).Detail as NavigationPage).Navigation.PushAsync(page);
+                  apiSecurity,
+                  "/api/account",
+                  "/customer/getcustomer",
+                  mainViewModel.Token.TokenType,
+                  mainViewModel.Token.AccessToken,
+                  mainViewModel.Token.UserName);
+                mainViewModel.Login.registerDataService(user, mainViewModel.Token);
                 await DisplayAlert("File Status", "File Downloaded", "OK");
             }
         }

@@ -216,15 +216,13 @@
             {
                 imageArray = FilesHelper.ReadFully(this.file.GetStream());
             }
-
+          
             var userDomain = Converter.ToUserDomain(this.User, imageArray);
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
-            var response = await this.apiService.Put(
+            var response = await this.apiService.Post(
                 apiSecurity,
                 "/api/account",
                 "/customer",
-                MainViewModel.GetInstance().Token.TokenType,
-                MainViewModel.GetInstance().Token.AccessToken,
                 userDomain);
 
             if (!response.IsSuccess)
@@ -240,20 +238,24 @@
 
             var userApi = await this.apiService.GetUserByEmail(
                 apiSecurity,
-                "/api",
-                "/Users/GetUserByEmail",
+                 "/api/account",
+                "/customer/getcustomer",
                 MainViewModel.GetInstance().Token.TokenType,
                 MainViewModel.GetInstance().Token.AccessToken,
-                this.User.Email);
+                MainViewModel.GetInstance().Token.UserName);
             var userLocal = Converter.ToUserLocal(userApi, Convert.ToInt32(MainViewModel.GetInstance().Token.UserName));
 
             MainViewModel.GetInstance().User = userLocal;
+            MainViewModel.GetInstance().Login.registerDataService(userApi, MainViewModel.GetInstance().Token);
             this.dataService.Update(userLocal);
 
             this.IsRunning = false;
             this.IsEnabled = true;
-
-            await App.Navigator.PopAsync();
+            await Application.Current.MainPage.DisplayAlert(
+               Languages.ConfirmLabel,
+               "Profile Updated Succefully",
+               Languages.Accept);
+            //  await App.Navigator.PopAsync();
         }
         #endregion
     }
