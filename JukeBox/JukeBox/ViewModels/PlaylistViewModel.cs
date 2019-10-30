@@ -53,10 +53,11 @@ namespace JukeBox.ViewModels
             {
                 Songs = _playlist.Songs;
             }
-
+            
             PlayCommand = new Command((item) =>
             {
-                DependencyService.Get<IMusicManager>().StartQueue(new ObservableCollection<Song>(Songs), 0);
+                var index = Songs.IndexOf(item as Song);
+                DependencyService.Get<IMusicManager>().StartQueue(new ObservableCollection<Song>(Songs), Songs.IndexOf(item as Song));
             });
         }
 

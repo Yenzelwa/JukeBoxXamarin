@@ -236,10 +236,6 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\next.png">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxhdpi\no_image.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
@@ -320,6 +316,30 @@
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable\ic_action_info.png" />
+    <AndroidResource Include="Resources\drawable\ic_action_people.png" />
+    <AndroidResource Include="Resources\drawable\ic_chevron_right.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_info.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_people.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_chevron_right.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_info.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_people.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_chevron_right.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_info.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_people.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_chevron_right.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_info.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_people.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_chevron_right.png" />
+    <AndroidResource Include="Resources\drawable\close_good.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\close_good.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\close_good.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\close_good.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\next.png">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\close_good.png" />
     <Content Include="Resources\mipmap-anydpi-v26\play_w.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

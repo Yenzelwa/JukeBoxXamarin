@@ -72,6 +72,8 @@ namespace JukeBox.Droid
             //// FlowListView
             FlowListView.Init();
 
+            Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
+
             if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != Permission.Granted)
             {
                 // We have permission, go ahead and use the camera.

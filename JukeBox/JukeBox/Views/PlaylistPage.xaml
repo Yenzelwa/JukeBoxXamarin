@@ -29,7 +29,7 @@
                            FontAttributes="Bold" FontSize="Medium" HorizontalTextAlignment="Center"
                            VerticalOptions="Center" VerticalTextAlignment="Center"
                            Margin="10, 0, 0, 0" TextColor="White"/>
-                    <Button Text="Shuffle" Clicked="Button_Clicked" BorderColor="#2287CA" BorderWidth="1" TextColor="White" BackgroundColor="Black" IsEnabled="{Binding HasSongs}">
+                    <!--<Button Text="Shuffle" Clicked="Button_Clicked" BorderColor="#2287CA" BorderWidth="1" TextColor="White" BackgroundColor="Black" IsEnabled="{Binding HasSongs}">
                         <Button.WidthRequest>
                             <OnPlatform x:TypeArguments="x:Double" Android="-1" iOS="100"  />
                         </Button.WidthRequest>
@@ -40,7 +40,7 @@
                             <OnPlatform x:TypeArguments="x:Double" Android="-1" iOS="100" />
                         </Button.WidthRequest>
      
-                    </Button>
+                    </Button>-->
                 </StackLayout>
             </ListView.Header>
             <ListView.ItemTemplate>
@@ -52,7 +52,7 @@
         <ActivityIndicator Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center"
                            IsRunning="True" IsVisible="{Binding SongsLoading}"
                            Color="#2287CA" />
-        <controls:MusicBarControl Grid.Row="1" x:Name="MusicBarController" HeightRequest="120" VerticalOptions="End"/>
+        <controls:MusicBarControl Grid.Row="1" x:Name="MusicBarController" HeightRequest="65" VerticalOptions="End"/>
     </Grid>
 </ContentPage>
 

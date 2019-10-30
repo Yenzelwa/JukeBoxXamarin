@@ -197,7 +197,7 @@
 
             this.Menus.Add(new MenuItemViewModel
             {
-                Icon = "ic_settings",
+                Icon = "ic_action_people",
                 PageName = "MyProfilePage",
                 Title = Languages.MyProfile
             });
@@ -205,14 +205,14 @@
 
             this.Menus.Add(new MenuItemViewModel
             {
-                Icon = "ic_insert_chart",
+                Icon = "ic_action_info",
                 PageName = "AboutPage",
                 Title = "About"
             });
 
             this.Menus.Add(new MenuItemViewModel
             {
-                Icon = "ic_exit_to_app",
+                Icon = "ic_chevron_right",
                 PageName = "LoginPage",
                 Title = Languages.LogOut
             });

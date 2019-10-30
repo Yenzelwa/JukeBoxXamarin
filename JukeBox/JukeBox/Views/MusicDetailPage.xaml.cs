@@ -352,6 +352,17 @@ namespace JukeBox.Views
             }
         }
 
+
+
+
+
+
+
+
+
+
+
+
         public bool IsDownloading(IDownloadFile file)
         {
             if (file == null) return false;
