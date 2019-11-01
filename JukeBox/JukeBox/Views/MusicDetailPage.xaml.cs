@@ -130,12 +130,12 @@ namespace JukeBox.Views
             if (items != null)
             {
                 var mainViewModel = MainViewModel.GetInstance();
-                
+
                 var request = new PurchaseOrderRequest
                 {
                     LibraryId = libraryId,
                     LibraryDetailId = 0,
-                    ClientId = Convert.ToInt32(mainViewModel.User.ImageFullPath),
+                    ClientId = Convert.ToInt32(mainViewModel.User.ImagePath),
                     UserId = 1
                 };
 
@@ -150,7 +150,8 @@ namespace JukeBox.Views
                         Languages.Accept);
                     return;
                 }
-                if (DownloadAlbum)
+                if (!DownloadAlbum)
+
                 {
                     var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
 
@@ -182,10 +183,22 @@ namespace JukeBox.Views
                 }
                 else
                 {
-                    await DisplayAlert(Languages.Error, Languages.SomethingWrong, Languages.Accept);
-                    return;
+                   
+                        foreach (var item in items)
+                        {
+                            DowloadFile(item.FilePath, "Album", LblMovieName.Text);
+                        }
+
+                    
+
                 }
             }
+            else
+            {
+                await DisplayAlert(Languages.Error, Languages.SomethingWrong, Languages.Accept);
+                return;
+            }
+            
             
         
     }
@@ -201,7 +214,7 @@ namespace JukeBox.Views
                 {
                     LibraryId = 0,
                     LibraryDetailId = song.Id,
-                    ClientId = Convert.ToInt32(mainViewModel.User.ImageFullPath),
+                    ClientId = Convert.ToInt32(mainViewModel.User.ImagePath),
                     UserId = 1
                 };
 

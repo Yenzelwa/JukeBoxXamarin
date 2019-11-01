@@ -206,6 +206,7 @@
         }
         public void registerDataService(User user , TokenResponse token)
         {
+            user.ImagePath = token.UserName;
             var userLocal = Converter.ToUserLocal(user, Convert.ToInt32(token.UserName));
 
 
