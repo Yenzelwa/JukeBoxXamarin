@@ -90,6 +90,11 @@
             get;
             set;
         }
+        public ForgotPasswordViewModel ForgotPassword
+        {
+            get;
+            set;
+        }
         public PlaylistViewModel Playlist
         {
             get;

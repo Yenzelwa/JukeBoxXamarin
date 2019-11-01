@@ -33,6 +33,7 @@ namespace JukeBox.Views
         private PlaylistViewModel _vm;
         private MediaPlayer _player;
         private long libraryId;
+        private bool DownloadAlbum;
         private string filePath;
         private List<ApiLibraryDetail> apiLibraryDetails;
         private DataService dataService;
@@ -79,6 +80,7 @@ namespace JukeBox.Views
                 ImgDetail.Source = library.CoverFilePath;
                 BtnBuy.Text = library.Purchase;
                 filePath = library.FilePath;
+                DownloadAlbum = library.AlbumDownload;
                 
 
                 if (library != null)
@@ -148,31 +150,34 @@ namespace JukeBox.Views
                         Languages.Accept);
                     return;
                 }
-                var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
-
-                var orderResponse = await apiService.PurchaseOrder(
-               apiSecurity,
-               "/api/library",
-               "/purchase",
-               "khji",
-               "klkl",
-               request);
-
-                if (orderResponse != null)
+                if (DownloadAlbum)
                 {
-                    if (orderResponse.ResponseType == 1)
+                    var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
+
+                    var orderResponse = await apiService.PurchaseOrder(
+                   apiSecurity,
+                   "/api/library",
+                   "/purchase",
+                   "khji",
+                   "klkl",
+                   request);
+
+                    if (orderResponse != null)
                     {
-                        foreach (var item in items)
+                        if (orderResponse.ResponseType == 1)
                         {
-                            DowloadFile(item.FilePath, "Album", LblMovieName.Text);
+                            foreach (var item in items)
+                            {
+                                DowloadFile(item.FilePath, "Album", LblMovieName.Text);
+                            }
+
                         }
+                        else
+                        {
+                            await DisplayAlert(Languages.Error, orderResponse.ResponseMessage, Languages.Accept);
+                            return;
 
-                    }
-                    else
-                    {
-                        await DisplayAlert(Languages.Error, orderResponse.ResponseMessage, Languages.Accept);
-                        return;
-
+                        }
                     }
                 }
                 else
@@ -187,17 +192,17 @@ namespace JukeBox.Views
         private async void BtnSingleDownload_OnClicked(object sender, EventArgs e)
         {
             var img = ((Button)sender);
-            
+
             if (img.BindingContext is ApiLibraryDetail song)
             {
                 var mainViewModel = MainViewModel.GetInstance();
 
                 var request = new PurchaseOrderRequest
                 {
-                     LibraryId = 0,
-                     LibraryDetailId = song.Id,
-                     ClientId=Convert.ToInt32( mainViewModel.User.ImageFullPath),
-                     UserId= 1
+                    LibraryId = 0,
+                    LibraryDetailId = song.Id,
+                    ClientId = Convert.ToInt32(mainViewModel.User.ImageFullPath),
+                    UserId = 1
                 };
 
                 var apiService = new ApiService();
@@ -211,36 +216,45 @@ namespace JukeBox.Views
                         Languages.Accept);
                     return;
                 }
-                var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
-           
-                var orderResponse = await apiService.PurchaseOrder(
-               apiSecurity,
-               "/api/library",
-               "/purchase",
-               "khji",
-               "klkl",
-               request);
-
-                if(orderResponse != null)
+                var orderResponse = new ApiResponse();
+                if (!song.SongDownload)
                 {
-                    if(orderResponse.ResponseType == 1)
+                    var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
+
+                    orderResponse = await apiService.PurchaseOrder(
+                  apiSecurity,
+                  "/api/library",
+                  "/purchase",
+                  "khji",
+                  "klkl",
+                  request);
+
+                    if (orderResponse != null)
                     {
-                        DowloadFile(song.FilePath, "Songs", null);
-                    }
-                    else
-                    {
-                        await DisplayAlert(Languages.Error, orderResponse.ResponseMessage, Languages.Accept);
-                        return;
-                     
+                        if (orderResponse.ResponseType == 1)
+                        {
+                            DowloadFile(song.FilePath, "Songs", null);
+                        }
+                        else
+                        {
+                            await DisplayAlert(Languages.Error, orderResponse.ResponseMessage, Languages.Accept);
+                            return;
+
+                        }
                     }
                 }
                 else
                 {
-                    await DisplayAlert(Languages.Error, Languages.SomethingWrong, Languages.Accept);
-                    return;
+                    DowloadFile(song.FilePath, "Songs", null);
                 }
-               
             }
+            else
+            {
+                await DisplayAlert(Languages.Error, Languages.SomethingWrong, Languages.Accept);
+                return;
+            }
+               
+            
           
         }
         private void Payment_Clicked(object sender, EventArgs e)

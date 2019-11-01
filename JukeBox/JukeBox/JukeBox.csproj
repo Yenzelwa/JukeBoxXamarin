@@ -55,6 +55,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Profile\ChangePasswordPage.xaml.cs">
+      <DependentUpon>ChangePasswordPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Update="Controls\CreatePlaylistPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>

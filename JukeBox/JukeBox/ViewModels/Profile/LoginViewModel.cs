@@ -181,6 +181,7 @@
                 token.UserName);
 
             user.Password = this.Password;
+            user.ImagePath = token.UserName;
             registerDataService(user, token);
 
             if (this.IsRemembered)
@@ -233,6 +234,19 @@
         {
             MainViewModel.GetInstance().Register = new RegisterViewModel();   
           await Application.Current.MainPage.Navigation.PushAsync(new RegisterPage());
+        }
+        public ICommand ForgotPasswordCommand
+        {
+            get
+            {
+                return new RelayCommand(ForgotPassword);
+            }
+        }
+
+        private async void ForgotPassword()
+        {
+            MainViewModel.GetInstance().ForgotPassword = new ForgotPasswordViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new ForgotPasswordPage());
         }
         #endregion
     }

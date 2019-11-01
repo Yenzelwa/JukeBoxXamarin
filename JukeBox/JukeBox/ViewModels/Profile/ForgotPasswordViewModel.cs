@@ -11,7 +11,7 @@
     using System.Windows.Input;
     using Xamarin.Forms;
 
-    public class ChangePasswordViewModel : BaseViewModel
+    public class ForgotPasswordViewModel : BaseViewModel
     {
         #region Services
         private ApiService apiService;
@@ -36,27 +36,16 @@
             set { SetValue(ref this.isEnabled, value); }
         }
 
-        public string CurrentPassword
+        public string Email
         {
             get;
             set;
         }
 
-        public string NewPassword
-        {
-            get;
-            set;
-        }
-
-        public string Confirm
-        {
-            get;
-            set;
-        }
         #endregion
 
         #region Constructors
-        public ChangePasswordViewModel()
+        public ForgotPasswordViewModel()
         {
             this.apiService = new ApiService();
             this.dataService = new DataService();
@@ -66,67 +55,30 @@
         #endregion
 
         #region Commands
-        public ICommand ChangePasswordCommand
+        public ICommand ForgotPasswordCommand
         {
             get
             {
-                return new RelayCommand(ChangePassword);
+                return new RelayCommand(ForgotPassword);
             }
         }
 
-        private async void ChangePassword()
+        private async void ForgotPassword()
         {
-            if (string.IsNullOrEmpty(this.CurrentPassword))
+            if (string.IsNullOrEmpty(this.Email))
             {
                 await Application.Current.MainPage.DisplayAlert(
                     Languages.Error,
-                    Languages.PasswordValidation,
+                    Languages.EmailValidation,
                     Languages.Accept);
                 return;
             }
 
-            if (this.CurrentPassword.Length < 6)
+            if (!RegexUtilities.IsValidEmail(this.Email))
             {
                 await Application.Current.MainPage.DisplayAlert(
                     Languages.Error,
-                    Languages.PasswordValidation2,
-                    Languages.Accept);
-                return;
-            }
-
-
-            if (string.IsNullOrEmpty(this.NewPassword))
-            {
-                await Application.Current.MainPage.DisplayAlert(
-                    Languages.Error,
-                    Languages.PasswordValidation,
-                    Languages.Accept);
-                return;
-            }
-
-            if (this.NewPassword.Length > 6)
-            {
-                await Application.Current.MainPage.DisplayAlert(
-                    Languages.Error,
-                    Languages.PasswordValidation2,
-                    Languages.Accept);
-                return;
-            }
-
-            if (string.IsNullOrEmpty(this.Confirm))
-            {
-                await Application.Current.MainPage.DisplayAlert(
-                    Languages.Error,
-                    Languages.ConfirmValidation,
-                    Languages.Accept);
-                return;
-            }
-
-            if (this.NewPassword != this.Confirm)
-            {
-                await Application.Current.MainPage.DisplayAlert(
-                    Languages.Error,
-                    Languages.ConfirmValidation2,
+                    Languages.EmailValidation2,
                     Languages.Accept);
                 return;
             }
@@ -149,17 +101,17 @@
 
             var request = new ChangePasswordRequest
             {
-                CurrentPassword = this.CurrentPassword,
-                Email = null,
-                NewPassword = this.NewPassword,
+                CurrentPassword = null,
+                Email = this.Email,
+                NewPassword = null,
             };
 
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
-            var response = await this.apiService.ChangePassword(
+            var response = await this.apiService.ForgotPassword(
                 apiSecurity,
                 "/api/account",
-                "/resetpassword/",
-               this.NewPassword+ "?code="+ this.CurrentPassword);
+                "/forgotpassword",
+                request.Email);
 
             if (!response.IsSuccess)
             {
@@ -167,23 +119,18 @@
                 this.IsEnabled = true;
                 await Application.Current.MainPage.DisplayAlert(
                     Languages.Error,
-                    Languages.ErrorChangingPassword,
+                    response.Message,
                     Languages.Accept);
                 return;
             }
 
           //  MainViewModel.GetInstance().User.Password = this.NewPassword;
-           // this.dataService.Update(MainViewModel.GetInstance().User);
+         //   this.dataService.Update(MainViewModel.GetInstance().User);
 
             this.IsRunning = false;
             this.IsEnabled = true;
-
-            await Application.Current.MainPage.DisplayAlert(
-                Languages.ConfirmLabel,
-                "Password have been changed",
-                Languages.Accept);
-            MainViewModel.GetInstance().Login = new LoginViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new LoginPage());
+            MainViewModel.GetInstance().ChangePassword = new ChangePasswordViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new ChangePasswordPage());
         }
         #endregion
     }

@@ -128,15 +128,57 @@
             string urlBase, 
             string servicePrefix, 
             string controller,
-            string tokenType, 
-            string accessToken, ChangePasswordRequest changePasswordRequest)
+             string changePasswordRequest)
         {
             try
             {
                 var request = JsonConvert.SerializeObject(changePasswordRequest);
                 var content = new StringContent(request, Encoding.UTF8, "application/json");
                 var client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenType, accessToken);
+               // client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenType, accessToken);
+                client.BaseAddress = new Uri(urlBase);
+                var url = string.Format("{0}{1}{2}", servicePrefix, controller,changePasswordRequest);
+                var response = await client.GetAsync(url);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                    };
+                }
+
+                return new Response
+                {
+                    IsSuccess = true,
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message,
+                };
+            }
+        }
+
+        public async Task<Response> ForgotPassword(
+        string urlBase,
+        string servicePrefix,
+        string controller,
+       string changePasswordRequest)
+        {
+            try
+            {
+                var model = new ForgotPasswordRequest
+                {
+                    Email = changePasswordRequest,
+                };
+                var request = JsonConvert.SerializeObject(model);
+                var content = new StringContent(request, Encoding.UTF8, "application/json");
+                var client = new HttpClient();
+              //  client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenType, accessToken);
                 client.BaseAddress = new Uri(urlBase);
                 var url = string.Format("{0}{1}", servicePrefix, controller);
                 var response = await client.PostAsync(url, content);
