@@ -44,6 +44,7 @@ namespace JukeBox.Droid.Audio
         public const string ActionToggle = "com.xammusic.TOGGLE";
         public const string ActionStop = "com.xammusic.STOP";
         public const string ActionTryKill = "com.xammusic.TRY_KILL";
+        public static string CHANNEL_ID = "JukeBoxChannel";
 
         private MediaPlayer _player;
         private IList<Song> _queue;
@@ -126,7 +127,7 @@ namespace JukeBox.Droid.Audio
 
         public void Start(int pos)
         {
-         //   System.Diagnostics.Debug.WriteLine("Start()");
+            //   System.Diagnostics.Debug.WriteLine("Start()");
             if (pos >= 0 && pos < _queue.Count && !_isPreparing)
             {
                 _isPreparing = true;
@@ -184,7 +185,7 @@ namespace JukeBox.Droid.Audio
             {
                 _player.Start();
                 UpdatePlaybackState(PlaybackStateCompat.StatePlaying);
-              StartNotification();
+                StartNotification();
                 UpdateMediaMetadataCompat();
 
                 Task.Run(() =>
@@ -311,7 +312,7 @@ namespace JukeBox.Droid.Audio
 
                     if (state == PlaybackStateCompat.StatePlaying || state == PlaybackStateCompat.StatePaused)
                     {
-                       StartNotification();
+                        StartNotification();
                     }
                 }
                 catch (Exception e)
@@ -325,54 +326,97 @@ namespace JukeBox.Droid.Audio
         {
             if (_mediaSessionCompat != null)
             {
-                Intent intent = new Intent(ApplicationContext, typeof(MainActivity));
-                PendingIntent pendingIntent = PendingIntent.GetActivity(ApplicationContext, 0, intent, PendingIntentFlags.UpdateCurrent);
                 Song currentSong = _queue[_pos];
 
-                Intent audioServiceIntent = new Intent(ApplicationContext, typeof(AudioService));
-                audioServiceIntent.SetAction(ActionStop);
-                PendingIntent pendingCancelIntent = PendingIntent.GetService(ApplicationContext, 1, audioServiceIntent, PendingIntentFlags.CancelCurrent);
-
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                    .SetContentTitle(currentSong.Title)
-                    .SetContentText(currentSong.Artist)
-                    .SetContentInfo(currentSong.Album)
-                    .SetSmallIcon(Resource.Drawable.icon)
-                    .SetContentIntent(pendingIntent)
-                    .SetShowWhen(false)
-                    .SetOngoing(true)
-                    .SetVisibility(Android.Support.V4.App.NotificationCompat.VisibilityPublic)
-                    .SetDefaults(Android.Support.V4.App.NotificationCompat.FlagNoClear)
-                    .SetPriority(Android.Support.V4.App.NotificationCompat.PriorityMax);
-
-                Bitmap artwork;
-                if (!String.IsNullOrEmpty(currentSong.Artwork.ToString()))
+                if (Build.VERSION.SdkInt < BuildVersionCodes.O)
                 {
-                    artwork = await BitmapFactory.DecodeFileAsync(currentSong.Artwork.ToString());
+                    var intent = new Intent(this, typeof(MainActivity));
+                    intent.AddFlags(ActivityFlags.ClearTop);
+                    var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
 
+                    Intent audioServiceIntent = new Intent(ApplicationContext, typeof(AudioService));
+                    audioServiceIntent.SetAction(ActionStop);
+                    PendingIntent pendingCancelIntent = PendingIntent.GetService(ApplicationContext, 1, audioServiceIntent, PendingIntentFlags.CancelCurrent);
+
+                    var notificationBuilder = new Android.App.Notification.Builder(this)
+                                .SetContentTitle(currentSong.Title)
+                                .SetSmallIcon(Resource.Drawable.icon)
+                                .SetContentText(currentSong.Artist)
+                                .SetAutoCancel(true)
+                                .SetContentIntent(pendingIntent);
+
+                    var notificationManager = NotificationManager.FromContext(this);
+
+                    notificationManager.Notify(0, notificationBuilder.Build());
                 }
                 else
                 {
-                    artwork = await BitmapFactory.DecodeResourceAsync(ApplicationContext.Resources, Resource.Drawable.ic_arrow_back);
+                    var intent = new Intent(this, typeof(MainActivity));
+                    intent.AddFlags(ActivityFlags.ClearTop);
+                    var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
+
+
+
+                    Intent audioServiceIntent = new Intent(ApplicationContext, typeof(AudioService));
+                    audioServiceIntent.SetAction(ActionStop);
+                    PendingIntent pendingCancelIntent = PendingIntent.GetService(ApplicationContext, 1, audioServiceIntent, PendingIntentFlags.CancelCurrent);
+
+                    var notificationBuilder = new Android.App.Notification.Builder(this)
+                                .SetContentTitle(currentSong.Title)
+                                .SetSmallIcon(Resource.Drawable.icon)
+                                .SetContentText(currentSong.Artist)
+                                .SetAutoCancel(true)
+                                .SetContentIntent(pendingIntent)
+                                .SetChannelId("YourUniqueChannelID")
+                                .SetOngoing(true)
+                                .SetShowWhen(false);
+                    Bitmap artwork;
+                    if (!String.IsNullOrEmpty(currentSong.Artwork.ToString()))
+                    {
+                        artwork = await BitmapFactory.DecodeFileAsync(currentSong.Artwork.ToString());
+
+                    }
+                    else
+                    {
+                        artwork = await BitmapFactory.DecodeResourceAsync(ApplicationContext.Resources, Resource.Drawable.icon);
+                    }
+                    notificationBuilder.SetLargeIcon(artwork);
+
+                    notificationBuilder.AddAction(GenerateActionCompat(Resource.Drawable.pause_w, "Prev", ActionPrev));
+                    AddPlayPauseActionCompat(notificationBuilder);
+                    notificationBuilder.AddAction(GenerateActionCompat(Resource.Drawable.play_w, "Next", ActionNext));
+
+                    MediaStyle style = new MediaStyle();
+                    style.SetShowCancelButton(true);
+                    style.SetCancelButtonIntent(pendingCancelIntent);
+                    style.SetMediaSession(_mediaSessionCompat.SessionToken);
+                    style.SetShowActionsInCompactView(0, 1, 2);
+                    // notificationBuilder.SetStyle(style);
+
+                    //var notificationManager = NotificationManager.FromContext(this);
+
+                    if (Build.VERSION.SdkInt < BuildVersionCodes.O)
+                    {
+                        // Notification channels are new in API 26 (and not a part of the
+                        // support library). There is no need to create a notification 
+                        // channel on older versions of Android.
+                        return;
+                    }
+
+                    var channel = new NotificationChannel("YourUniqueChannelID", "FCM Notifications", NotificationImportance.Default)
+                    {
+                        Description = "Firebase Cloud Messages appear in this channel"
+                    };
+
+                    var notificationManager = (NotificationManager)GetSystemService(NotificationService);
+                    notificationManager.CreateNotificationChannel(channel);
+
+                    notificationManager.Notify(0, notificationBuilder.Build());
                 }
-                builder.SetLargeIcon(artwork);
-
-                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPrevious, "Prev", ActionPrev));
-                AddPlayPauseActionCompat(builder);
-                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaNext, "Next", ActionNext));
-
-                MediaStyle style = new MediaStyle();
-                style.SetShowCancelButton(true);
-                style.SetCancelButtonIntent(pendingCancelIntent);
-                style.SetMediaSession(_mediaSessionCompat.SessionToken);
-                style.SetShowActionsInCompactView(0, 1, 2);
-                builder.SetStyle(style);
-
-                // StartForeground(111, builder.Build());
             }
         }
 
-        private Android.Support.V4.App.NotificationCompat.Action GenerateActionCompat(int icon, string title, string intentAction)
+        private Notification.Action GenerateActionCompat(int icon, string title, string intentAction)
         {
             Intent intent = new Intent(ApplicationContext, typeof(AudioService));
             intent.SetAction(intentAction);
@@ -385,18 +429,18 @@ namespace JukeBox.Droid.Audio
 
             PendingIntent pendingIntent = PendingIntent.GetService(ApplicationContext, 1, intent, flags);
 
-            return new Android.Support.V4.App.NotificationCompat.Action.Builder(icon, title, pendingIntent).Build();
+            return new Notification.Action.Builder(icon, title, pendingIntent).Build();
         }
 
-        private void AddPlayPauseActionCompat(Android.Support.V4.App.NotificationCompat.Builder builder)
+        private void AddPlayPauseActionCompat(Notification.Builder builder)
         {
             if (_player.IsPlaying)
             {
-                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPause, "Pause", ActionPause));
+                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPrevious, "Pause", ActionPause));
             }
             else
             {
-                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPlay, "Play", ActionPlay));
+                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPrevious, "Play", ActionPlay));
             }
         }
 
@@ -428,9 +472,9 @@ namespace JukeBox.Droid.Audio
                             .PutString(MediaMetadata.MetadataKeyArtist, _queue[_pos].Artist)
                             .PutString(MediaMetadata.MetadataKeyDisplayTitle, _queue[_pos].Title);
                     }
-                    
+
                     if (!String.IsNullOrEmpty(_queue[_pos].Artwork.ToString()))
-                     {
+                    {
                         Bitmap artwork = BitmapFactory.DecodeFile(_queue[_pos].Artwork.ToString());
                         builder.PutBitmap(MediaMetadataCompat.MetadataKeyAlbumArt, artwork);
                         builder.PutBitmap(MediaMetadataCompat.MetadataKeyArt, artwork);
@@ -517,7 +561,7 @@ namespace JukeBox.Droid.Audio
                 //UnregisterMediaSessionCompat();
             });
         }
-        
+
         public override IBinder OnBind(Intent intent)
         {
             _binder = new AudioServiceBinder(this);
@@ -574,7 +618,7 @@ namespace JukeBox.Droid.Audio
             UpdatePlaybackState(PlaybackStateCompat.StatePaused);
             return false;
         }
-        
+
         public void OnPrepared(MediaPlayer mp)
         {
             System.Diagnostics.Debug.WriteLine("OnPrepared()");
