@@ -338,12 +338,16 @@ namespace JukeBox.Droid.Audio
                     audioServiceIntent.SetAction(ActionStop);
                     PendingIntent pendingCancelIntent = PendingIntent.GetService(ApplicationContext, 1, audioServiceIntent, PendingIntentFlags.CancelCurrent);
 
-                    var notificationBuilder = new Android.App.Notification.Builder(this)
+                 
+                               var notificationBuilder = new Android.App.Notification.Builder(this)
                                 .SetContentTitle(currentSong.Title)
                                 .SetSmallIcon(Resource.Drawable.icon)
                                 .SetContentText(currentSong.Artist)
                                 .SetAutoCancel(true)
-                                .SetContentIntent(pendingIntent);
+                                .SetContentIntent(pendingIntent)
+                                .SetChannelId("YourUniqueChannelID")
+                                .SetOngoing(true)
+                                .SetShowWhen(false);
 
                     var notificationManager = NotificationManager.FromContext(this);
 
@@ -382,16 +386,16 @@ namespace JukeBox.Droid.Audio
                     }
                     notificationBuilder.SetLargeIcon(artwork);
 
-                    notificationBuilder.AddAction(GenerateActionCompat(Resource.Drawable.pause_w, "Prev", ActionPrev));
+                    notificationBuilder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPrevious, "Prev", ActionPrev));
                     AddPlayPauseActionCompat(notificationBuilder);
-                    notificationBuilder.AddAction(GenerateActionCompat(Resource.Drawable.play_w, "Next", ActionNext));
+                    notificationBuilder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaNext, "Next", ActionNext));
 
                     MediaStyle style = new MediaStyle();
                     style.SetShowCancelButton(true);
                     style.SetCancelButtonIntent(pendingCancelIntent);
                     style.SetMediaSession(_mediaSessionCompat.SessionToken);
                     style.SetShowActionsInCompactView(0, 1, 2);
-                    // notificationBuilder.SetStyle(style);
+                    //notificationBuilder.SetStyle(style);
 
                     //var notificationManager = NotificationManager.FromContext(this);
 
@@ -403,9 +407,9 @@ namespace JukeBox.Droid.Audio
                         return;
                     }
 
-                    var channel = new NotificationChannel("YourUniqueChannelID", "FCM Notifications", NotificationImportance.Default)
+                    var channel = new NotificationChannel("YourUniqueChannelID", "JukeBox Notifications", NotificationImportance.Low)
                     {
-                        Description = "Firebase Cloud Messages appear in this channel"
+                        Description = "JukeBox appear in this channel"
                     };
 
                     var notificationManager = (NotificationManager)GetSystemService(NotificationService);
