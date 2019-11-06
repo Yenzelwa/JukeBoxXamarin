@@ -47,6 +47,7 @@
             set;
         }
 
+
         public UserLocal User
         {
             get { return this.user; }
@@ -78,7 +79,11 @@
             get;
             set;
         }
-
+        public ImageSource ImageSource
+        {
+            get;
+            set;
+        }
         public MyProfileViewModel MyProfile
         {
             get;
@@ -135,10 +140,10 @@
             PlaylistItems.Add(new PlaylistItem(
             new Playlist { Title = "Home", IsDynamic = false }));
             this.PlaylistViewModel = new PlaylistViewModel(PlaylistItems[0]);
-            
-           
-         //   this.Library = this.LibraryModel.Library;
-           // this.LibraryDetail = new LibraryDetailViewModel.LibraryDetail();
+
+
+            //   this.Library = this.LibraryModel.Library;
+            // this.LibraryDetail = new LibraryDetailViewModel.LibraryDetail();
             this.LoadMenu();
            
         }
@@ -202,7 +207,7 @@
 
             this.Menus.Add(new MenuItemViewModel
             {
-                Icon = "ic_action_people",
+                
                 PageName = "MyProfilePage",
                 Title = Languages.MyProfile
             });
@@ -210,14 +215,14 @@
 
             this.Menus.Add(new MenuItemViewModel
             {
-                Icon = "ic_action_info",
+                
                 PageName = "AboutPage",
                 Title = "About"
             });
 
             this.Menus.Add(new MenuItemViewModel
             {
-                Icon = "ic_chevron_right",
+                
                 PageName = "LoginPage",
                 Title = Languages.LogOut
             });

@@ -46,6 +46,8 @@ namespace JukeBox
                     var mainViewModel = MainViewModel.GetInstance();
                     mainViewModel.Token = token;
                     mainViewModel.User = user;
+                    if (mainViewModel.User != null)
+                        mainViewModel.ImageSource = mainViewModel.User.ImagePath;
                     //  mainViewModel.Lands = new LandsViewModel();
                     Application.Current.MainPage = new RootPage();
                 }
@@ -128,6 +130,8 @@ namespace JukeBox
             var mainViewModel = MainViewModel.GetInstance();
             mainViewModel.Token = token;
             mainViewModel.User = userLocal;
+            if (mainViewModel.User !=null)
+            mainViewModel.ImageSource = mainViewModel.User.ImagePath;
             mainViewModel.Lands = new LandsViewModel();
             Application.Current.MainPage = new RootPage();
             Settings.IsRemembered = "true";

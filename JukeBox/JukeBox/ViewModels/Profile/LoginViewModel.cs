@@ -181,7 +181,6 @@
                 token.UserName);
 
             user.Password = this.Password;
-            user.ImagePath = token.UserName;
             registerDataService(user, token);
 
             if (this.IsRemembered)
@@ -206,7 +205,6 @@
         }
         public void registerDataService(User user , TokenResponse token)
         {
-            user.ImagePath = token.UserName;
             var userLocal = Converter.ToUserLocal(user, Convert.ToInt32(token.UserName));
 
 

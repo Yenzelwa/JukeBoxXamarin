@@ -135,7 +135,7 @@ namespace JukeBox.Views
                 {
                     LibraryId = libraryId,
                     LibraryDetailId = 0,
-                    ClientId = Convert.ToInt32(mainViewModel.User.ImagePath),
+                    ClientId = Convert.ToInt32(mainViewModel.Token.UserName),
                     UserId = 1
                 };
 
@@ -214,7 +214,7 @@ namespace JukeBox.Views
                 {
                     LibraryId = 0,
                     LibraryDetailId = song.Id,
-                    ClientId = Convert.ToInt32(mainViewModel.User.ImagePath),
+                    ClientId = Convert.ToInt32(mainViewModel.Token.UserName),
                     UserId = 1
                 };
 

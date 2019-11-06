@@ -90,7 +90,7 @@ namespace JukeBox.ViewModels
             var client = 0;
             if (main.User != null)
             { 
-            var id = Convert.ToInt32(main.User.ImagePath);
+            var id = Convert.ToInt32(main.Token.UserName);
             client = id > 0 ? id: 0;
            }
             var response = await BLL.Library.Library.GetLibrary(filter , client );

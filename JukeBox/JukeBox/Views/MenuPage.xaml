@@ -14,7 +14,7 @@
                 <controls:CircleImage 
                 Aspect="AspectFill"
                 HeightRequest="100"
-            Source="no_image.png"
+            Source="{Binding ImageSource}"
                >   
             </controls:CircleImage>
             <Label
@@ -44,7 +44,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Image 
                                     Source="{Binding Icon}"
-                                    WidthRequest="50"
+                                    WidthRequest="20"
                                     HeightRequest="50">
                                 </Image>
                                 <Label 

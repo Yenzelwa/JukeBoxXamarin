@@ -211,11 +211,15 @@
                 FirstName = this.FirstName,
                 LastName = this.LastName,
                 Telephone = this.Telephone,
-                ImageArray = imageArray,
+                ImageArray = null,
                 UserTypeId = 1,
                 Password = this.Password,
             };
 
+            if (file != null)
+            {
+                user.ImagePath = file.Path;
+            }
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
             var response = await this.apiService.Post(
                 apiSecurity,

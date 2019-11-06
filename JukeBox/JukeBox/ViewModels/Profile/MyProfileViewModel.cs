@@ -136,6 +136,7 @@
                 this.ImageSource = ImageSource.FromStream(() =>
                 {
                     var stream = file.GetStream();
+                    User.ImagePath = file.Path;
                     return stream;
                 });
             }
@@ -217,7 +218,7 @@
                 imageArray = FilesHelper.ReadFully(this.file.GetStream());
             }
           
-            var userDomain = Converter.ToUserDomain(this.User, imageArray);
+            var userDomain = Converter.ToUserDomain(this.User, null);
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
             var response = await this.apiService.Post(
                 apiSecurity,
