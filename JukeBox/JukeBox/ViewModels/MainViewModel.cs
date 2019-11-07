@@ -134,7 +134,7 @@
             instance = this;
             this.Login = new LoginViewModel();
             this.LibraryModel = new LibraryViewModel(1);
-            this.LibraryPromoModel = new LibraryPromoViewModel(3);
+            this.LibraryPromoModel = new LibraryPromoViewModel(99);
             this.LibraryDetailModel = new LibraryDetailViewModel();
             this.PlaylistItems = new ObservableCollection<PlaylistItem>();
             PlaylistItems.Add(new PlaylistItem(

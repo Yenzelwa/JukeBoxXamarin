@@ -60,9 +60,9 @@
         {
             this.apiService = new ApiService();
             this.dataService = new DataService();
-
+            var v = MainViewModel.GetInstance();
             this.User = MainViewModel.GetInstance().User;
-            this.ImageSource = this.User.ImageFullPath;
+            if(this.User != null) this.ImageSource = this.User.ImageFullPath;
             this.IsEnabled = true;
         }
         #endregion

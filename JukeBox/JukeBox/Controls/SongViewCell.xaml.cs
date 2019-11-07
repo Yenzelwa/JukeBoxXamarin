@@ -19,8 +19,6 @@ namespace JukeBox.Controls
     {
         public SongViewCell()
         {
-            var main = MainViewModel.GetInstance();
-            BindingContext = main.PlaylistViewModel.Songs;
             InitializeComponent();
         }
 

@@ -24,8 +24,10 @@ namespace JukeBox.Views
         }
         public MenuPage()
         {
-            //  this.Main = MainViewModel.Instance;
+             this.Main = MainViewModel.GetInstance();
             // this.BindingContext = this.Main;
+            if (this.Main.User != null)
+                this.Main.ImageSource = this.Main.User.ImagePath;
             InitializeComponent();
         }
 

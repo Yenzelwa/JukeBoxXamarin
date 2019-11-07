@@ -58,7 +58,7 @@
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <Image Source="{Binding CoverFilePath}" Grid.Column="0" />
+                                            <Image Source="{Binding CoverFilePath}" Grid.Column="0"  WidthRequest="250" HeightRequest="60"/>
                                             <StackLayout Grid.Column="1">
                                                 <Label Text="{Binding Name ,Mode=TwoWay}"  TextColor="White" FontAttributes="Bold"/>
                                                 <Label Text="{Binding ShowTime}" TextColor="Gray"/>
