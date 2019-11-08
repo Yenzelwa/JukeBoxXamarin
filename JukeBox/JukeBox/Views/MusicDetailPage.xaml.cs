@@ -168,6 +168,9 @@ namespace JukeBox.Views
                     {
                         if (orderResponse.ResponseType == 1)
                         {
+                            var response = await BLL.Library.Library.GetLibrary(1, Convert.ToInt32(mainViewModel.Token.UserName));
+                            if (response != null)
+                                mainViewModel.LibraryModel.Library = response.ResponseObject;
                             foreach (var item in items)
                             {
                                 DowloadFile(item.FilePath, "Album", LblMovieName.Text);

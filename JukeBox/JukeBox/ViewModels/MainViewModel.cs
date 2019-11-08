@@ -79,10 +79,15 @@
             get;
             set;
         }
+        private ImageSource imageSource;
         public ImageSource ImageSource
         {
-            get;
-            set;
+            get { return imageSource; }
+            set
+            {
+                imageSource = value;
+                OnPropertyChanged(nameof(ImageSource));
+            }
         }
         public MyProfileViewModel MyProfile
         {

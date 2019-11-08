@@ -248,6 +248,7 @@
 
             MainViewModel.GetInstance().User = userLocal;
             MainViewModel.GetInstance().Login.registerDataService(userApi, MainViewModel.GetInstance().Token);
+            MainViewModel.GetInstance().ImageSource = userLocal.ImageFullPath;
             this.dataService.Update(userLocal);
 
             this.IsRunning = false;
