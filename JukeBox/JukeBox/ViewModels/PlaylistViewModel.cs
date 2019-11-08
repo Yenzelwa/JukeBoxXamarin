@@ -40,10 +40,12 @@ namespace JukeBox.ViewModels
                     if (playlistItem.Playlist.Title == "Home" && !playlistItem.Playlist.IsDynamic)
                     {
                         Songs = await DependencyService.Get<IPlaylistManager>().GetAllSongs();
+                        await DependencyService.Get<IMusicManager>().SetQueue(Songs);
                     }
                     else
                     {
                         Songs = await DependencyService.Get<IPlaylistManager>().GetPlaylistSongs(playlistItem.Playlist.Id);
+                        await DependencyService.Get<IMusicManager>().SetQueue(Songs);
                     }
                     SongsLoading = false;
                     OnPropertyChanged(nameof(SongsLoading));
@@ -58,6 +60,7 @@ namespace JukeBox.ViewModels
             {
               var  songItem = item as Song;
                 var song = Songs.Where(x => x.Id == songItem.Id).FirstOrDefault();
+                if (song == null) Songs.Add(songItem);   
                 var index = Songs.IndexOf(song);
                 DependencyService.Get<IMusicManager>().StartQueue(new ObservableCollection<Song>(Songs), index);
             });

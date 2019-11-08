@@ -31,11 +31,11 @@
 
                                             <Image Source="{Binding CoverFilePath}" Grid.Column="0" />
                                             <StackLayout Grid.Column="1">
-                                                <Label Text="{Binding Name ,Mode=TwoWay}"  TextColor="White" FontAttributes="Bold"/>
+                                                <Label Text="{Binding Artist ,Mode=TwoWay}"  TextColor="White" FontAttributes="Bold"/>
                                                 <Label Text="{Binding ShowTime}" TextColor="Gray"/>
                                                 <Label Text="{Binding Type} " TextColor="Gray"/>
                                                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                                                    <Label Text="{Binding Artist}" TextColor="Gray"/>
+                                                    <Label Text="{Binding Name}" TextColor="Gray"/>
                                                     <Label HorizontalOptions="EndAndExpand"  TextColor="White" Text="{Binding Price ,StringFormat='{0:C}' }"/>
                                                 </StackLayout>
                                             </StackLayout>

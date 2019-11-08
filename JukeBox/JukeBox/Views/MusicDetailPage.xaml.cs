@@ -55,6 +55,7 @@ namespace JukeBox.Views
                "|| Old Items: " + (e.OldItems?.Count ?? 0) +
                " at " + e.OldStartingIndex
              );
+
  
         }
         private async void GetUpComingMovie(ApiLibrary library)
@@ -75,7 +76,7 @@ namespace JukeBox.Views
                 LblType.Text = library.Type;
                 var price = Math.Round(library.Price ?? 0, 2);
                 LblPrice.Text = "R" + price;
-                LblLanguage.Text = library.Type;
+                LblLanguage.Text = library.Name;
                 LblDescription.Text = library.Description;
                 ImgDetail.Source = library.CoverFilePath;
                 BtnBuy.Text = library.Purchase;
@@ -246,6 +247,9 @@ namespace JukeBox.Views
                     {
                         if (orderResponse.ResponseType == 1)
                         {
+                            var response = await BLL.Library.Library.GetLibrary(1, Convert.ToInt32(mainViewModel.Token.UserName));
+                            if (response !=null)
+                            mainViewModel.LibraryModel.Library = response.ResponseObject;
                             DowloadFile(song.FilePath, "Songs", null);
                         }
                         else
@@ -275,43 +279,22 @@ namespace JukeBox.Views
           //  PopupNavigation.Instance.PushAsync(new PaymentPagePopUp());
 
         }
-        //private bool _isClicked = false;
-        //private void SongListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
-        //{
-        //   // SlAudioPlayer.IsVisible = true;
-        //    var song = e.SelectedItem as ApiLibraryDetail;
-        //    CrossMediaManager.Current.PlayingChanged += Current_PlayingChanged;
-        //    if (song != null)
-        //    {
-        //        CrossMediaManager.Current.Play(new MediaFile(song.FilePath, MediaFileType.Audio));
-        //        CrossMediaManager.Current.PlaybackController.Play();
-        //        // ImgPausePlay.Source = ImageSource.FromFile("pause.png");
-        //    }
-
-
-        //    //if (_isClicked)
-        //    //{
-        //    //    CrossMediaManager.Current.PlaybackController.Play();
-        //    //  //  ImgPausePlay.Source = ImageSource.FromFile("pause.png");
-        //    //    _isClicked = false;
-        //    //}
-        //    //else
-        //    //{
-        //    //    CrossMediaManager.Current.Pause();
-        //    //   // ImgPausePlay.Source = ImageSource.FromFile("play.png");
-        //    //    _isClicked = true;
-        //    //}
-        //}
-
- 
+        private Xamarin.Forms.Image currentImg = null;
         private bool _isClicked = false;
         private void TapPausePlay_OnTapped(object sender, EventArgs e)
         {
             _isClicked = !_isClicked;
-            var img = ((Xamarin.Forms.Image)sender);
+          var   img = ((Xamarin.Forms.Image)sender);
             if (img.BindingContext is ApiLibraryDetail libraryDetail)
             {
-                
+                if (_player.IsPlaying)
+                {
+                    _player.Stop();
+                    _player.Reset();
+                    currentImg.Source = ImageSource.FromFile("play_w.png");
+                    _isClicked = !_isClicked;
+                }
+                currentImg = img;
                 if (_isClicked)
                 {
                    _player = new MediaPlayer();
@@ -320,7 +303,7 @@ namespace JukeBox.Views
                     _player?.Prepare(); // might take long! (for buffering, etc)
                     _player?.Start();
                     //slider.Maximum = _player.Duration;
-                    img.Source = ImageSource.FromFile("pause_w.png");
+                    currentImg.Source = ImageSource.FromFile("pause_w.png");
                     
                 }
                 else
@@ -329,7 +312,7 @@ namespace JukeBox.Views
                     {
                         _player.Stop();
                         _player.Reset();
-                        img.Source = ImageSource.FromFile("play_w.png");
+                        currentImg.Source = ImageSource.FromFile("play_w.png");
                     }             
                 }
             }
@@ -354,7 +337,7 @@ namespace JukeBox.Views
             });
             if (!isDownloading)
             {
-                var a = MusicStateViewModel.Instance;
+               
                 var b = QueuePopup.Instance;
                 var c = SliderControl.Instance;
                 var main = MainViewModel.GetInstance();
@@ -375,19 +358,14 @@ namespace JukeBox.Views
                   mainViewModel.Token.AccessToken,
                   mainViewModel.Token.UserName);
                 mainViewModel.Login.registerDataService(user, mainViewModel.Token);
+                var a = MusicStateViewModel.Instance;
+                mainViewModel.PlaylistItems = new ObservableCollection<PlaylistItem>();
+                mainViewModel.PlaylistItems.Add(new PlaylistItem(
+                new Playlist { Title = "Home", IsDynamic = false }));
+                mainViewModel.PlaylistViewModel = new PlaylistViewModel(mainViewModel.PlaylistItems[0]);
                 await DisplayAlert("File Status", "File Downloaded", "OK");
             }
         }
-
-
-
-
-
-
-
-
-
-
 
 
         public bool IsDownloading(IDownloadFile file)
@@ -412,9 +390,24 @@ namespace JukeBox.Views
         {
             CrossDownloadManager.Current.Abort(file);
         }
+
+        protected override void OnDisappearing()
+        {
+         
+                if (_player.IsPlaying)
+                {
+                    _player.Stop();
+                    _player.Reset();
+                currentImg.Source = ImageSource.FromFile("play_w.png");
+            }
+        }
+
+            //return true;
+        
         //private void Current_PlayingChanged(object sender, Plugin.MediaManager.Abstractions.EventArguments.PlayingChangedEventArgs e)
         //{
         //    PbAudio.Progress = e.Progress / 100;
         //}
+
     }
 }

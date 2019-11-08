@@ -27,7 +27,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <controls:TLScrollView  x:Name="genreList" HorizontalScrollBarVisibility="Never"
+                        <controls:TLScrollView  x:Name="genreList" HorizontalScrollBarVisibility="Never"  
 				Orientation="Horizontal" 
 				ItemsSource="{Binding LibraryType ,Mode=TwoWay}" 
                 BackgroundColor="#2f3037">
@@ -35,7 +35,7 @@
                                 <DataTemplate>
                                     <ViewCell>
                                         <StackLayout Padding="-8">
-                                            <Button Text="{Binding TypeName}"  BackgroundColor="Transparent"  HorizontalOptions="FillAndExpand"  Command="{Binding LibraryCommand}" TextColor="Gray"></Button>
+                                            <Button Text="{Binding TypeName}"  BackgroundColor="Transparent"  HorizontalOptions="FillAndExpand"  Command="{Binding LibraryCommand}" TextColor="Gray" ></Button>
                                         </StackLayout>
                                     </ViewCell>
                                 </DataTemplate>
@@ -60,11 +60,11 @@
 
                                             <Image Source="{Binding CoverFilePath}" Grid.Column="0"  WidthRequest="250" HeightRequest="60"/>
                                             <StackLayout Grid.Column="1">
-                                                <Label Text="{Binding Name ,Mode=TwoWay}"  TextColor="White" FontAttributes="Bold"/>
+                                                <Label Text="{Binding Artist ,Mode=TwoWay}"  TextColor="White" FontAttributes="Bold"/>
                                                 <Label Text="{Binding ShowTime}" TextColor="Gray"/>
                                                 <Label Text="{Binding Type} " TextColor="Gray"/>
                                                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                                                    <Label Text="{Binding Artist}" TextColor="Gray"/>
+                                                    <Label Text="{Binding Name}" TextColor="Gray"/>
                                                     <Label HorizontalOptions="EndAndExpand"  TextColor="White" Text="{Binding Price ,StringFormat='{0:C}' }"/>
                                                 </StackLayout>
                                             </StackLayout>

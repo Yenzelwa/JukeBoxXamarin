@@ -106,7 +106,7 @@ namespace JukeBox
                     MediaStore.Audio.Media.ExternalContentUri,
                     _mediaProjections, MediaStore.Audio.Media.InterfaceConsts.Data + " like ? ",
     new string[] { "%jukebox/Songs%" },
-                    MediaStore.Audio.Media.InterfaceConsts.ArtistId);
+                    MediaStore.Audio.Media.InterfaceConsts.TitleKey);
 
                 int artistColumn = mediaCursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.Artist);
                 int albumColumn = mediaCursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.Album);

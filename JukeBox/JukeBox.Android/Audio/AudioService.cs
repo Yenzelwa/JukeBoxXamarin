@@ -433,7 +433,7 @@ namespace JukeBox.Droid.Audio
 
             PendingIntent pendingIntent = PendingIntent.GetService(ApplicationContext, 1, intent, flags);
 
-            return new Notification.Action.Builder(icon, title, pendingIntent).Build();
+            return new Notification.Action(icon, title, pendingIntent);
         }
 
         private void AddPlayPauseActionCompat(Notification.Builder builder)

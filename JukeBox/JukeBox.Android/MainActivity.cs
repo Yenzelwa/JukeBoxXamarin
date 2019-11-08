@@ -23,6 +23,7 @@ using System.Reflection;
 using FFImageLoading.Forms.Platform;
 using JukeBox.Droid.Audio;
 
+
 namespace JukeBox.Droid
 {
     [Activity(Label = "JukeBox", Icon = "@drawable/icon", Theme = "@style/MainTheme", LaunchMode = LaunchMode.SingleInstance, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
@@ -322,6 +323,29 @@ namespace JukeBox.Droid
         {
             StartService(new Intent(JukeBox.Droid.Audio.AudioService.ActionTryKill));
             base.OnDestroy();
+        }
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            if (item.ItemId == 16908332)
+            {
+                // Get the index for the current page.
+                int index = ((App)App.Current).MainPage.Navigation.NavigationStack.Count - 1;
+                // Get the current page.
+                var currentPage = ((App)App.Current).MainPage.Navigation.NavigationStack[index];
+                // Programmatically press the hardware back button.
+                if (currentPage.SendBackButtonPressed())
+                {
+                    return true;
+                }
+                else
+                {
+                    return base.OnOptionsItemSelected(item);
+                }
+            }
+            else
+            {
+                return base.OnOptionsItemSelected(item);
+            }
         }
     }
 }
