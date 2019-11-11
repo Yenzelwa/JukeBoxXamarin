@@ -80,17 +80,7 @@ namespace JukeBox.Droid
                 // We have permission, go ahead and use the camera.
                 if (ActivityCompat.ShouldShowRequestPermissionRationale(activity: this, Manifest.Permission.ReadExternalStorage))
                 {
-                    new AlertDialog.Builder(context: this)
-                    .SetTitle("Permission Needed")
-                    .SetMessage("Thus permission is needed")
-                    .Create().Show();
-                    //.SetPositiveButton(text: "ok"{
-
-                    //    @override
-                    //    public void onClick(DialogInterface dialog, int which)
-                    //{
-
-                    //}
+                    ActivityCompat.RequestPermissions(activity: this, new String[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.WriteExternalStorage }, STORAGE_PERMISSION_CODE);
                 }
 
                 else
@@ -104,19 +94,8 @@ namespace JukeBox.Droid
             {
                 if (ActivityCompat.ShouldShowRequestPermissionRationale(activity: this, Manifest.Permission.ReadExternalStorage))
                 {
-                    new AlertDialog.Builder(context: this)
-                    .SetTitle("Permission Needed")
-                    .SetMessage("Thus permission is needed")
-                    .Create().Show();
-                    //.SetPositiveButton(text: "ok"{
-
-                    //    @override
-                    //    public void onClick(DialogInterface dialog, int which)
-                    //{
-
-                    //}
+                    ActivityCompat.RequestPermissions(activity: this, new String[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.WriteExternalStorage }, STORAGE_PERMISSION_CODE);
                 }
-
                 else
                 {
                     ActivityCompat.RequestPermissions(activity: this, new String[] { Manifest.Permission.ReadExternalStorage }, STORAGE_PERMISSION_CODE);
@@ -168,6 +147,7 @@ namespace JukeBox.Droid
                 else
                 {
                     Toast.MakeText(context: this, text: "Permission Deniel", ToastLength.Short);
+                    System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
                 }
             }
 
