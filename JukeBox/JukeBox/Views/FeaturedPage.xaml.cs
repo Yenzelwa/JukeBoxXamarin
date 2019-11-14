@@ -74,8 +74,6 @@ namespace JukeBox.Views
               ((ListView)sender).SelectedItem = null;
 
         }
-
-      
     }
 }
 

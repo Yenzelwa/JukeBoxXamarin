@@ -22,7 +22,12 @@ using System.Collections.Generic;
 using System.Reflection;
 using FFImageLoading.Forms.Platform;
 using JukeBox.Droid.Audio;
-
+using Java.IO;
+using System.IO;
+using Javax.Crypto;
+using Javax.Crypto.Spec;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace JukeBox.Droid
 {
@@ -122,9 +127,131 @@ namespace JukeBox.Droid
                     Android.Net.Uri uri = MediaStore.Audio.Media.ExternalContentUri;
                     var subFolder = type == "Songs" ? type : $"Album/{typename}";
                     var dd = GetActualPathFromFile(uri);
+                  //  EncryptFile(file.Url, $"/storage/emulated/0/jukebox/{subFolder}");
                     // var ddd = ApplicationContext.GetExternalFilesDir(dd).AbsolutePath;
                     return System.IO.Path.Combine($"/storage/emulated/0/jukebox/{subFolder}", fileName);
                 });
+        }
+
+private void EncryptFile(string inputFile, string outputFile)
+        {
+            try
+            {
+                string password = "65gyuguyu"; // Your Key Here
+                UnicodeEncoding UE = new UnicodeEncoding();
+                byte[] key = UE.GetBytes(password);
+
+                string cryptFile = outputFile;
+                FileStream fsCrypt = new FileStream(cryptFile, FileMode.Create);
+
+                RijndaelManaged RMCrypto = new RijndaelManaged();
+
+                CryptoStream cs = new CryptoStream(fsCrypt,
+                    RMCrypto.CreateEncryptor(key, key),
+                    CryptoStreamMode.Write);
+
+                FileStream fsIn = new FileStream(inputFile, FileMode.Open);
+
+                int data;
+                while ((data = fsIn.ReadByte()) != -1)
+                    cs.WriteByte((byte)data);
+
+
+                fsIn.Close();
+                cs.Close();
+                fsCrypt.Close();
+            }
+            catch
+            {
+                
+            }
+        }
+
+
+
+
+private void DecryptFile(string inputFile, string outputFile)
+        {
+
+            {
+                string password = @"myKey123"; // Your Key Here
+
+                UnicodeEncoding UE = new UnicodeEncoding();
+                byte[] key = UE.GetBytes(password);
+
+                FileStream fsCrypt = new FileStream(inputFile, FileMode.Open);
+
+                RijndaelManaged RMCrypto = new RijndaelManaged();
+
+                CryptoStream cs = new CryptoStream(fsCrypt,
+                    RMCrypto.CreateDecryptor(key, key),
+                    CryptoStreamMode.Read);
+
+                FileStream fsOut = new FileStream(outputFile, FileMode.Create);
+
+                int data;
+                while ((data = cs.ReadByte()) != -1)
+                    fsOut.WriteByte((byte)data);
+
+                fsOut.Close();
+                cs.Close();
+                fsCrypt.Close();
+
+            }
+        }
+
+        public static byte[] readFile(String filePath)
+        {
+            byte[] contents;
+            Java.IO.File file = new Java.IO.File(filePath);
+            int size = (int)file.Length();
+            contents = new byte[size];
+            try
+            {
+                FileStream inputStream = new FileStream(filePath, FileMode.OpenOrCreate);
+                Java.IO.BufferedOutputStream bos = new Java.IO.BufferedOutputStream(inputStream);
+                BufferedInputStream buf = new BufferedInputStream(inputStream);
+                try
+                {
+                    buf.Read(contents);
+                    buf.Close();
+                }
+                catch (Java.IO.IOException e)
+                {
+                    e.PrintStackTrace();
+                }
+            }
+            catch (Java.IO.FileNotFoundException e)
+            {
+                e.PrintStackTrace();
+            }
+            return contents;
+        }
+        public static void saveFile(byte[] encodedBytes, String path)
+        {
+            try
+            {
+                Java.IO.File file = new Java.IO.File(path);
+                FileStream inputStream = new FileStream(path, FileMode.OpenOrCreate);
+                Java.IO.BufferedOutputStream bos = new Java.IO.BufferedOutputStream(inputStream);
+                bos.Write(encodedBytes);
+                bos.Flush();
+                bos.Close();
+
+            }
+            catch (Java.IO.FileNotFoundException e)
+            {
+                e.PrintStackTrace();
+            }
+            catch (Java.IO.IOException e)
+            {
+                e.PrintStackTrace();
+            }
+            catch (Exception e)
+            {
+               
+            }
+
         }
 
         override
@@ -147,7 +274,7 @@ namespace JukeBox.Droid
                 else
                 {
                     Toast.MakeText(context: this, text: "Permission Deniel", ToastLength.Short);
-                    System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
+                   System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
                 }
             }
 

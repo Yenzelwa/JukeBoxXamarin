@@ -5,6 +5,7 @@ using Java.IO;
 using JukeBox.BLL.Library;
 using JukeBox.Controls;
 using JukeBox.Helpers;
+using JukeBox.Interfaces;
 using JukeBox.Models;
 using JukeBox.Services;
 using JukeBox.ViewModels;
@@ -16,6 +17,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
@@ -284,42 +286,70 @@ namespace JukeBox.Views
         }
         private Xamarin.Forms.Image currentImg = null;
         private bool _isClicked = false;
-        private void TapPausePlay_OnTapped(object sender, EventArgs e)
+        private async void TapPausePlay_OnTapped(object sender, EventArgs e)
         {
+            var mainMusic = MusicStateViewModel.Instance;
+            if (mainMusic.IsPlaying)
+            {
+                DependencyService.Get<IMusicManager>().Pause();
+            }
             _isClicked = !_isClicked;
-          var   img = ((Xamarin.Forms.Image)sender);
+            var img = ((Xamarin.Forms.Image)sender);
             if (img.BindingContext is ApiLibraryDetail libraryDetail)
             {
-                if (_player.IsPlaying)
+                if (_player !=null &&_player.IsPlaying)
                 {
                     _player.Stop();
                     _player.Reset();
-                    currentImg.Source = ImageSource.FromFile("play_w.png");
-                    _isClicked = !_isClicked;
+
+                    var v = img.Source.ToString();
+                    _isClicked = img.Source.ToString() == "File: pause_w.png" ? false : true;
+                    if (!_isClicked)
+                    {
+                        currentImg.Source = ImageSource.FromFile("play_w.png");
+                    }
+                    else
+                    {
+                        currentImg.Source = ImageSource.FromFile("play_w.png");
+                    }
+                   // currentImg.Source = ImageSource.FromFile("play_w.png");
                 }
                 currentImg = img;
                 if (_isClicked)
                 {
                    _player = new MediaPlayer();
+                  //  SongLoader.IsVisible = true;
+                    
+
+
                     _player.SetAudioStreamType(streamtype: Stream.Music);
+                    
                     _player.SetDataSource(libraryDetail.FilePath);
                     _player?.Prepare(); // might take long! (for buffering, etc)
                     _player?.Start();
+                    //SongLoader.IsVisible = false;
+
                     //slider.Maximum = _player.Duration;
                     currentImg.Source = ImageSource.FromFile("pause_w.png");
-                    
                 }
-                else
+               
+
+                Device.StartTimer(TimeSpan.FromSeconds(2), () =>
                 {
-                    if (_player.IsPlaying)
+                    if( _player !=null && _player.CurrentPosition > 20000)
                     {
                         _player.Stop();
                         _player.Reset();
+                        _player = null;
                         currentImg.Source = ImageSource.FromFile("play_w.png");
-                    }             
-                }
+                    }
+
+                    return true; // return true to repeat counting, false to stop timer
+                });
+
             }
         }
+
         public async void DowloadFile(string fileName ,string type, string typename)
         {
             await Task.Yield();
@@ -396,17 +426,27 @@ namespace JukeBox.Views
 
         protected override void OnDisappearing()
         {
-         
+            if (_player != null)
+            {
+
                 if (_player.IsPlaying)
                 {
                     _player.Stop();
-                    _player.Reset();
-                currentImg.Source = ImageSource.FromFile("play_w.png");
+                    currentImg.Source = ImageSource.FromFile("play_w.png");
+                    _isClicked = false;
+                }
+                _player.Release();
+                _player = null;
             }
+        
+    }
+
+        public void onSeekComplete(MediaPlayer mp)
+        {
         }
 
-            //return true;
-        
+        //return true;
+
         //private void Current_PlayingChanged(object sender, Plugin.MediaManager.Abstractions.EventArguments.PlayingChangedEventArgs e)
         //{
         //    PbAudio.Progress = e.Progress / 100;

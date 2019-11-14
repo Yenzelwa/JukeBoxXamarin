@@ -27,15 +27,16 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <controls:TLScrollView  x:Name="genreList" HorizontalScrollBarVisibility="Never"  
+                        <controls:TLScrollView  x:Name="genreList" HorizontalScrollBarVisibility="Never" 
 				Orientation="Horizontal" 
 				ItemsSource="{Binding LibraryType ,Mode=TwoWay}" 
                 BackgroundColor="#2f3037">
                             <controls:TLScrollView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <StackLayout Padding="-8">
-                                            <Button Text="{Binding TypeName}"  BackgroundColor="Transparent"  HorizontalOptions="FillAndExpand"  Command="{Binding LibraryCommand}" TextColor="Gray" ></Button>
+                                <DataTemplate >
+                                    <ViewCell >
+                                        <StackLayout Padding="-5">
+                                            <Button Text="{Binding TypeName}" BackgroundColor="Transparent"  HorizontalOptions="FillAndExpand"
+                                                    Command="{Binding LibraryCommand}" TextColor="Gray" ></Button>
                                         </StackLayout>
                                     </ViewCell>
                                 </DataTemplate>
