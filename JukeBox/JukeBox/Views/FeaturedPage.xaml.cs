@@ -74,6 +74,23 @@ namespace JukeBox.Views
               ((ListView)sender).SelectedItem = null;
 
         }
+        private Xamarin.Forms.Button currentBtn;
+        private  async void Button_Clicked(object sender, EventArgs e)
+        {
+            var btn = ((Xamarin.Forms.Button)sender);
+            //var viewCell = btn.Parent as StackLayout;
+            //var viewControls = viewCell.Children;
+            //foreach (var item in viewControls)
+            //{
+            //    item.BackgroundColor = Color.FromHex("#2f3037");
+            //}
+            //viewControls[0].BackgroundColor = Color.Black;
+            if (currentBtn != null) currentBtn.TextColor = Color.Gray;
+            currentBtn = btn;
+            btn.TextColor = Color.Black;
+
+
+        }
     }
 }
 

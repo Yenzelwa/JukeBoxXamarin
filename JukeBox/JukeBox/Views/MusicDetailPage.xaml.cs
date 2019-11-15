@@ -96,6 +96,7 @@ namespace JukeBox.Views
                     apiLibraryDetails = new List<ApiLibraryDetail>();
                     foreach (var item in response.ResponseObject)
                     {
+                        item.IsStream = true;
                         apiLibraryDetails.Add(item);
                     }
                     if(apiLibraryDetails != null)
@@ -288,15 +289,19 @@ namespace JukeBox.Views
         private bool _isClicked = false;
         private async void TapPausePlay_OnTapped(object sender, EventArgs e)
         {
-            var mainMusic = MusicStateViewModel.Instance;
+         
+                var mainMusic = MusicStateViewModel.Instance;
             if (mainMusic.IsPlaying)
             {
                 DependencyService.Get<IMusicManager>().Pause();
             }
             _isClicked = !_isClicked;
             var img = ((Xamarin.Forms.Image)sender);
+        
             if (img.BindingContext is ApiLibraryDetail libraryDetail)
             {
+          
+
                 if (_player !=null &&_player.IsPlaying)
                 {
                     _player.Stop();
@@ -312,25 +317,27 @@ namespace JukeBox.Views
                     {
                         currentImg.Source = ImageSource.FromFile("play_w.png");
                     }
-                   // currentImg.Source = ImageSource.FromFile("play_w.png");
                 }
                 currentImg = img;
                 if (_isClicked)
                 {
                    _player = new MediaPlayer();
-                  //  SongLoader.IsVisible = true;
-                    
+                    currentImg.IsVisible = false;
+                    var viewCell = img.Parent as Grid;
+                    var viewControls = viewCell.Children;
+                    viewControls[1].IsVisible = true;
+                    await Task.Run(async () => {
 
-
-                    _player.SetAudioStreamType(streamtype: Stream.Music);
+                        _player.SetAudioStreamType(streamtype: Stream.Music);
                     
                     _player.SetDataSource(libraryDetail.FilePath);
-                    _player?.Prepare(); // might take long! (for buffering, etc)
+                    _player?.Prepare(); 
                     _player?.Start();
-                    //SongLoader.IsVisible = false;
-
-                    //slider.Maximum = _player.Duration;
+                        await Task.Delay(1000);
+                    });
                     currentImg.Source = ImageSource.FromFile("pause_w.png");
+                   viewControls[1].IsVisible = false;
+                    currentImg.IsVisible = true;
                 }
                
 
@@ -348,6 +355,8 @@ namespace JukeBox.Views
                 });
 
             }
+               
+         
         }
 
         public async void DowloadFile(string fileName ,string type, string typename)

@@ -120,6 +120,11 @@
             get;
             set;
         }
+        public LibraryTypeViewModel LibraryTypeModel
+        {
+            get;
+            set;
+        }
         private PlaylistViewModel _playlistViewModel;
         public PlaylistViewModel PlaylistViewModel
         {
@@ -141,6 +146,7 @@
             this.LibraryModel = new LibraryViewModel(1);
             this.LibraryPromoModel = new LibraryPromoViewModel(99);
             this.LibraryDetailModel = new LibraryDetailViewModel();
+            this.LibraryTypeModel = new LibraryTypeViewModel(1);
             this.PlaylistItems = new ObservableCollection<PlaylistItem>();
             PlaylistItems.Add(new PlaylistItem(
             new Playlist { Title = "Home", IsDynamic = false }));

@@ -10,7 +10,7 @@
                         BackgroundColor="#2f3037"
        BindingContext="{Binding Main, Source={StaticResource Locator}}" >
     <StackLayout BackgroundColor="#2f3037">
-        <Grid   BindingContext="{Binding LibraryModel ,Mode=TwoWay}"  BackgroundColor="#2f3037" >
+        <Grid   BackgroundColor="#2f3037" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
@@ -20,23 +20,23 @@
             </Grid.RowDefinitions>
             <StackLayout Grid.Row="0"  Grid.Column="0" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,0,0" BackgroundColor="#2f3037" >
                 <Frame BackgroundColor="#2f3037">
-                    <Grid>
+                    <Grid  BindingContext="{Binding LibraryTypeModel}"  >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                        </Grid.RowDefinitions >
                         <controls:TLScrollView  x:Name="genreList" HorizontalScrollBarVisibility="Never" 
 				Orientation="Horizontal" 
 				ItemsSource="{Binding LibraryType ,Mode=TwoWay}" 
-                BackgroundColor="#2f3037">
-                            <controls:TLScrollView.ItemTemplate>
+                BackgroundColor="#2f3037" >
+                            <controls:TLScrollView.ItemTemplate >
                                 <DataTemplate >
-                                    <ViewCell >
-                                        <StackLayout Padding="-5">
-                                            <Button Text="{Binding TypeName}" BackgroundColor="Transparent"  HorizontalOptions="FillAndExpand"
-                                                    Command="{Binding LibraryCommand}" TextColor="Gray" ></Button>
+                                    <ViewCell>
+                                        <StackLayout Padding="-5" Spacing="2"  >
+                                            <Button Text="{Binding TypeName}"  BackgroundColor="Transparent"   HorizontalOptions="FillAndExpand"
+                                                    Command="{Binding LibraryCommand}" Clicked="Button_Clicked" BorderColor="Red" TextColor="Gray" ></Button>
                                         </StackLayout>
                                     </ViewCell>
                                 </DataTemplate>
@@ -45,8 +45,8 @@
                     </Grid>
                 </Frame>
             </StackLayout>
-            <StackLayout x:Name="SLMovies" Grid.Row="1"  AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,0,0" BackgroundColor="#2f3037">
-                <ListView x:Name="MovieListView" Grid.Row="1" HasUnevenRows="True" SeparatorVisibility="Default"  BackgroundColor="#2f3037"
+            <StackLayout   BindingContext="{Binding LibraryModel}" x:Name="SLMovies" Grid.Row="1"  AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,0,0" BackgroundColor="#2f3037">
+                <ListView x:Name="MovieListView" Grid.Row="1" HasUnevenRows="True" SeparatorVisibility="Default"  BackgroundColor="#2f3037" 
                   SeparatorColor="Gray" ItemsSource="{Binding Library,Mode=TwoWay}" ItemSelected="MovieListView_OnItemSelected">
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -76,16 +76,17 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-            </StackLayout>
-            <StackLayout IsVisible="{Binding IsRunning, Mode=TwoWay}" Padding="12" Grid.Row="1" 
+                <StackLayout IsVisible="{Binding IsRunning, Mode=TwoWay}" Padding="12" Grid.Row="1" 
                      AbsoluteLayout.LayoutFlags="PositionProportional"
                      AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1">
 
-                <ActivityIndicator IsRunning="{Binding IsRunning, Mode=TwoWay}" Color ="#80000000"/>
+                    <ActivityIndicator IsRunning="{Binding IsRunning, Mode=TwoWay}" Color ="#80000000"/>
 
-                <Label Text="Loading..." HorizontalOptions="Center" TextColor="Red"/>
+                    <Label Text="Loading..." HorizontalOptions="Center" TextColor="Red"/>
 
+                </StackLayout>
             </StackLayout>
+       
         </Grid>
     </StackLayout>
 </ContentPage>

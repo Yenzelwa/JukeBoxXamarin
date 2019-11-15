@@ -62,7 +62,7 @@ namespace JukeBox.ViewModels
         {
             this.apiService = new ApiService();
             this.GetLibrary(type);
-            this.GetLibraryType();
+            //this.GetLibraryType();
         }
         #endregion
 
@@ -121,45 +121,46 @@ namespace JukeBox.ViewModels
 
 
         }
-        private async void GetLibraryType()
-        {
+        //private async void GetLibraryType()
+        //{
 
 
 
-            var checkConnetion = await this.apiService.CheckConnection();
-            if (!checkConnetion.IsSuccess)
-            {
+        //    var checkConnetion = await this.apiService.CheckConnection();
+        //    if (!checkConnetion.IsSuccess)
+        //    {
 
-                await Application.Current.MainPage.DisplayAlert(
-                    Languages.Error,
-                    checkConnetion.Message,
-                    Languages.Accept);
-                return;
-            }
-            var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
-            var response = await BLL.Library.Library.GetLibraryTypes();
-
-
-
-            if (response != null)
-            {
-                this.LibraryType = response.ResponseObject;
-
-            }
-            else
-            {
-
-                await Application.Current.MainPage.DisplayAlert(
-                    Languages.Error,
-                    response.ResponseMessage,
-                    Languages.Accept);
-                return;
-            }
+        //        await Application.Current.MainPage.DisplayAlert(
+        //            Languages.Error,
+        //            checkConnetion.Message,
+        //            Languages.Accept);
+        //        return;
+        //    }
+        //    var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
+        //    var response = await BLL.Library.Library.GetLibraryTypes();
 
 
 
+        //    if (response != null)
+        //    {
 
-        }
+        //        this.LibraryType = response.ResponseObject;
+
+        //    }
+        //    else
+        //    {
+
+        //        await Application.Current.MainPage.DisplayAlert(
+        //            Languages.Error,
+        //            response.ResponseMessage,
+        //            Languages.Accept);
+        //        return;
+        //    }
+
+
+
+
+        //}
 
 
      

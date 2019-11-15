@@ -14,7 +14,7 @@
             <Grid x:Name="GridMoviesDetail" 
                       IsVisible="False" 
                       AbsoluteLayout.LayoutFlags="All" 
-                      AbsoluteLayout.LayoutBounds="0,0,1,1" BindingContext="{Binding LibraryDetailModel}">
+                      AbsoluteLayout.LayoutBounds="0,0,1,1" BindingContext="{Binding LibraryDetailModel, Mode=TwoWay}">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -69,7 +69,7 @@
                     <StackLayout Grid.Row="0" Padding="0"   AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
 
 
-                        <ListView x:Name="SongListView" HasUnevenRows="True" SeparatorVisibility="Default" ItemsSource="{Binding LibraryDetail}" SeparatorColor="Gray">
+                        <ListView x:Name="SongListView" HasUnevenRows="True" SeparatorVisibility="Default" ItemsSource="{Binding LibraryDetail , Mode=TwoWay}" SeparatorColor="Gray">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
@@ -87,7 +87,7 @@
                                                             <TapGestureRecognizer x:Name="TapPausePlay" Tapped="TapPausePlay_OnTapped" ></TapGestureRecognizer>
                                                         </Image.GestureRecognizers>
                                                     </Image>
-                                                  
+                                                    <ActivityIndicator IsVisible="False" x:Name="{Binding Id}" IsRunning="True" Color ="#80000000"/>
                                                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Column="1" >
                                                         <Label  Text="{Binding Name}"  TextColor="Gray"
                                    HorizontalTextAlignment="Center" />

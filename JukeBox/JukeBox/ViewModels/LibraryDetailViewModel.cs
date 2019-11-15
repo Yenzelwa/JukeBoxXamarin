@@ -84,8 +84,13 @@ namespace JukeBox.ViewModels
             if (response != null)
             {
                 this.IsRunning = false;
-
-                this.LibraryDetail = response.ResponseObject;
+                var lis = new ObservableCollection<ApiLibraryDetail>();
+                foreach (var item in response.ResponseObject)
+                {
+                    item.IsStream = true;
+                    lis.Add(item);
+                }
+                this.LibraryDetail = lis;
 
             }
             else

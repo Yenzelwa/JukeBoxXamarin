@@ -13,6 +13,7 @@ namespace JukeBox.Models
         public decimal Price { get; set; }
         public bool SongDownload { get; set; }
         public DateTime DateCreated { get; set; }
+        public bool? IsStream { get; set; }
 
     
         public string SinglePurchase
