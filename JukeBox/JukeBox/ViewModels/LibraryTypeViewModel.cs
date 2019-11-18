@@ -74,12 +74,26 @@ namespace JukeBox.ViewModels
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
             var response = await BLL.Library.Library.GetLibraryTypes();
 
+            var model = new ApiLibraryType
+            {
+                TypeId = 0,
+                TypeName = "ALL",
+                Color = "Black"
+               
 
 
+            };
+            var modelList = new ObservableCollection<ApiLibraryType>();
+           
             if (response != null)
             {
 
-                this.LibraryType = response.ResponseObject;
+                foreach (var item in response.ResponseObject)
+                {
+                    item.Color = item.TypeId == 0 ? "Black" : "Gray";
+                    modelList.Add(item);
+                }
+                this.LibraryType = modelList;
 
             }
             else

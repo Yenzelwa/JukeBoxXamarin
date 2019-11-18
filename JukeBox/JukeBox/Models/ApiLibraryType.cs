@@ -20,6 +20,7 @@ namespace JukeBox.Models
     {
         public int TypeId { get; set; }
         public string TypeName { get; set; }
+        public string Color { get; set; }
         public ICommand LibraryCommand
         {
             get
@@ -31,9 +32,16 @@ namespace JukeBox.Models
         private async void GetLibrary()
         {
 
-            if (this.TypeId > 0 )
+            if (this.TypeId > -1 )
             {
                 var mainViewModel = MainViewModel.GetInstance();
+                var modelList = new ObservableCollection<ApiLibraryType>();
+                foreach (var item in mainViewModel.LibraryTypeModel.LibraryType)
+                {
+                    item.Color = item.TypeId == this.TypeId ? "Black" : "Gray";
+                    modelList.Add(item);
+                }
+                mainViewModel.LibraryTypeModel.LibraryType = modelList;
                 mainViewModel.LibraryModel = new LibraryViewModel(this.TypeId);
 
             }

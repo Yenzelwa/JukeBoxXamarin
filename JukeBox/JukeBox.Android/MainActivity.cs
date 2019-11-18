@@ -28,6 +28,7 @@ using Javax.Crypto;
 using Javax.Crypto.Spec;
 using System.Text;
 using System.Security.Cryptography;
+using Android.Support.V4.Media.Session;
 
 namespace JukeBox.Droid
 {
@@ -42,6 +43,9 @@ namespace JukeBox.Droid
 
         private AudioServiceConnection _connection;
         private int STORAGE_PERMISSION_CODE = 1;
+        private NotificationManagerCompat notificationManager;
+
+        private MediaSessionCompat mediaSession;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
@@ -52,6 +56,10 @@ namespace JukeBox.Droid
             // Set Status Bar Color
             Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
             Window.SetStatusBarColor(Color.Black);
+            notificationManager = NotificationManagerCompat.From(this);
+
+
+            mediaSession = new MediaSessionCompat(this, "tag");
 
             CarouselViewRenderer.Init();
 
@@ -428,7 +436,7 @@ private void DecryptFile(string inputFile, string outputFile)
 
         protected override void OnDestroy()
         {
-            StartService(new Intent(JukeBox.Droid.Audio.AudioService.ActionTryKill));
+            System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
             base.OnDestroy();
         }
         public override bool OnOptionsItemSelected(IMenuItem item)

@@ -143,7 +143,7 @@
         {
             instance = this;
             this.Login = new LoginViewModel();
-            this.LibraryModel = new LibraryViewModel(1);
+            this.LibraryModel = new LibraryViewModel(0);
             this.LibraryPromoModel = new LibraryPromoViewModel(99);
             this.LibraryDetailModel = new LibraryDetailViewModel();
             this.LibraryTypeModel = new LibraryTypeViewModel(1);
