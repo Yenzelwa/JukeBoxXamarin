@@ -157,6 +157,10 @@
     <Compile Include="BroadcastRecievers\AudioNoisyBroadcastReceiver.cs" />
     <Compile Include="Effects\BlueProgressBarEffect.cs" />
     <Compile Include="Effects\BlueSliderEffect.cs" />
+    <Compile Include="FileEncryption\EncryptDecryptUtils.cs" />
+    <Compile Include="FileEncryption\FileDownload.cs" />
+    <Compile Include="FileEncryption\FileUtils.cs" />
+    <Compile Include="FileEncryption\PrefUtils.cs" />
     <Compile Include="Implementations\Config.cs" />
     <Compile Include="Implementations\Localize.cs" />
     <Compile Include="Implementations\LoginPageRenderer.cs" />

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using JukeBox.Models;
+using Xamarin.Forms;
 
 namespace JukeBox.BLL.Library
 {
@@ -24,7 +25,8 @@ namespace JukeBox.BLL.Library
                 // Call asynchronous network methods in a try/catch block to handle exceptions
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"http://igagasimediaweb.co.za/api/library/library/type");
+                    var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
+                    HttpResponseMessage response = await client.GetAsync($"{apiSecurity}/api/library/library/type");
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     //  Console.WriteLine(responseBody);
@@ -60,8 +62,8 @@ namespace JukeBox.BLL.Library
                 try
                 {
                     client.Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite);
-
-                    HttpResponseMessage response = await client.GetAsync($"http://igagasimediaweb.co.za/api/library/{filter}?clientid={clientId}", HttpCompletionOption.ResponseHeadersRead);
+                    var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
+                    HttpResponseMessage response = await client.GetAsync($"{apiSecurity}/api/library/{filter}?clientid={clientId}", HttpCompletionOption.ResponseHeadersRead);
                     
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
@@ -118,7 +120,8 @@ namespace JukeBox.BLL.Library
                 // Call asynchronous network methods in a try/catch block to handle exceptions
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"http://igagasimediaweb.co.za/api/library/detail/{libraryId}?clientid={clientId}");
+                    var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
+                    HttpResponseMessage response = await client.GetAsync($"{apiSecurity}/api/library/detail/{libraryId}?clientid={clientId}");
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                   //  Console.WriteLine(responseBody);

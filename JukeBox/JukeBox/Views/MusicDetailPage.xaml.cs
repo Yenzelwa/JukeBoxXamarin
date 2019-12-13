@@ -2,6 +2,8 @@
 using Android.Media;
 using Android.Provider;
 using Java.IO;
+using Javax.Crypto;
+using Javax.Crypto.Spec;
 using JukeBox.BLL.Library;
 using JukeBox.Controls;
 using JukeBox.Helpers;
@@ -39,6 +41,9 @@ namespace JukeBox.Views
         private string filePath;
         private List<ApiLibraryDetail> apiLibraryDetails;
         private DataService dataService;
+           long stopTime, startTime;
+        private string sKey = "0123456789abcdef";//key，
+        private string ivParameter = "1020304050607080";
         public  MusicDetailPage (ApiLibrary library)
 		{
 			InitializeComponent ();
@@ -329,9 +334,8 @@ namespace JukeBox.Views
                     await Task.Run(async () => {
 
                         _player.SetAudioStreamType(streamtype: Stream.Music);
-                    
-                    _player.SetDataSource(libraryDetail.FilePath);
-                    _player?.Prepare(); 
+                        _player.SetDataSource(libraryDetail.FilePath);
+                     _player?.PrepareAsync(); 
                     _player?.Start();
                         await Task.Delay(1000);
                     });
@@ -343,7 +347,7 @@ namespace JukeBox.Views
 
                 Device.StartTimer(TimeSpan.FromSeconds(2), () =>
                 {
-                    if( _player !=null && _player.CurrentPosition > 20000)
+                    if( _player !=null && _player.CurrentPosition > 80000)
                     {
                         _player.Stop();
                         _player.Reset();
@@ -379,7 +383,8 @@ namespace JukeBox.Views
             });
             if (!isDownloading)
             {
-               
+                string name = fileName.Split('/').Last();
+            var fileEncryption =    DependencyService.Get<IPlaylistManager>().EncryptFile(name,fileName);
                 var b = QueuePopup.Instance;
                 var c = SliderControl.Instance;
                 var main = MainViewModel.GetInstance();
@@ -404,12 +409,83 @@ namespace JukeBox.Views
                 mainViewModel.PlaylistItems = new ObservableCollection<PlaylistItem>();
                 mainViewModel.PlaylistItems.Add(new PlaylistItem(
                 new Playlist { Title = "Home", IsDynamic = false }));
+              //  var file = DencryptFile(title + ".mp3", "");
                 mainViewModel.PlaylistViewModel = new PlaylistViewModel(mainViewModel.PlaylistItems[0]);
                 await DisplayAlert("File Status", "File Downloaded", "OK");
             }
         }
 
+        public void encrypt(string filename, string path)
+        {
 
+            // Here you read the cleartext.
+            try
+            {
+                var extStore = new File("/storage/emulated/0/jukebox/Songs");
+                startTime = System.DateTime.Now.Millisecond;
+                Android.Util.Log.Error("Encryption Started", extStore + "/" + filename);
+
+                // This stream write the encrypted text. This stream will be wrapped by
+                // another stream.
+                createFile(filename, extStore);
+                System.IO.FileStream fs = System.IO.File.OpenRead(path + "/" + filename);
+                FileOutputStream fos = new FileOutputStream(extStore + "/" + filename + ".aes", false);
+
+                // Length is 16 byte
+                Cipher cipher = Cipher.GetInstance("AES/CBC/PKCS5Padding");
+                byte[] raw = System.Text.Encoding.Default.GetBytes(sKey);
+                SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+                IvParameterSpec iv = new IvParameterSpec(System.Text.Encoding.Default.GetBytes(ivParameter));//
+              //  cipher.Init(CipherMode.EncryptMode, skeySpec, iv);
+
+                // Wrap the output stream
+                CipherInputStream cis = new CipherInputStream(fs, cipher);
+                // Write bytes
+                int b;
+                byte[] d = new byte[1024 * 1024];
+                while ((b = cis.Read(d)) != -1)
+                {
+                    fos.Write(d, 0, b);
+                }
+                // Flush and close streams.
+                fos.Flush();
+                fos.Close();
+                cis.Close();
+                stopTime = System.DateTime.Now.Millisecond;
+                Android.Util.Log.Error("Encryption Ended", extStore + "/5mbtest/" + filename + ".aes");
+                Android.Util.Log.Error("Time Elapsed", ((stopTime - startTime) / 1000.0) + "");
+            }
+            catch (Exception e)
+            {
+                Android.Util.Log.Error("lv", e.Message);
+            }
+
+        }
+        private void createFile(string filename, Java.IO.File extStore)
+        {
+            Java.IO.File file = new Java.IO.File(extStore + "/" + filename + ".aes");
+
+            if (filename.IndexOf(".") != -1)
+            {
+                try
+                {
+                    file.CreateNewFile();
+                }
+                catch (Java.IO.IOException e)
+                {
+                    // TODO Auto-generated catch block
+                    Android.Util.Log.Error("lv", e.Message);
+                }
+                Android.Util.Log.Error("lv", "file created");
+            }
+            else
+            {
+                file.Mkdir();
+                Android.Util.Log.Error("lv", "folder created");
+            }
+
+            file.Mkdirs();
+        }
         public bool IsDownloading(IDownloadFile file)
         {
             if (file == null) return false;

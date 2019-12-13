@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,12 +23,21 @@ using System.Net;
 using System.ComponentModel;
 using JukeBox.Interfaces;
 using JukeBox.Models;
+using Java.IO;
+using Javax.Crypto;
+using Javax.Crypto.Spec;
+using static Android.Resource;
+using JukeBox.Droid.FileEncryption;
+using JukeBox.Droid;
 
 [assembly: Dependency(typeof(PlaylistManagerDroid))]
 namespace JukeBox
 {
     public class PlaylistManagerDroid : IPlaylistManager
     {
+        long stopTime, startTime;
+        private string sKey = "0123456789abcdef";//key，
+        private string ivParameter = "1020304050607080";
         private static string[] _mediaProjections =
         {
             MediaStore.Audio.Media.InterfaceConsts.Id,
@@ -91,13 +100,134 @@ namespace JukeBox
                     return new Playlist { Id = id, Title = name, Songs = new List<Song>(), IsDynamic = true, DateModified = DateTime.Now };
                 }
                 playlistCursor?.Close();
-                
+
             }
             return null;
         }
 
+
+        public bool EncryptFile(string filename, string path)
+        {
+
+            try
+            {
+                byte[] fileData = FileUtils.readFile("/storage/emulated/0/jukebox/Songs/" + filename);
+                byte[] encodedBytes = EncryptDecryptUtils.encode(fileData);
+                FileUtils.saveFile(encodedBytes, "/storage/emulated/0/jukebox/Songs/" + filename);
+                return true;
+            }
+            catch (Exception e)
+            {
+                // updateUI("File Encryption failed.\nException: " + e.getMessage());
+            }
+            return false;
+        }
+
+        public byte[] DencryptFile(string filename, string path)
+        {
+
+            try
+            {
+                byte[] fileData = FileUtils.readFile("/storage/emulated/0/jukebox/Songs/" + filename);
+                byte[] decryptedBytes = EncryptDecryptUtils.decode(fileData);
+               FileUtils.saveDecFile(decryptedBytes, "/storage/emulated/0/jukebox/Songs/" + filename , filename);
+                return decryptedBytes;
+            }
+            catch (Exception e)
+            {
+                // updateUI("File Encryption failed.\nException: " + e.getMessage());
+            }
+            return null;
+        }
+
+
+
+
+        private void createFile(string filename, Java.IO.File extStore)
+        {
+            Java.IO.File file = new Java.IO.File(extStore + "/" + filename + ".aes");
+
+            if (filename.IndexOf(".") != -1)
+            {
+                try
+                {
+                    file.CreateNewFile();
+                }
+                catch (Java.IO.IOException e)
+                {
+                    // TODO Auto-generated catch block
+                    Android.Util.Log.Error("lv", e.Message);
+                }
+                Android.Util.Log.Error("lv", "file created");
+            }
+            else
+            {
+                file.Mkdir();
+                Android.Util.Log.Error("lv", "folder created");
+            }
+
+            file.Mkdirs();
+        }
+        public void decrypt()
+        {
+            try
+            {
+
+                string path = "/storage/emulated/0/jukebox/Songs";
+                //   Log.d("Files", "Path: " + path);
+                Java.IO.File directory = new Java.IO.File(path);
+                Java.IO.File[] files = directory.ListFiles();
+                //  Log.d("Files", "Size: " + files.length);
+                for (int i = 0; i < files.Length; i++)
+                {
+                    //  Log.d("Files", "FileName:" + files[i].getName());
+                    var fileName = files[i].Name;
+                    int index = fileName.LastIndexOf(".");
+                    if (index > 0)
+                        fileName = fileName.Substring(0, index);
+
+                    //Java.IO.File extStore = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryMovies);
+                    Android.Util.Log.Error("Decryption Started", directory + "");
+                    FileInputStream fis = new FileInputStream(directory + "/" + fileName + ".aes");
+
+                    createFile(files[i].Name, directory);
+                    FileOutputStream fos = new FileOutputStream(directory + "/" + "decrypted" + fileName, false);
+                    System.IO.FileStream fs = System.IO.File.OpenWrite(directory + "/" + "decrypted" + fileName);
+                    // Create cipher
+
+                    Cipher cipher = Cipher.GetInstance("AES/CBC/PKCS5Padding");
+                    byte[] raw = System.Text.Encoding.Default.GetBytes(sKey);
+                    SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+                    IvParameterSpec iv = new IvParameterSpec(System.Text.Encoding.Default.GetBytes(ivParameter));//
+                    cipher.Init(Javax.Crypto.CipherMode.DecryptMode, skeySpec, iv);
+
+                    startTime = System.DateTime.Now.Millisecond;
+                    CipherOutputStream cos = new CipherOutputStream(fs, cipher);
+                    int b;
+                    byte[] d = new byte[1024 * 1024];
+                    while ((b = fis.Read(d)) != -1)
+                    {
+                        cos.Write(d, 0, b);
+                    }
+
+                    stopTime = System.DateTime.Now.Millisecond;
+
+                    Android.Util.Log.Error("Decryption Ended", directory + "/" + "decrypted" + fileName);
+                    Android.Util.Log.Error("Time Elapsed", ((stopTime - startTime) / 1000.0) + "");
+
+                    cos.Flush();
+                    cos.Close();
+                    fis.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                Android.Util.Log.Error("lv", e.Message);
+            }
+        }
         public async Task<IList<Song>> GetAllSongs()
-        {                                                                                                                   
+        {
+        //   decrypt();
             return await Task.Run<IList<Song>>(() =>
             {
                 IList<Song> songs = new ObservableCollection<Song>();
@@ -105,7 +235,7 @@ namespace JukeBox
                      mediaCursor = Android.App.Application.Context.ContentResolver.Query(
                     MediaStore.Audio.Media.ExternalContentUri,
                     _mediaProjections, MediaStore.Audio.Media.InterfaceConsts.Data + " like ? ",
-    new string[] { "%jukebox/Songs%" },
+    new string[] { "%jukebox%" },
                     MediaStore.Audio.Media.InterfaceConsts.TitleKey);
 
                 int artistColumn = mediaCursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.Artist);
@@ -119,7 +249,7 @@ namespace JukeBox
 
                 int isMusic;
                 ulong duration, id;
-                string artist, album, title, uri, genre, artwork, artworkId;
+                string artist, album, uri ,title,  genre, artwork, artworkId;
 
                 if (mediaCursor.MoveToFirst())
                 {
@@ -128,13 +258,21 @@ namespace JukeBox
                         isMusic = int.Parse(mediaCursor.GetString(isMusicColumn));
                         if (isMusic != 0)
                         {
+                            title = mediaCursor.GetString(titleColumn);
+                            var decrypt = DencryptFile(title + ".mp3","");
+
+                         //  var file = FileUtils.getTempFileDescriptor(title + ".mp3", decrypt);
                             artist = mediaCursor.GetString(artistColumn);
                             album = mediaCursor.GetString(albumColumn);
-                            title = mediaCursor.GetString(titleColumn);
+                            uri = "/storage/emulated/0/movies/" + title + ".mp3";
                             duration = ulong.Parse(mediaCursor.GetString(durationColumn));
-                            uri = mediaCursor.GetString(uriColumn);
+
+
+
                             id = ulong.Parse(mediaCursor.GetString(idColumn));
                             artworkId = mediaCursor.GetString(albumIdColumn);
+                           // file.Delete();
+                           // decrypt(title + ".mp3");
 
                             genreCursor = Android.App.Application.Context.ContentResolver.Query(
                                 MediaStore.Audio.Genres.GetContentUriForAudioId("external", (int)id),
@@ -178,6 +316,7 @@ namespace JukeBox
                             });
                             genreCursor?.Close();
                             albumCursor?.Close();
+                     
                         }
                     } while (mediaCursor.MoveToNext());
                 }
@@ -186,7 +325,59 @@ namespace JukeBox
                 return songs;
             });
         }
+        public void decrypt(string filename)
+        {
+            try
+            {
 
+                Java.IO.File extStore = new Java.IO.File("/storage/emulated/0/jukebox/Songs");
+                Android.Util.Log.Error("Decryption Started", extStore + "");
+                FileInputStream fis = new FileInputStream(extStore + "/" + filename + ".aes");
+
+                createFile(filename, extStore);
+                FileOutputStream fos = new FileOutputStream(extStore + "/" + "decrypted" + filename, false);
+                System.IO.FileStream fs = System.IO.File.OpenWrite(extStore + "/" + "decrypted" + filename);
+                // Create cipher
+
+                Cipher cipher = Cipher.GetInstance("AES/CBC/PKCS5Padding");
+                byte[] raw = System.Text.Encoding.Default.GetBytes(sKey);
+                SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+                IvParameterSpec iv = new IvParameterSpec(System.Text.Encoding.Default.GetBytes(ivParameter));//
+                cipher.Init(Javax.Crypto.CipherMode.DecryptMode, skeySpec, iv);
+
+                startTime = System.DateTime.Now.Millisecond;
+                CipherOutputStream cos = new CipherOutputStream(fs, cipher);
+                Java.IO.File file = new Java.IO.File("/storage/emulated/0/jukebox/Songs" + "/" + filename);
+                if (file.Delete())
+                {
+                    Android.Util.Log.Error("File Deteted", extStore + filename);
+                }
+                else
+                {
+                    Android.Util.Log.Error("File Doesn't exists", extStore + filename);
+                }
+
+                int b;
+                byte[] d = new byte[1024 * 1024];
+                while ((b = fis.Read(d)) != -1)
+                {
+                    cos.Write(d, 0, b);
+                }
+
+                stopTime = System.DateTime.Now.Millisecond;
+
+                Android.Util.Log.Error("Decryption Ended", extStore + "/" + "decrypted" + filename);
+                Android.Util.Log.Error("Time Elapsed", ((stopTime - startTime) / 1000.0) + "");
+
+                cos.Flush();
+                cos.Close();
+                fis.Close();
+            }
+            catch (Exception e)
+            {
+                Android.Util.Log.Error("lv", e.Message);
+            }
+        }
         public IList<Playlist> GetPlaylists()
         {
 
@@ -262,9 +453,11 @@ namespace JukeBox
                     {
                         do
                         {
+                            title = songCursor.GetString(titleColumn);
+                            var decrypt = DencryptFile(title + ".mp3", "");
+                            var file = FileUtils.getTempFileDescriptor(title + ".mp3", decrypt);
                             artist = songCursor.GetString(artistColumn);
                             album = songCursor.GetString(albumColumn);
-                            title = songCursor.GetString(titleColumn);
                             duration = ulong.Parse(songCursor.GetString(durationColumn));
                             uri = songCursor.GetString(uriColumn);
                             id = ulong.Parse(songCursor.GetString(idColumn));

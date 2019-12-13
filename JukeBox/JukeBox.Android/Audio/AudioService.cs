@@ -136,7 +136,8 @@ namespace JukeBox.Droid.Audio
                 _player?.Reset();
                 try
                 {
-                    _player?.SetDataSource(_queue[_pos].Uri);
+                    var url = _queue[_pos].Uri;
+                    _player?.SetDataSource(url);
                     _player?.PrepareAsync();
                 }
                 catch (Exception e)

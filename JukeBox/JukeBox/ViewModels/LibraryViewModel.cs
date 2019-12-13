@@ -77,12 +77,20 @@ namespace JukeBox.ViewModels
             var checkConnetion = await this.apiService.CheckConnection();
             if (!checkConnetion.IsSuccess)
             {
+                if (Application.Current.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        Languages.Error,
+                        checkConnetion.Message,
+                        Languages.Accept);
+                }
+
                 this.IsRunning = false;
 
-                await Application.Current.MainPage.DisplayAlert(
-                    Languages.Error,
-                    checkConnetion.Message,
-                    Languages.Accept);
+                //await Application.Current.MainPage.DisplayAlert(
+                //    Languages.Error,
+                //    checkConnetion.Message,
+                //    Languages.Accept);
                 return;
             }
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();

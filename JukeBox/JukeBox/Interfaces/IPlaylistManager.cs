@@ -18,5 +18,6 @@ namespace JukeBox.Interfaces
         Task<IList<Song>> GetPlaylistSongs(ulong playlistId); 
 
         Task<IList<Song>> GetAllSongs();
+        bool EncryptFile(string filename, string path);
     }
 }

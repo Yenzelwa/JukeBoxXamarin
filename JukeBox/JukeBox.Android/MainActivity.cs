@@ -29,6 +29,8 @@ using Javax.Crypto.Spec;
 using System.Text;
 using System.Security.Cryptography;
 using Android.Support.V4.Media.Session;
+using System.Net;
+using JukeBox.Droid.FileEncryption;
 
 namespace JukeBox.Droid
 {
@@ -44,7 +46,9 @@ namespace JukeBox.Droid
         private AudioServiceConnection _connection;
         private int STORAGE_PERMISSION_CODE = 1;
         private NotificationManagerCompat notificationManager;
-
+        long stopTime, startTime;
+        private string sKey = "0123456789abcdef";//key，
+        private string ivParameter = "1020304050607080";
         private MediaSessionCompat mediaSession;
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -117,94 +121,196 @@ namespace JukeBox.Droid
             }
             LoadApplication(new App());
         }
-        //public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
-        //{
-        //    Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        //    base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        //}
+        public bool encrypt(string filename)
+        {
+            // updateUI("Encrypting file...");
+            try
+            {
+                byte[] fileData = FileUtils.readFile("/storage/emulated/0/jukebox/"+filename);
+                byte[] encodedBytes = EncryptDecryptUtils.encode( fileData);
+                FileUtils.saveFile(encodedBytes,"/storage/emulated/0/jukebox/"+filename);
+                return true;
+            }
+            catch (Exception e)
+            {
+                // updateUI("File Encryption failed.\nException: " + e.getMessage());
+            }
+            return false;
+        }
+        public byte[] decrypt2(string filename)
+        {
+          //  updateUI("Decrypting file...");
+            try
+            {
+                byte[] fileData = FileUtils.readFile("/storage/emulated/0/jukebox/" + filename);
+                byte[] decryptedBytes = EncryptDecryptUtils.decode(fileData);
+                return decryptedBytes;
+            }
+            catch (Exception e)
+            {
+               // updateUI("File Decryption failed.\nException: " + e.getMessage());
+            }
+            return null;
+        }
+
         public void Download(string type, string typename)
         {
 
-
+            string fileName ="", url = "";
             CrossDownloadManager.Current.PathNameForDownloadedFile = new Func<Plugin.DownloadManager.Abstractions.IDownloadFile, string>
-                (file =>
-                {
+              (file =>
+              {
 
-                    string fileName = Android.Net.Uri.Parse(file.Url).Path.Split('/').Last();
-                    Android.Net.Uri uri = MediaStore.Audio.Media.ExternalContentUri;
-                    var subFolder = type == "Songs" ? type : $"Album/{typename}";
-                    var dd = GetActualPathFromFile(uri);
+                   fileName = Android.Net.Uri.Parse(file.Url).Path.Split('/').Last();
+                  url = file.Url;
+                  Android.Net.Uri uri = MediaStore.Audio.Media.ExternalContentUri;
+                  var subFolder = type == "Songs" ? type : $"Album/{typename}";
+                  var dd = GetActualPathFromFile(uri);
+                  var v = file.Status;
+                  //  encrypt(fileName, file.Url);
+                 //  decrypt(fileName);
                   //  EncryptFile(file.Url, $"/storage/emulated/0/jukebox/{subFolder}");
-                    // var ddd = ApplicationContext.GetExternalFilesDir(dd).AbsolutePath;
-                    return System.IO.Path.Combine($"/storage/emulated/0/jukebox/{subFolder}", fileName);
-                });
+                  // var ddd = ApplicationContext.GetExternalFilesDir(dd).AbsolutePath;
+                  return System.IO.Path.Combine($"/storage/emulated/0/jukebox/{subFolder}", fileName); 
+                  
+              });
+           
         }
 
-private void EncryptFile(string inputFile, string outputFile)
+        public void encrypt(string filename , string path)
+        {
+
+            // Here you read the cleartext.
+            try
+            {
+                var extStore = new Java.IO.File("/storage/emulated/0/jukebox/Songs");
+                startTime = System.DateTime.Now.Millisecond;
+                Android.Util.Log.Error("Encryption Started", extStore + "/" + filename);
+
+                // This stream write the encrypted text. This stream will be wrapped by
+                // another stream.
+                createFile(filename, extStore);
+                var webRequest = WebRequest.Create(path);
+
+                using (var response = webRequest.GetResponse())
+                using (var content = response.GetResponseStream())
+                using (var reader = new StreamReader(content))
+                {
+                    var strContent = reader.ReadToEnd();
+
+                  //  System.IO.FileStream fs = System.IO.File.OpenWrite(path);
+                    FileOutputStream fos = new FileOutputStream(extStore + "/" + filename + ".aes", false);
+
+                    // Length is 16 byte
+                    Cipher cipher = Cipher.GetInstance("AES/CBC/PKCS5Padding");
+                    byte[] raw = System.Text.Encoding.Default.GetBytes(sKey);
+                    SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+                    IvParameterSpec iv = new IvParameterSpec(System.Text.Encoding.Default.GetBytes(ivParameter));//
+                    cipher.Init(Javax.Crypto.CipherMode.EncryptMode, skeySpec, iv);
+
+                    // Wrap the output stream
+                    CipherInputStream cis = new CipherInputStream(content, cipher);
+                    // Write bytes
+                    int b;
+                    byte[] d = new byte[1024 * 1024];
+                    while ((b = cis.Read(d)) != -1)
+                    {
+                        fos.Write(d, 0, b);
+                    }
+                    // Flush and close streams.
+                    fos.Flush();
+                    fos.Close();
+                    cis.Close();
+                    stopTime = System.DateTime.Now.Millisecond;
+                    Android.Util.Log.Error("Encryption Ended", extStore + "/5mbtest/" + filename + ".aes");
+                    Android.Util.Log.Error("Time Elapsed", ((stopTime - startTime) / 1000.0) + "");
+                }
+            }
+            catch (Exception e)
+            {
+                Android.Util.Log.Error("lv", e.Message);
+            }
+
+        }
+
+
+        private void createFile(string filename, Java.IO.File extStore)
+        {
+            Java.IO.File file = new Java.IO.File(extStore + "/" + filename + ".aes");
+
+            if (filename.IndexOf(".") != -1)
+            {
+                try
+                {
+                    file.CreateNewFile();
+                }
+                catch (Java.IO.IOException e)
+                {
+                    // TODO Auto-generated catch block
+                    Android.Util.Log.Error("lv", e.Message);
+                }
+                Android.Util.Log.Error("lv", "file created");
+            }
+            else
+            {
+                file.Mkdir();
+                Android.Util.Log.Error("lv", "folder created");
+            }
+
+            file.Mkdirs();
+        }
+        public void decrypt(string filename)
         {
             try
             {
-                string password = "65gyuguyu"; // Your Key Here
-                UnicodeEncoding UE = new UnicodeEncoding();
-                byte[] key = UE.GetBytes(password);
 
-                string cryptFile = outputFile;
-                FileStream fsCrypt = new FileStream(cryptFile, FileMode.Create);
+                Java.IO.File extStore = new Java.IO.File("/storage/emulated/0/jukebox/Songs");
+                Android.Util.Log.Error("Decryption Started", extStore + "");
+                FileInputStream fis = new FileInputStream(extStore + "/" + filename + ".aes");
 
-                RijndaelManaged RMCrypto = new RijndaelManaged();
+                createFile(filename, extStore);
+                FileOutputStream fos = new FileOutputStream(extStore + "/" + "decrypted" + filename, false);
+                System.IO.FileStream fs = System.IO.File.OpenWrite(extStore + "/" + "decrypted" + filename);
+                // Create cipher
 
-                CryptoStream cs = new CryptoStream(fsCrypt,
-                    RMCrypto.CreateEncryptor(key, key),
-                    CryptoStreamMode.Write);
+                Cipher cipher = Cipher.GetInstance("AES/CBC/PKCS5Padding");
+                byte[] raw = System.Text.Encoding.Default.GetBytes(sKey);
+                SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+                IvParameterSpec iv = new IvParameterSpec(System.Text.Encoding.Default.GetBytes(ivParameter));//
+                cipher.Init(Javax.Crypto.CipherMode.DecryptMode, skeySpec, iv);
 
-                FileStream fsIn = new FileStream(inputFile, FileMode.Open);
+                startTime = System.DateTime.Now.Millisecond;
+                CipherOutputStream cos = new CipherOutputStream(fs, cipher);
+                Java.IO.File file = new Java.IO.File("/storage/emulated/0/jukebox/Songs" + "/" + filename);
+                if (file.Delete())
+                {
+                    Android.Util.Log.Error("File Deteted", extStore + filename);
+                }
+                else
+                {
+                    Android.Util.Log.Error("File Doesn't exists", extStore + filename);
+                }
 
-                int data;
-                while ((data = fsIn.ReadByte()) != -1)
-                    cs.WriteByte((byte)data);
+                int b;
+                byte[] d = new byte[1024 * 1024];
+                while ((b = fis.Read(d)) != -1)
+                {
+                    cos.Write(d, 0, b);
+                }
 
+                stopTime = System.DateTime.Now.Millisecond;
 
-                fsIn.Close();
-                cs.Close();
-                fsCrypt.Close();
+                Android.Util.Log.Error("Decryption Ended", extStore + "/" + "decrypted" + filename);
+                Android.Util.Log.Error("Time Elapsed", ((stopTime - startTime) / 1000.0) + "");
+
+                cos.Flush();
+                cos.Close();
+                fis.Close();
             }
-            catch
+            catch (Exception e)
             {
-                
-            }
-        }
-
-
-
-
-private void DecryptFile(string inputFile, string outputFile)
-        {
-
-            {
-                string password = @"myKey123"; // Your Key Here
-
-                UnicodeEncoding UE = new UnicodeEncoding();
-                byte[] key = UE.GetBytes(password);
-
-                FileStream fsCrypt = new FileStream(inputFile, FileMode.Open);
-
-                RijndaelManaged RMCrypto = new RijndaelManaged();
-
-                CryptoStream cs = new CryptoStream(fsCrypt,
-                    RMCrypto.CreateDecryptor(key, key),
-                    CryptoStreamMode.Read);
-
-                FileStream fsOut = new FileStream(outputFile, FileMode.Create);
-
-                int data;
-                while ((data = cs.ReadByte()) != -1)
-                    fsOut.WriteByte((byte)data);
-
-                fsOut.Close();
-                cs.Close();
-                fsCrypt.Close();
-
+                Android.Util.Log.Error("lv", e.Message);
             }
         }
 
@@ -417,23 +523,10 @@ private void DecryptFile(string inputFile, string outputFile)
             return "com.android.providers.media.documents".Equals(uri.Authority);
         }
 
-        //Whether the Uri authority is Google Photos.
         public static bool isGooglePhotosUri(Android.Net.Uri uri)
         {
             return "com.google.android.apps.photos.content".Equals(uri.Authority);
         }
-        //protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-        //{
-        //    base.OnActivityResult(requestCode, resultCode, data);
-        //    if (requestCode == 0)
-        //    {
-        //        var uri = data.Data;
-        //        string path = GetActualPathFromFile(uri);
-        //        System.Diagnostics.Debug.WriteLine("Image path == " + path);
-
-        //    }
-        //}
-
         protected override void OnDestroy()
         {
             System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();

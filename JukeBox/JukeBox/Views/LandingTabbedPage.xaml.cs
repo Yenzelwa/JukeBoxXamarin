@@ -19,7 +19,7 @@ namespace JukeBox.Views
                 new FeaturedPage()
                 {
                     Title = "Store"
-                    
+
                 });
             this.Children.Add(
     new PlaylistPage(playlistItem)
@@ -37,7 +37,7 @@ namespace JukeBox.Views
              {
                  Title = "Recharge"
              });
-            this.CurrentPageChanged += tabChanged;
+        //    this.CurrentPageChanged += tabChanged;
         }
         protected void tabChanged(object sender, EventArgs args)
         { //The children are navigation pages so we can easily pop to root of previous selected page //if you have something else than NavigationPages make sure to get the good reference //Keep an integer as reference to the currently selected page index within your class //Pop to root for previous index 

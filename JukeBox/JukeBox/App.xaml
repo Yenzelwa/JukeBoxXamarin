@@ -13,6 +13,6 @@
 
          <!--Parameters--> 
         <x:String x:Key="APILands">http://restcountries.eu</x:String>
-        <x:String x:Key="APISecurity">http://igagasimediaweb.co.za</x:String>
+        <x:String x:Key="APISecurity">http://www.apigagasimedia.co.za</x:String>
     </Application.Resources>
 </Application>
