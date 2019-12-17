@@ -29,7 +29,7 @@ namespace JukeBox.BroadcastRecievers
             if (key.Action != KeyEventActions.Down)
                 return;
             string action = AudioService.ActionPlay;
-            switch (key.KeyCode)
+            switch (key.KeyCode)    
             {
                 case Keycode.Headsethook:
                 case Keycode.MediaPlayPause: action = AudioService.ActionToggle; break;

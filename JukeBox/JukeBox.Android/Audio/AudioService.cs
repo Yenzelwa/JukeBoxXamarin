@@ -24,6 +24,7 @@ using Android.Support.V4.Media;
 using static Android.Support.V4.Media.App.NotificationCompat;
 using static Android.AccessibilityServices.GestureDescription;
 using JukeBox.Audio;
+using Android.Telephony;
 
 namespace JukeBox.Droid.Audio
 {
@@ -66,6 +67,11 @@ namespace JukeBox.Droid.Audio
         private ComponentName _remoteComponentName;
         private Random _random;
         private SongComparer _comparer;
+
+        //Handle incoming phone calls
+        private bool ongoingCall = false;
+        private PhoneStateListener phoneStateListener;
+        private TelephonyManager telephonyManager;
 
         public override void OnCreate()
         {
@@ -314,7 +320,7 @@ namespace JukeBox.Droid.Audio
                     if (state == PlaybackStateCompat.StatePlaying || state == PlaybackStateCompat.StatePaused)
                     {
                         var autoclose = state == PlaybackStateCompat.StatePaused ? true : false;
-                       StartNotification(autoclose);
+                        StartNotification(autoclose);
                     }
                 }
                 catch (Exception e)
@@ -336,7 +342,8 @@ namespace JukeBox.Droid.Audio
                 audioServiceIntent.SetAction(ActionStop);
                 PendingIntent pendingCancelIntent = PendingIntent.GetService(ApplicationContext, 1, audioServiceIntent, PendingIntentFlags.CancelCurrent);
                 var builder = new NotificationCompat.Builder(this, CHANNEL_ID);
-                if(autoclose) {
+                if (autoclose)
+                {
                     builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                    .SetContentTitle(currentSong.Title)
                    .SetContentText(currentSong.Artist)
@@ -400,7 +407,7 @@ namespace JukeBox.Droid.Audio
                 var notificationManager = (NotificationManager)GetSystemService(NotificationService);
                 notificationManager.CreateNotificationChannel(channel);
                 notificationManager.Notify(1, builder.Build());
-               //  StartForeground(1, builder.Build())
+                //  StartForeground(1, builder.Build())
             }
         }
 
@@ -622,7 +629,6 @@ namespace JukeBox.Droid.Audio
         {
             _getPosition(mp.CurrentPosition / 1000);
         }
-
 
     }
 }

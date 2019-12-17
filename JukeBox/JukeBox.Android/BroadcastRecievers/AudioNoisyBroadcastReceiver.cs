@@ -12,6 +12,8 @@ using Android.Widget;
 using Android.Media;
 using JukeBox.Audio;
 using JukeBox.Droid.Audio;
+using Xamarin.Forms;
+using JukeBox.Interfaces;
 
 namespace JukeBox.BroadcastRecievers
 {
@@ -24,8 +26,11 @@ namespace JukeBox.BroadcastRecievers
             if (intent.Action != AudioManager.ActionAudioBecomingNoisy)
                 return;
 
-            Intent stopIntent = new Intent(AudioService.ActionPause);
-            context.StartService(stopIntent);
+          //  Intent stopIntent = new Intent(AudioService.ActionPause);
+            DependencyService.Get<IMusicManager>().Pause();
+          //  context.StartService(stopIntent);
+
+
         }
     }
 }

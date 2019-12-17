@@ -118,10 +118,13 @@ namespace JukeBox.ViewModels
             else
             {
                 this.IsRunning = false;
-                await Application.Current.MainPage.DisplayAlert(
-                    Languages.Error,
-                    response.ResponseMessage,
-                    Languages.Accept);
+                if (Application.Current.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        Languages.Error,
+                        checkConnetion.Message,
+                        Languages.Accept);
+                }
                 return;
             }
 

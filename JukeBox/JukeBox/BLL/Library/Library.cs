@@ -37,9 +37,12 @@ namespace JukeBox.BLL.Library
                             //  throw new Exception(response.StatusDescription, new Exception(response.Content));
                         }
                     }
-
-                    var data = JsonConvert.DeserializeObject<ApiLibraryTypeResponse>(responseBody);
-                    return data;
+                    if (responseBody.Contains("ResponseObject"))
+                    {
+                        var data = JsonConvert.DeserializeObject<ApiLibraryTypeResponse>(responseBody);
+                        return data;
+                    }
+                    return null;
                 }
                 catch (HttpRequestException e)
                 {
@@ -78,9 +81,12 @@ namespace JukeBox.BLL.Library
                             //  throw new Exception(response.StatusDescription, new Exception(response.Content));
                         }
                     }
-
-                    var data = JsonConvert.DeserializeObject<LibraryResponse>(responseBody);
-                    return data;
+                    if (responseBody.Contains("ResponseObject"))
+                    {
+                        var data = JsonConvert.DeserializeObject<LibraryResponse>(responseBody);
+                        return data;
+                    }
+                    return null;
                 }
                 catch (HttpRequestException e)
                 {
@@ -132,9 +138,12 @@ namespace JukeBox.BLL.Library
                             //  throw new Exception(response.StatusDescription, new Exception(response.Content));
                         }
                     }
-
-                    var data = JsonConvert.DeserializeObject<LibraryDetailResponse>(responseBody);
-                    return data;
+                    if (responseBody.Contains("ResponseObject"))
+                    {
+                        var data = JsonConvert.DeserializeObject<LibraryDetailResponse>(responseBody);
+                        return data;
+                    }
+                    return null;
                 }
                 catch (HttpRequestException e)
                 {

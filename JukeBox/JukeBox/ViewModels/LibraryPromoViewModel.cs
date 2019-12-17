@@ -76,11 +76,13 @@ namespace JukeBox.ViewModels
             if (!checkConnetion.IsSuccess)
             {
                 this.IsRunning = false;
-
-                //await Application.Current.MainPage.DisplayAlert(
-                //    Languages.Error,
-                //    checkConnetion.Message,
-                //    Languages.Accept);
+                if (Application.Current.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        Languages.Error,
+                        checkConnetion.Message,
+                        Languages.Accept);
+                }
                 return;
             }
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
@@ -102,10 +104,13 @@ namespace JukeBox.ViewModels
             else
             {
                 this.IsRunning = false;
-                await Application.Current.MainPage.DisplayAlert(
-                    Languages.Error,
-                    response.ResponseMessage,
-                    Languages.Accept);
+                if (Application.Current.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        Languages.Error,
+                        checkConnetion.Message,
+                        Languages.Accept);
+                }
                 return;
             }
 
@@ -144,10 +149,13 @@ namespace JukeBox.ViewModels
             else
             {
 
-                await Application.Current.MainPage.DisplayAlert(
-                    Languages.Error,
-                    response.ResponseMessage,
-                    Languages.Accept);
+                if (Application.Current.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        Languages.Error,
+                        checkConnetion.Message,
+                        Languages.Accept);
+                }
                 return;
             }
 
