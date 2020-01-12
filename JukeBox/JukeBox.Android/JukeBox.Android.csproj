@@ -155,6 +155,7 @@
     <Compile Include="Audio\AudioServiceConnection.cs" />
     <Compile Include="BroadcastRecievers\AudioControlsBroadcastReceiver.cs" />
     <Compile Include="BroadcastRecievers\AudioNoisyBroadcastReceiver.cs" />
+    <Compile Include="BroadcastRecievers\IncomingCallBroadCastReceiver.cs" />
     <Compile Include="Effects\BlueProgressBarEffect.cs" />
     <Compile Include="Effects\BlueSliderEffect.cs" />
     <Compile Include="FileEncryption\EncryptDecryptUtils.cs" />

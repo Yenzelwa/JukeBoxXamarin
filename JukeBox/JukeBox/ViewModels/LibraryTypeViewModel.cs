@@ -87,7 +87,7 @@ namespace JukeBox.ViewModels
             };
             var modelList = new ObservableCollection<ApiLibraryType>();
            
-            if (response != null)
+            if (response.ResponseObject != null)
             {
 
                 foreach (var item in response.ResponseObject)

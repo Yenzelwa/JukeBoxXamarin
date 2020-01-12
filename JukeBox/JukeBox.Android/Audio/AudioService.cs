@@ -72,7 +72,6 @@ namespace JukeBox.Droid.Audio
         private bool ongoingCall = false;
         private PhoneStateListener phoneStateListener;
         private TelephonyManager telephonyManager;
-
         public override void OnCreate()
         {
             base.OnCreate();
@@ -82,6 +81,7 @@ namespace JukeBox.Droid.Audio
             _random = new Random();
             _comparer = new SongComparer();
             InitializePlayer();
+            RequestAudioFocus();
         }
 
         private void InitializePlayer()
@@ -190,6 +190,7 @@ namespace JukeBox.Droid.Audio
             System.Diagnostics.Debug.WriteLine("Play()");
             if (_player != null && !_isPreparing && !_player.IsPlaying)
             {
+                RequestAudioFocus();
                 _player.Start();
                 UpdatePlaybackState(PlaybackStateCompat.StatePlaying);
                 StartNotification(false);
@@ -564,7 +565,7 @@ namespace JukeBox.Droid.Audio
             return _binder;
         }
 
-        public void OnAudioFocusChange([GeneratedEnum] AudioFocus focusChange)
+        public  void OnAudioFocusChange([GeneratedEnum] AudioFocus focusChange)
         {
             switch (focusChange)
             {
@@ -580,7 +581,11 @@ namespace JukeBox.Droid.Audio
                     }
                     break;
                 case AudioFocus.Loss:
-                    Pause();
+                    if (_player != null)
+                    {
+                        if(_player.IsPlaying)
+                        Pause();
+                    }
                     break;
                 case AudioFocus.LossTransient:
                     Pause();
@@ -629,6 +634,31 @@ namespace JukeBox.Droid.Audio
         {
             _getPosition(mp.CurrentPosition / 1000);
         }
+
+        public bool RequestAudioFocus()
+        {
+            _audioManager = (AudioManager)GetSystemService(AudioService);
+            AudioFocusRequest audioFocusRequest;
+            if (Build.VERSION.SdkInt > BuildVersionCodes.O)
+            {
+                audioFocusRequest = _audioManager.RequestAudioFocus(new AudioFocusRequestClass.Builder(AudioFocus.Gain)
+                .SetAudioAttributes(new AudioAttributes.Builder().SetLegacyStreamType(Stream.Music).Build()).SetOnAudioFocusChangeListener(this)
+                .Build());
+
+            }
+            else
+            {
+                audioFocusRequest = _audioManager.RequestAudioFocus(this, Stream.Music, AudioFocus.Gain);
+            }
+
+            if (audioFocusRequest == AudioFocusRequest.Granted)
+            {
+                return true;
+            }
+            return false;
+        }
+
+    
 
     }
 }

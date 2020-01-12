@@ -45,6 +45,7 @@ namespace JukeBox.Droid
 
         private AudioServiceConnection _connection;
         private int STORAGE_PERMISSION_CODE = 1;
+
         private NotificationManagerCompat notificationManager;
         long stopTime, startTime;
         private string sKey = "0123456789abcdef";//key，
@@ -68,6 +69,7 @@ namespace JukeBox.Droid
             CarouselViewRenderer.Init();
 
             CachedImageRenderer.Init(true);
+          //  RegisterReceiver(savedInstanceState, new IntentFilter("com.companyname.IncomingCall"));
 
             //// FFImageLoading
             //CachedImageRenderer.Init();
@@ -92,30 +94,34 @@ namespace JukeBox.Droid
 
             Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
 
-            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != Permission.Granted)
+            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != Permission.Granted || ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadPhoneState) != Permission.Granted)
             {
                 // We have permission, go ahead and use the camera.
-                if (ActivityCompat.ShouldShowRequestPermissionRationale(activity: this, Manifest.Permission.ReadExternalStorage))
+                if (ActivityCompat.ShouldShowRequestPermissionRationale(activity: this, Manifest.Permission.ReadExternalStorage)
+                    || ActivityCompat.ShouldShowRequestPermissionRationale(activity: this, Manifest.Permission.ReadPhoneState))
                 {
-                    ActivityCompat.RequestPermissions(activity: this, new String[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.WriteExternalStorage }, STORAGE_PERMISSION_CODE);
+                    ActivityCompat.RequestPermissions(activity: this, new String[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.WriteExternalStorage , Manifest.Permission.ReadPhoneState }, STORAGE_PERMISSION_CODE);
                 }
 
                 else
                 {
-                    ActivityCompat.RequestPermissions(activity: this, new String[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.WriteExternalStorage }, STORAGE_PERMISSION_CODE);
+                    ActivityCompat.RequestPermissions(activity: this, new String[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.WriteExternalStorage , Manifest.Permission.ReadPhoneState }, STORAGE_PERMISSION_CODE);
 
                 }
+
+
 
             }
             else
             {
-                if (ActivityCompat.ShouldShowRequestPermissionRationale(activity: this, Manifest.Permission.ReadExternalStorage))
+                if (ActivityCompat.ShouldShowRequestPermissionRationale(activity: this, Manifest.Permission.ReadExternalStorage)
+                    || ActivityCompat.ShouldShowRequestPermissionRationale(activity: this, Manifest.Permission.ReadPhoneState))
                 {
-                    ActivityCompat.RequestPermissions(activity: this, new String[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.WriteExternalStorage }, STORAGE_PERMISSION_CODE);
+                    ActivityCompat.RequestPermissions(activity: this, new String[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.WriteExternalStorage , Manifest.Permission.ReadExternalStorage }, STORAGE_PERMISSION_CODE);
                 }
                 else
                 {
-                    ActivityCompat.RequestPermissions(activity: this, new String[] { Manifest.Permission.ReadExternalStorage }, STORAGE_PERMISSION_CODE);
+                    ActivityCompat.RequestPermissions(activity: this, new String[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.ReadPhoneState }, STORAGE_PERMISSION_CODE);
 
                 }
             }
@@ -379,9 +385,10 @@ namespace JukeBox.Droid
                     if (Build.VERSION.SdkInt > BuildVersionCodes.M)
                     {
                         if (CheckSelfPermission(Manifest.Permission.WriteExternalStorage) != Android.Content.PM.Permission.Granted
-                        || CheckSelfPermission(Manifest.Permission.RecordAudio) != Android.Content.PM.Permission.Granted)
+                        || CheckSelfPermission(Manifest.Permission.RecordAudio) != Android.Content.PM.Permission.Granted
+                        || CheckSelfPermission(Manifest.Permission.ReadPhoneState) != Android.Content.PM.Permission.Granted)
                         {
-                            RequestPermissions(new[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.RecordAudio }, 0);
+                            RequestPermissions(new[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.RecordAudio , Manifest.Permission.ReadPhoneState }, 0);
                         }
                     }
                 }
