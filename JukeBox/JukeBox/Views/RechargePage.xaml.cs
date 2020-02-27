@@ -69,7 +69,9 @@ namespace JukeBox.Views
                     main.User.UserId.ToString());
                     var userLocal = Converter.ToUserLocal(user,Convert.ToInt32(main.Token.UserName));
                     userLocal.Password = main.User.Password;
-                    main.User = userLocal;
+                    main.User = userLocal;               
+                    var dataService = new DataService();
+                    dataService.Update(userLocal);
                     this.IsEnabled = true;
                     await DisplayAlert(Languages.Accept, orderResponse.ResponseMessage, Languages.Accept);
                     return;

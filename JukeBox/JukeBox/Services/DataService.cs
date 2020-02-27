@@ -112,6 +112,20 @@
                 return da.GetMembers().FirstOrDefault();
             }
         }
+        public IEnumerable<AudioLocal> GetAllSongs()
+        {
+            using (var da = new DataAccess())
+            {
+                return da.GetAllFiles().ToList();
+            }
+        }
+        public AudioLocal GetFileById(long id)
+        {
+            using (var da = new DataAccess())
+            {
+                return da.GetFileById(id);
+            }
+        }
 
         //public List<T> Get<T>(bool withChildren) where T : class
         //{

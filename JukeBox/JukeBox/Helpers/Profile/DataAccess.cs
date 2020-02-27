@@ -23,6 +23,7 @@
                 databasePath: Path.Combine(config.DirectoryDB, "JukeBox.db3") );
             connection.CreateTable<UserLocal>();
             connection.CreateTable<TokenResponse>();
+            connection.CreateTable<AudioLocal>();
         }
 
         public void Insert<T>(T model)
@@ -64,6 +65,15 @@
             return members.ToList();
         }
 
+        public IEnumerable<AudioLocal> GetAllFiles()
+        {
+            var members = (from mem in connection.Table<AudioLocal>() select mem);
+            return members.ToList();
+        }
+        public AudioLocal GetFileById(long Id)
+        {
+            return connection.Table<AudioLocal>().FirstOrDefault(m => m.LibraryId == Id);
+        }
         //public T Find<T>(int pk, bool WithChildren) where T : class
         //{
         //    if (WithChildren)

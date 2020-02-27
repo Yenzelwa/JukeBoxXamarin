@@ -16,7 +16,9 @@ using Plugin.DownloadManager.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -28,9 +30,9 @@ using Xamarin.Forms.Xaml;
 
 namespace JukeBox.Views
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class MusicDetailPage : ContentPage
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class MusicDetailPage : ContentPage
+    {
         public IDownloadFile file;
         bool isDownloading = true;
         private string trailorUrl;
@@ -41,12 +43,14 @@ namespace JukeBox.Views
         private string filePath;
         private List<ApiLibraryDetail> apiLibraryDetails;
         private DataService dataService;
-           long stopTime, startTime;
+        long stopTime, startTime;
         private string sKey = "0123456789abcdef";//key，
         private string ivParameter = "1020304050607080";
-        public  MusicDetailPage (ApiLibrary library)
-		{
-			InitializeComponent ();
+        const int _downloadImageTimeoutInSeconds = 15;
+        readonly HttpClient _httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(_downloadImageTimeoutInSeconds) };
+        public MusicDetailPage(ApiLibrary library)
+        {
+            InitializeComponent();
             GetUpComingMovie(library);
             _player?.Reset();
             _player?.Release();
@@ -63,7 +67,7 @@ namespace JukeBox.Views
                " at " + e.OldStartingIndex
              );
 
- 
+
         }
         private async void GetUpComingMovie(ApiLibrary library)
         {
@@ -76,7 +80,7 @@ namespace JukeBox.Views
                 //SLLoader.IsVisible = true;
                 var main = MainViewModel.GetInstance();
                 var clientId = main.User.UserId > 0 ? main.User.UserId : 0;
-                var response = await Library.GetLibraryDetail(library.Id , clientId);
+                var response = await Library.GetLibraryDetail(library.Id, clientId);
                 libraryId = library.Id;
                 var songs = response.ResponseObject;
                 LblMovieName.Text = library.Artist;
@@ -89,7 +93,7 @@ namespace JukeBox.Views
                 BtnBuy.Text = library.Purchase;
                 filePath = library.FilePath;
                 DownloadAlbum = library.AlbumDownload;
-                
+
 
                 if (library != null)
                 {
@@ -97,14 +101,14 @@ namespace JukeBox.Views
                     mainViewModel.LibraryDetailModel.LibraryId = library.Id;
                     mainViewModel.LibraryDetailModel.libraryDetail();
                     GridMoviesDetail.IsVisible = true;
-                   // BindingContext = mainViewModel;
+                    // BindingContext = mainViewModel;
                     apiLibraryDetails = new List<ApiLibraryDetail>();
                     foreach (var item in response.ResponseObject)
                     {
                         item.IsStream = true;
                         apiLibraryDetails.Add(item);
                     }
-                    if(apiLibraryDetails != null)
+                    if (apiLibraryDetails != null)
                     {
                         lblSongs.IsVisible = true;
                     }
@@ -121,24 +125,26 @@ namespace JukeBox.Views
             }
             finally
             {
-               // SLLoader.IsVisible = false;
+                // SLLoader.IsVisible = false;
 
             }
 
 
         }
-   
+
         private void BtnBookOrder_OnClicked(object sender, EventArgs e)
         {
-           // Navigation.PushAsync(new OrderPage(LblMovieName.Text, LblPrice.Text.Substring(1)));
+            // Navigation.PushAsync(new OrderPage(LblMovieName.Text, LblPrice.Text.Substring(1)));
         }
 
         private async void BtnTrailor_OnClicked(object sender, EventArgs e)
         {
             var items = apiLibraryDetails;
+            var mainViewModel = MainViewModel.GetInstance();
+            var apiService = new ApiService();
+            var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
             if (items != null)
             {
-                var mainViewModel = MainViewModel.GetInstance();
 
                 var request = new PurchaseOrderRequest
                 {
@@ -148,7 +154,6 @@ namespace JukeBox.Views
                     UserId = 1
                 };
 
-                var apiService = new ApiService();
                 var checkConnetion = await apiService.CheckConnection();
                 if (!checkConnetion.IsSuccess)
                 {
@@ -162,7 +167,6 @@ namespace JukeBox.Views
                 if (!DownloadAlbum)
 
                 {
-                    var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
 
                     var orderResponse = await apiService.PurchaseOrder(
                    apiSecurity,
@@ -179,10 +183,29 @@ namespace JukeBox.Views
                             var response = await BLL.Library.Library.GetLibrary(1, Convert.ToInt32(mainViewModel.Token.UserName));
                             if (response != null)
                                 mainViewModel.LibraryModel.Library = response.ResponseObject;
-                            foreach (var item in items)
+                            await Task.Run(async () =>
                             {
-                                DowloadFile(item.FilePath, "Album", LblMovieName.Text);
-                            }
+                                foreach (var item in items)
+                                {
+                                    if (dataService.GetFileById(item.Id) == null)
+                                    {
+
+                                        var audiobyte = getArrayFromUrl(item.FilePath);
+                                        var fileLocal = new AudioLocal
+                                        {
+                                            LibraryId = item.Id,
+                                            AudioName = item.Name,
+                                            AudioTitle = LblMovieName.Text,
+                                            Album = LblMovieName.Text,
+                                            Genre = LblType.Text,
+                                            AudioData = audiobyte
+                                        };
+                                        var dataService = new DataService();
+                                        dataService.Insert(fileLocal);
+                                    }
+                                }
+
+                            });
 
                         }
                         else
@@ -195,14 +218,28 @@ namespace JukeBox.Views
                 }
                 else
                 {
-                   
+                    await Task.Run(async () =>
+                    {
                         foreach (var item in items)
                         {
-                            DowloadFile(item.FilePath, "Album", LblMovieName.Text);
+                            if (dataService.GetFileById(item.Id) == null)
+                            {
+                                var audiobyteArray = getArrayFromUrl(item.FilePath);
+
+                                var fileLocal = new AudioLocal
+                                {
+                                    LibraryId = item.Id,
+                                    AudioName = item.Name,
+                                    AudioTitle = LblMovieName.Text,
+                                    Album = LblMovieName.Text,
+                                    Genre = LblType.Text,
+                                    AudioData = audiobyteArray
+                                };
+                                var dataService = new DataService();
+                                dataService.Insert(fileLocal);
+                            }
                         }
-
-                    
-
+                    });
                 }
             }
             else
@@ -210,17 +247,41 @@ namespace JukeBox.Views
                 await DisplayAlert(Languages.Error, Languages.SomethingWrong, Languages.Accept);
                 return;
             }
-            
-            
-        
-    }
+            var b = QueuePopup.Instance;
+            var c = SliderControl.Instance;
+            var main = MainViewModel.GetInstance();
+            main.PlaylistItems = new ObservableCollection<PlaylistItem>();
+            main.PlaylistItems.Add(new PlaylistItem(
+            new Playlist { Title = "Home", IsDynamic = false }));
+            main.PlaylistViewModel = new PlaylistViewModel(main.PlaylistItems[0]);
+            var user = await apiService.GetUserByEmail(
+              apiSecurity,
+              "/api/account",
+              "/customer/getcustomer",
+              mainViewModel.Token.TokenType,
+              mainViewModel.Token.AccessToken,
+              mainViewModel.Token.UserName);
+            mainViewModel.Login.registerDataService(user, mainViewModel.Token);
+            var a = MusicStateViewModel.Instance;
+            mainViewModel.PlaylistItems = new ObservableCollection<PlaylistItem>();
+            mainViewModel.PlaylistItems.Add(new PlaylistItem(
+            new Playlist { Title = "Home", IsDynamic = false }));
+            //  var file = DencryptFile(title + ".mp3", "");
+            mainViewModel.PlaylistViewModel = new PlaylistViewModel(mainViewModel.PlaylistItems[0]);
+            // await DisplayAlert("File Status", "File Downloaded", "OK");
+
+
+
+        }
         private async void BtnSingleDownload_OnClicked(object sender, EventArgs e)
         {
             var img = ((Button)sender);
-
+            var mainViewModel = MainViewModel.GetInstance();
+            var apiService = new ApiService();
+            var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
             if (img.BindingContext is ApiLibraryDetail song)
             {
-                var mainViewModel = MainViewModel.GetInstance();
+
 
                 var request = new PurchaseOrderRequest
                 {
@@ -230,7 +291,7 @@ namespace JukeBox.Views
                     UserId = 1
                 };
 
-                var apiService = new ApiService();
+
                 var checkConnetion = await apiService.CheckConnection();
                 if (!checkConnetion.IsSuccess)
                 {
@@ -244,7 +305,7 @@ namespace JukeBox.Views
                 var orderResponse = new ApiResponse();
                 if (!song.SongDownload)
                 {
-                    var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
+
 
                     orderResponse = await apiService.PurchaseOrder(
                   apiSecurity,
@@ -258,10 +319,34 @@ namespace JukeBox.Views
                     {
                         if (orderResponse.ResponseType == 1)
                         {
+                         //   DowloadFile(song.FilePath, "Album", LblMovieName.Text);
+
                             var response = await BLL.Library.Library.GetLibrary(1, Convert.ToInt32(mainViewModel.Token.UserName));
-                            if (response !=null)
-                            mainViewModel.LibraryModel.Library = response.ResponseObject;
-                            DowloadFile(song.FilePath, "Songs", null);
+                            if (response != null)
+                                mainViewModel.LibraryModel.Library = response.ResponseObject;
+                            if (dataService.GetFileById(song.Id) == null)
+                            {
+                                await Task.Run(async () =>
+                                {
+                                    var audiobyte = getArrayFromUrl(song.FilePath);
+
+                                    var fileLocal = new AudioLocal
+                                    {
+                                        LibraryId = song.Id,
+                                        AudioName = song.Name,
+                                        AudioTitle = LblMovieName.Text,
+                                        Album = LblMovieName.Text,
+                                        Genre = LblType.Text,
+                                        AudioData = audiobyte
+                                    };
+                                    var dataService = new DataService();
+                                    dataService.Insert(fileLocal);
+
+                                });
+                                
+                            }
+
+
                         }
                         else
                         {
@@ -273,7 +358,27 @@ namespace JukeBox.Views
                 }
                 else
                 {
-                    DowloadFile(song.FilePath, "Songs", null);
+
+                  if(dataService.GetFileById(song.Id) == null)
+                    {
+                        await Task.Run(async () =>
+                        {
+                            var audiobyteArray = getArrayFromUrl(song.FilePath);
+                            var fileLocal = new AudioLocal
+                            {
+                                LibraryId = song.Id,
+                                AudioName = song.Name,
+                                AudioTitle = LblMovieName.Text,
+                                Album = LblMovieName.Text,
+                                Genre = LblType.Text,
+                                AudioData = audiobyteArray
+                            };
+
+                            var dataService = new DataService();
+                            dataService.Insert(fileLocal);
+                        });
+                    }
+                       
                 }
             }
             else
@@ -281,33 +386,83 @@ namespace JukeBox.Views
                 await DisplayAlert(Languages.Error, Languages.SomethingWrong, Languages.Accept);
                 return;
             }
-               
-            
-          
+
+            var b = QueuePopup.Instance;
+            var c = SliderControl.Instance;
+            var main = MainViewModel.GetInstance();
+            main.PlaylistItems = new ObservableCollection<PlaylistItem>();
+            main.PlaylistItems.Add(new PlaylistItem(
+            new Playlist { Title = "Home", IsDynamic = false }));
+            main.PlaylistViewModel = new PlaylistViewModel(main.PlaylistItems[0]);
+            var user = await apiService.GetUserByEmail(
+              apiSecurity,
+              "/api/account",
+              "/customer/getcustomer",
+              mainViewModel.Token.TokenType,
+              mainViewModel.Token.AccessToken,
+              mainViewModel.Token.UserName);
+            mainViewModel.Login.registerDataService(user, mainViewModel.Token);
+            var a = MusicStateViewModel.Instance;
+            mainViewModel.PlaylistItems = new ObservableCollection<PlaylistItem>();
+            mainViewModel.PlaylistItems.Add(new PlaylistItem(
+            new Playlist { Title = "Home", IsDynamic = false }));
+            //  var file = DencryptFile(title + ".mp3", "");
+            mainViewModel.PlaylistViewModel = new PlaylistViewModel(mainViewModel.PlaylistItems[0]);
+            // await DisplayAlert("File Status", "File Downloaded", "OK");
+
         }
+
+    
+        public  byte[] getArrayFromUrl(string url)
+        {
+            HttpWebRequest request = null;
+            HttpWebResponse response = null;
+            byte[] b = null;
+
+            request = (HttpWebRequest)WebRequest.Create(url);
+            response = (HttpWebResponse)request.GetResponse();
+
+            if (request.HaveResponse)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var receiveStream = response.GetResponseStream();
+                    using (System.IO.BinaryReader br = new System.IO.BinaryReader(receiveStream))
+                    {
+                        b = br.ReadBytes(100000000);
+                        var tt = b.Length;
+                        br.Close();
+                    }
+                }
+                return b;
+            }
+
+            return b;
+        }
+   
         private void Payment_Clicked(object sender, EventArgs e)
         {
-          //  PopupNavigation.Instance.PushAsync(new PaymentPagePopUp());
+            //  PopupNavigation.Instance.PushAsync(new PaymentPagePopUp());
 
         }
         private Xamarin.Forms.Image currentImg = null;
         private bool _isClicked = false;
         private async void TapPausePlay_OnTapped(object sender, EventArgs e)
         {
-         
-                var mainMusic = MusicStateViewModel.Instance;
+
+            var mainMusic = MusicStateViewModel.Instance;
             if (mainMusic.IsPlaying)
             {
                 DependencyService.Get<IMusicManager>().Pause();
             }
             _isClicked = !_isClicked;
             var img = ((Xamarin.Forms.Image)sender);
-        
+
             if (img.BindingContext is ApiLibraryDetail libraryDetail)
             {
-          
 
-                if (_player !=null &&_player.IsPlaying)
+
+                if (_player != null && _player.IsPlaying)
                 {
                     _player.Stop();
                     _player.Reset();
@@ -326,28 +481,29 @@ namespace JukeBox.Views
                 currentImg = img;
                 if (_isClicked)
                 {
-                   _player = new MediaPlayer();
+                    _player = new MediaPlayer();
                     currentImg.IsVisible = false;
                     var viewCell = img.Parent as Grid;
                     var viewControls = viewCell.Children;
                     viewControls[1].IsVisible = true;
                     await Task.Run(async () => {
 
-                        _player.SetAudioStreamType(streamtype: Stream.Music);
+                        _player.SetAudioStreamType(streamtype: Android.Media.Stream.Music);
                         _player.SetDataSource(libraryDetail.FilePath);
-                     _player?.PrepareAsync(); 
-                    _player?.Start();
+                        _player?.PrepareAsync();
+                        _player?.Start();
+                       
                         await Task.Delay(1000);
                     });
                     currentImg.Source = ImageSource.FromFile("pause_w.png");
-                   viewControls[1].IsVisible = false;
+                    viewControls[1].IsVisible = false;
                     currentImg.IsVisible = true;
                 }
-               
+
 
                 Device.StartTimer(TimeSpan.FromSeconds(2), () =>
                 {
-                    if( _player !=null && _player.CurrentPosition > 80000)
+                    if (_player != null && _player.CurrentPosition > 80000)
                     {
                         _player.Stop();
                         _player.Reset();
@@ -359,11 +515,11 @@ namespace JukeBox.Views
                 });
 
             }
-               
-         
+
+
         }
 
-        public async void DowloadFile(string fileName ,string type, string typename)
+        public async void DowloadFile(string fileName, string type, string typename)
         {
             await Task.Yield();
 
@@ -373,22 +529,22 @@ namespace JukeBox.Views
                 var downloadManager = CrossDownloadManager.Current;
                 var file = downloadManager.CreateDownloadFile(fileName);
                 downloadManager.Start(file, true);
-                
+
                 while (isDownloading)
                 {
                     isDownloading = IsDownloading(file);
                 }
-              
+
 
             });
             if (!isDownloading)
             {
                 string name = fileName.Split('/').Last();
-            var fileEncryption =    DependencyService.Get<IPlaylistManager>().EncryptFile(name,fileName);
+                var fileEncryption = DependencyService.Get<IPlaylistManager>().EncryptFile(name, fileName);
                 var b = QueuePopup.Instance;
                 var c = SliderControl.Instance;
                 var main = MainViewModel.GetInstance();
-               main.PlaylistItems = new ObservableCollection<PlaylistItem>();
+                main.PlaylistItems = new ObservableCollection<PlaylistItem>();
                 main.PlaylistItems.Add(new PlaylistItem(
                 new Playlist { Title = "Home", IsDynamic = false }));
                 main.PlaylistViewModel = new PlaylistViewModel(main.PlaylistItems[0]);
@@ -409,58 +565,13 @@ namespace JukeBox.Views
                 mainViewModel.PlaylistItems = new ObservableCollection<PlaylistItem>();
                 mainViewModel.PlaylistItems.Add(new PlaylistItem(
                 new Playlist { Title = "Home", IsDynamic = false }));
-              //  var file = DencryptFile(title + ".mp3", "");
+                //  var file = DencryptFile(title + ".mp3", "");
                 mainViewModel.PlaylistViewModel = new PlaylistViewModel(mainViewModel.PlaylistItems[0]);
                 await DisplayAlert("File Status", "File Downloaded", "OK");
             }
         }
 
-        public void encrypt(string filename, string path)
-        {
-
-            // Here you read the cleartext.
-            try
-            {
-                var extStore = new File("/storage/emulated/0/jukebox/Songs");
-                startTime = System.DateTime.Now.Millisecond;
-                Android.Util.Log.Error("Encryption Started", extStore + "/" + filename);
-
-                // This stream write the encrypted text. This stream will be wrapped by
-                // another stream.
-                createFile(filename, extStore);
-                System.IO.FileStream fs = System.IO.File.OpenRead(path + "/" + filename);
-                FileOutputStream fos = new FileOutputStream(extStore + "/" + filename + ".aes", false);
-
-                // Length is 16 byte
-                Cipher cipher = Cipher.GetInstance("AES/CBC/PKCS5Padding");
-                byte[] raw = System.Text.Encoding.Default.GetBytes(sKey);
-                SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
-                IvParameterSpec iv = new IvParameterSpec(System.Text.Encoding.Default.GetBytes(ivParameter));//
-              //  cipher.Init(CipherMode.EncryptMode, skeySpec, iv);
-
-                // Wrap the output stream
-                CipherInputStream cis = new CipherInputStream(fs, cipher);
-                // Write bytes
-                int b;
-                byte[] d = new byte[1024 * 1024];
-                while ((b = cis.Read(d)) != -1)
-                {
-                    fos.Write(d, 0, b);
-                }
-                // Flush and close streams.
-                fos.Flush();
-                fos.Close();
-                cis.Close();
-                stopTime = System.DateTime.Now.Millisecond;
-                Android.Util.Log.Error("Encryption Ended", extStore + "/5mbtest/" + filename + ".aes");
-                Android.Util.Log.Error("Time Elapsed", ((stopTime - startTime) / 1000.0) + "");
-            }
-            catch (Exception e)
-            {
-                Android.Util.Log.Error("lv", e.Message);
-            }
-
-        }
+ 
         private void createFile(string filename, Java.IO.File extStore)
         {
             Java.IO.File file = new Java.IO.File(extStore + "/" + filename + ".aes");
@@ -501,7 +612,7 @@ namespace JukeBox.Views
                 case DownloadFileStatus.FAILED:
                     return false;
                 default:
-                    throw  new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException();
             }
         }
         public void AbortDownloading()
@@ -523,8 +634,8 @@ namespace JukeBox.Views
                 _player.Release();
                 _player = null;
             }
-        
-    }
+
+        }
 
         public void onSeekComplete(MediaPlayer mp)
         {

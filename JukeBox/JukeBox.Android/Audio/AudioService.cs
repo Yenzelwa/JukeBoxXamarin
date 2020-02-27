@@ -25,6 +25,8 @@ using static Android.Support.V4.Media.App.NotificationCompat;
 using static Android.AccessibilityServices.GestureDescription;
 using JukeBox.Audio;
 using Android.Telephony;
+using Java.IO;
+using Android.Provider;
 
 namespace JukeBox.Droid.Audio
 {
@@ -68,6 +70,18 @@ namespace JukeBox.Droid.Audio
         private Random _random;
         private SongComparer _comparer;
 
+        private static string[] _playlistSongsProjections =
+              {
+                    MediaStore.Audio.Playlists.Members.AudioId,
+                    MediaStore.Audio.Playlists.Members.InterfaceConsts.Artist,
+                    MediaStore.Audio.Playlists.Members.InterfaceConsts.Title,
+                    MediaStore.Audio.Playlists.Members.InterfaceConsts.IsMusic,
+                    MediaStore.Audio.Playlists.Members.InterfaceConsts.Album,
+                    MediaStore.Audio.Playlists.Members.InterfaceConsts.Duration,
+                    MediaStore.Audio.Playlists.Members.InterfaceConsts.Title,
+                    MediaStore.Audio.Playlists.Members.InterfaceConsts.Data,
+                    MediaStore.Audio.Playlists.Members.InterfaceConsts.AlbumId
+                };
         //Handle incoming phone calls
         private bool ongoingCall = false;
         private PhoneStateListener phoneStateListener;
@@ -143,14 +157,50 @@ namespace JukeBox.Droid.Audio
                 try
                 {
                     var url = _queue[_pos].Uri;
-                    _player?.SetDataSource(url);
+                    File tempMp3 = File.CreateTempFile(_queue[pos].Artist, ".mp3", CacheDir);
+                    tempMp3.DeleteOnExit();
+                    var tt = tempMp3.Length();
+                    FileOutputStream fos = new FileOutputStream(tempMp3);
+                    fos.Write(url);
+                    fos.Close();
+                    FileInputStream fis = new FileInputStream(tempMp3);
+                    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                    retriever.SetDataSource(tempMp3.Path);
+                    long duration = Java.Lang.Long.ParseLong(retriever.ExtractMetadata(MetadataKey.Duration));
+                    _queue[_pos].Duration = duration / 1000;
+                    retriever.Release();
+                    _player?.SetDataSource(fis.FD);
                     _player?.PrepareAsync();
                 }
-                catch (Exception e)
+                catch (System.Exception e)
                 {
                     System.Diagnostics.Debug.WriteLine(e);
                 }
             }
+        }
+        private static byte[] readFileToByteArray(Java.IO.File file)
+        {
+            FileInputStream fis = null;
+            // Creating a byte array using the length of the file
+            // file.length returns long which is cast to int
+            byte[] bArray = new byte[(int)file.Length()];
+            try
+            {
+                fis = new FileInputStream(file);
+                fis.Read(bArray);
+                fis.Close();
+
+            }
+            catch (Java.IO.IOException ioExp)
+            {
+                ioExp.PrintStackTrace();
+            }
+            return bArray;
+        }
+
+        private File getCacheDir()
+        {
+            throw new NotImplementedException();
         }
 
         public void AddToEndOfQueue(IList<Song> songs)
@@ -371,7 +421,7 @@ namespace JukeBox.Droid.Audio
                 }
 
                 Bitmap artwork;
-                if (!String.IsNullOrEmpty(currentSong.Artwork.ToString()))
+                if (currentSong.Artwork !=null)
                 {
                     artwork = await BitmapFactory.DecodeFileAsync(currentSong.Artwork.ToString());
 
@@ -469,7 +519,7 @@ namespace JukeBox.Droid.Audio
                             .PutString(MediaMetadata.MetadataKeyDisplayTitle, _queue[_pos].Title);
                     }
 
-                    if (!String.IsNullOrEmpty(_queue[_pos].Artwork.ToString()))
+                    if (_queue[_pos].Artwork!=null)
                     {
                         Bitmap artwork = BitmapFactory.DecodeFile(_queue[_pos].Artwork.ToString());
                         builder.PutBitmap(MediaMetadataCompat.MetadataKeyAlbumArt, artwork);

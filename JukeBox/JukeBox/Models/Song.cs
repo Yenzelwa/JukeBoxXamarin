@@ -9,7 +9,7 @@ namespace JukeBox.Models
 {
     public class Song
     {
-        public ulong Id { get; set; }
+        public int Id { get; set; }
 
         public string Title { get; set; }
 
@@ -27,7 +27,7 @@ namespace JukeBox.Models
 
         //public DateTime Date { get; set; }
 
-        public string Uri { get; set; }
+        public byte[] Uri { get; set; }
 
         public bool HasArtwork
         {

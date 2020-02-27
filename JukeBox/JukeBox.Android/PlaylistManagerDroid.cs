@@ -29,6 +29,8 @@ using Javax.Crypto.Spec;
 using static Android.Resource;
 using JukeBox.Droid.FileEncryption;
 using JukeBox.Droid;
+using Android.Database.Sqlite;
+using JukeBox.Helpers;
 
 [assembly: Dependency(typeof(PlaylistManagerDroid))]
 namespace JukeBox
@@ -38,6 +40,7 @@ namespace JukeBox
         long stopTime, startTime;
         private string sKey = "0123456789abcdef";//key，
         private string ivParameter = "1020304050607080";
+        SQLiteDatabase db;
         private static string[] _mediaProjections =
         {
             MediaStore.Audio.Media.InterfaceConsts.Id,
@@ -130,7 +133,7 @@ namespace JukeBox
             {
                 byte[] fileData = FileUtils.readFile("/storage/emulated/0/jukebox/Songs/" + filename);
                 byte[] decryptedBytes = EncryptDecryptUtils.decode(fileData);
-               FileUtils.saveDecFile(decryptedBytes, "/storage/emulated/0/jukebox/Songs/" + filename , filename);
+                FileUtils.saveDecFile(decryptedBytes, "/storage/emulated/0/jukebox/Songs/" + filename, filename);
                 return decryptedBytes;
             }
             catch (Exception e)
@@ -227,104 +230,35 @@ namespace JukeBox
         }
         public async Task<IList<Song>> GetAllSongs()
         {
-        //   decrypt();
+            //   decrypt();
             return await Task.Run<IList<Song>>(() =>
             {
                 IList<Song> songs = new ObservableCollection<Song>();
-                ICursor mediaCursor, genreCursor, albumCursor;
-                     mediaCursor = Android.App.Application.Context.ContentResolver.Query(
-                    MediaStore.Audio.Media.ExternalContentUri,
-                    _mediaProjections, MediaStore.Audio.Media.InterfaceConsts.Data + " like ? ",
-    new string[] { "%jukebox%" },
-                    MediaStore.Audio.Media.InterfaceConsts.TitleKey);
-
-                int artistColumn = mediaCursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.Artist);
-                int albumColumn = mediaCursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.Album);
-                int titleColumn = mediaCursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.Title);
-                int durationColumn = mediaCursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.Duration);
-                int uriColumn = mediaCursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.Data);
-                int idColumn = mediaCursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.Id);
-                int isMusicColumn = mediaCursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.IsMusic);
-                int albumIdColumn = mediaCursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.AlbumId);
-
-                int isMusic;
-                ulong duration, id;
-                string artist, album, uri ,title,  genre, artwork, artworkId;
-
-                if (mediaCursor.MoveToFirst())
+                var db = new DataAccess();
+                var files = db.GetAllFiles();
+                // var duration = 4.5;
+                foreach (var song in files)
                 {
-                    do
+                    songs.Add(new Song
                     {
-                        isMusic = int.Parse(mediaCursor.GetString(isMusicColumn));
-                        if (isMusic != 0)
-                        {
-                            title = mediaCursor.GetString(titleColumn);
-                            var decrypt = DencryptFile(title + ".mp3","");
+                        Id = song.AudioId,
+                        Title = song.AudioTitle,
+                        Artist = song.AudioName,
+                        Album = song.Album,
+                        Genre = song.Genre,
+                        Duration = 1000,
+                        Uri = song.AudioData,
+                        Artwork = null
+                    });
 
-                         //  var file = FileUtils.getTempFileDescriptor(title + ".mp3", decrypt);
-                            artist = mediaCursor.GetString(artistColumn);
-                            album = mediaCursor.GetString(albumColumn);
-                            uri = "/storage/emulated/0/movies/" + title + ".mp3";
-                            duration = ulong.Parse(mediaCursor.GetString(durationColumn));
-
-
-
-                            id = ulong.Parse(mediaCursor.GetString(idColumn));
-                            artworkId = mediaCursor.GetString(albumIdColumn);
-                           // file.Delete();
-                           // decrypt(title + ".mp3");
-
-                            genreCursor = Android.App.Application.Context.ContentResolver.Query(
-                                MediaStore.Audio.Genres.GetContentUriForAudioId("external", (int)id),
-                                _genresProjections, null, null, null);
-                            int genreColumn = genreCursor.GetColumnIndex(MediaStore.Audio.Genres.InterfaceConsts.Name);
-                            if (genreCursor.MoveToFirst())
-                            {
-                                genre = genreCursor.GetString(genreColumn) ?? string.Empty;
-                            }
-                            else
-                            {
-                                genre = string.Empty;
-                            }
-
-                            albumCursor = Android.App.Application.Context.ContentResolver.Query(
-                                MediaStore.Audio.Albums.ExternalContentUri,
-                                _albumProjections,
-                                $"{MediaStore.Audio.Albums.InterfaceConsts.Id}=?",
-                                new string[] { artworkId },
-                                null);
-                            int artworkColumn = albumCursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.AlbumArt);
-                            if (albumCursor.MoveToFirst())
-                            {
-                                artwork = albumCursor.GetString(artworkColumn) ?? string.Empty;
-                            }
-                            else
-                            {
-                                artwork = string.Empty;
-                            }
-
-                            songs.Add(new Song
-                            {
-                                Id = id,
-                                Title = title,
-                                Artist = artist,
-                                Album = album,
-                                Genre = genre,
-                                Duration = duration / 1000,
-                                Uri = uri,
-                                Artwork = artwork
-                            });
-                            genreCursor?.Close();
-                            albumCursor?.Close();
-                     
-                        }
-                    } while (mediaCursor.MoveToNext());
                 }
-                mediaCursor?.Close();
-
                 return songs;
             });
+
+            
+           
         }
+
         public void decrypt(string filename)
         {
             try
@@ -445,8 +379,9 @@ namespace JukeBox
                     int albumIdColumn = songCursor.GetColumnIndex(MediaStore.Audio.Playlists.Members.InterfaceConsts.AlbumId);
 
 
-                    string artist, album, title, uri, artworkId, genre, artwork;
+                    string artist, album, title, artworkId, genre, artwork;
                     ulong duration, id;
+                    byte[] uri;
 
 
                     if (songCursor.MoveToFirst())
@@ -459,7 +394,7 @@ namespace JukeBox
                             artist = songCursor.GetString(artistColumn);
                             album = songCursor.GetString(albumColumn);
                             duration = ulong.Parse(songCursor.GetString(durationColumn));
-                            uri = songCursor.GetString(uriColumn);
+                            uri = null;
                             id = ulong.Parse(songCursor.GetString(idColumn));
                             artworkId = songCursor.GetString(albumIdColumn);
 
@@ -495,7 +430,7 @@ namespace JukeBox
 
                             songs.Add(new Song
                             {
-                                Id = id,
+                                Id = 1,
                                 Title = title,
                                 Artist = artist,
                                 Album = album,
