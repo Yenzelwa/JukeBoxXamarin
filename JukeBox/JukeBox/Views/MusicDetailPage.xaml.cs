@@ -490,10 +490,10 @@ namespace JukeBox.Views
 
                         _player.SetAudioStreamType(streamtype: Android.Media.Stream.Music);
                         _player.SetDataSource(libraryDetail.FilePath);
-                        _player?.PrepareAsync();
+                        _player?.Prepare();
                         _player?.Start();
                        
-                        await Task.Delay(1000);
+                        await Task.Delay(2000);
                     });
                     currentImg.Source = ImageSource.FromFile("pause_w.png");
                     viewControls[1].IsVisible = false;
@@ -503,7 +503,7 @@ namespace JukeBox.Views
 
                 Device.StartTimer(TimeSpan.FromSeconds(2), () =>
                 {
-                    if (_player != null && _player.CurrentPosition > 80000)
+                    if (_player != null && _player.CurrentPosition > 30000)
                     {
                         _player.Stop();
                         _player.Reset();

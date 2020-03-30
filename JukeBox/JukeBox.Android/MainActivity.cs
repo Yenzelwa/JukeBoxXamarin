@@ -57,7 +57,7 @@ namespace JukeBox.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
-            Download("Songs", null);
+        //    Download("Songs", null);
             // Set Status Bar Color
             Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
             Window.SetStatusBarColor(Color.Black);
@@ -144,45 +144,7 @@ namespace JukeBox.Droid
             }
             return false;
         }
-        public byte[] decrypt2(string filename)
-        {
-          //  updateUI("Decrypting file...");
-            try
-            {
-                byte[] fileData = FileUtils.readFile("/storage/emulated/0/jukebox/" + filename);
-                byte[] decryptedBytes = EncryptDecryptUtils.decode(fileData);
-                return decryptedBytes;
-            }
-            catch (Exception e)
-            {
-               // updateUI("File Decryption failed.\nException: " + e.getMessage());
-            }
-            return null;
-        }
 
-        public void Download(string type, string typename)
-        {
-
-            string fileName ="", url = "";
-            CrossDownloadManager.Current.PathNameForDownloadedFile = new Func<Plugin.DownloadManager.Abstractions.IDownloadFile, string>
-              (file =>
-              {
-
-                   fileName = Android.Net.Uri.Parse(file.Url).Path.Split('/').Last();
-                  url = file.Url;
-                  Android.Net.Uri uri = MediaStore.Audio.Media.ExternalContentUri;
-                  var subFolder = type == "Songs" ? type : $"Album/{typename}";
-                  var dd = GetActualPathFromFile(uri);
-                  var v = file.Status;
-                  //  encrypt(fileName, file.Url);
-                 //  decrypt(fileName);
-                  //  EncryptFile(file.Url, $"/storage/emulated/0/jukebox/{subFolder}");
-                  // var ddd = ApplicationContext.GetExternalFilesDir(dd).AbsolutePath;
-                  return System.IO.Path.Combine($"/storage/emulated/0/jukebox/{subFolder}", fileName); 
-                  
-              });
-           
-        }
 
         public void encrypt(string filename , string path)
         {
