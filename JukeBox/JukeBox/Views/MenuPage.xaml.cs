@@ -10,6 +10,7 @@ using Xamarin.Forms.Xaml;
 using JukeBox.ViewModels;
 using JukeBox.Controls;
 using JukeBox.Models;
+using System.IO;
 
 namespace JukeBox.Views
 {
@@ -27,7 +28,14 @@ namespace JukeBox.Views
              this.Main = MainViewModel.GetInstance();
             // this.BindingContext = this.Main;
             if (this.Main.User != null)
-                this.Main.ImageSource = this.Main.User.ImagePath;
+                if (Main.User.ImageArray != null)
+                {
+                    Main.ImageSource = ImageSource.FromStream(() => new MemoryStream(Main.User.ImageArray));
+                }
+                else
+                {
+                    Main.ImageSource = "no_image";
+                }
             InitializeComponent();
         }
 

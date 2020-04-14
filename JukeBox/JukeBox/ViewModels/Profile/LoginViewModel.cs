@@ -180,6 +180,8 @@
                 token.AccessToken,
                 token.UserName);
 
+            var userDB = dataService.GetUser();
+            if (userDB != null) user.ImageArray = userDB.ImageArray;
             user.Password = this.Password;
             registerDataService(user, token);
 

@@ -199,11 +199,7 @@
                 return;
             }
 
-            byte[] imageArray = null;
-            if (this.file != null)
-            {
-                imageArray = FilesHelper.ReadFully(this.file.GetStream());
-            }
+          
 
             var user = new User
             {
@@ -219,6 +215,8 @@
             if (file != null)
             {
                 user.ImagePath = file.Path;
+                user.ImageArray  = FilesHelper.ReadFully(this.file.GetStream());
+                
             }
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
             var response = await this.apiService.Post(

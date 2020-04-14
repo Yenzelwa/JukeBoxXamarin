@@ -5,6 +5,7 @@ using JukeBox.Services;
 using JukeBox.ViewModels;
 using JukeBox.Views;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -46,8 +47,6 @@ namespace JukeBox
                     var mainViewModel = MainViewModel.GetInstance();
                     mainViewModel.Token = token;
                     mainViewModel.User = user;
-                    if (mainViewModel.User != null)
-                        mainViewModel.ImageSource = mainViewModel.User.ImagePath;
                     //  mainViewModel.Lands = new LandsViewModel();
                     Application.Current.MainPage = new RootPage();
                 }

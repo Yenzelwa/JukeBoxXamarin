@@ -8,6 +8,7 @@
     using JukeBox.Interfaces;
     using JukeBox.Models.Profile;
     using JukeBox.Profile.ViewModels;
+    using System.IO;
 
     public class MainViewModel : BaseViewModel
     {
@@ -151,7 +152,7 @@
             PlaylistItems.Add(new PlaylistItem(
             new Playlist { Title = "Home", IsDynamic = false }));
             this.PlaylistViewModel = new PlaylistViewModel(PlaylistItems[0]);
-
+            
 
             //   this.Library = this.LibraryModel.Library;
             // this.LibraryDetail = new LibraryDetailViewModel.LibraryDetail();

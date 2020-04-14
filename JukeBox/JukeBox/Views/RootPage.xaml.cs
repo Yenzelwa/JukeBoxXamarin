@@ -43,41 +43,6 @@ namespace JukeBox.Views
                 BarTextColor = Color.White,
                 Title = "Home"
             };
-            // InitializeComponent();
-
-            //MenuPage.PlaylistList.ItemSelected += (s, e) =>
-            //{
-            //    PlaylistItem item = e.SelectedItem as PlaylistItem;
-            //    if (item != null)
-            //    {
-            //        // To display the Home page since it isn't a PlaylistPage
-            //        if (item.Playlist.IsDynamic == false && item.Playlist.Title == "Home")
-            //        {
-            //            LandingTabbedPage page = new LandingTabbedPage(item);
-            //            Detail = new NavigationPage(page)
-            //            {
-            //                BarBackgroundColor = Color.DarkGreen,
-            //                BarTextColor = Color.White
-            //            };
-            //        }
-            //        else  
-            //        {
-
-            //            PlaylistViewModel.Instance = null;
-            //            Detail = new NavigationPage(new HomePage(this))
-            //            {
-            //                BarBackgroundColor = Color.DarkGreen,
-            //                BarTextColor = Color.White
-            //            };
-            //        }
-             
-
-
-            //        IsPresented = false;
-            //    }
-            //};
-
-           // UpdateSelected(MenuViewModel.Instance.PlaylistItems.First());
         }
 
         public void UpdateSelected(object item)
@@ -101,30 +66,7 @@ namespace JukeBox.Views
             }
 
             Page newPage;
-            //if (!Pages.ContainsKey(id))
-            //{
-
-            //    switch (id)
-            //    {
-            //        case (int)MenuType.Browse:
-            //            Pages.Add(id, new MusicAppNavigationPage(new HomeTabbedPage()));
-            //            break;
-           
-
-            //    }
-            //}
-
-          //  newPage = Pages[id];
-         //   if (newPage == null)
-         //       return;
-
-            //pop to root for Windows Phone
-            //if (Detail != null && Device.RuntimePlatform == Device.macOS)
-            //{
-            //    await Detail.Navigation.PopToRootAsync();
-            //}
-
-          //  Detail = newPage;
+          
 
         }
     }

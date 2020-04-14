@@ -1,6 +1,7 @@
 ﻿namespace JukeBox.Profile.ViewModels
 {
     using System;
+    using System.IO;
     using System.Windows.Input;
     using GalaSoft.MvvmLight.Command;
     using JukeBox;
@@ -62,7 +63,16 @@
             this.dataService = new DataService();
             var v = MainViewModel.GetInstance();
             this.User = MainViewModel.GetInstance().User;
-            if(this.User != null) this.ImageSource = this.User.ImageFullPath;
+            if (this.User != null) {
+                if (User.ImageArray != null)
+                {
+                    this.ImageSource = ImageSource.FromStream(() => new MemoryStream(User.ImageArray));
+                }
+                else
+                {
+                    this.ImageSource = "no_image";
+                }
+            }
             this.IsEnabled = true;
         }
         #endregion
@@ -133,12 +143,9 @@
 
             if (this.file != null)
             {
-                this.ImageSource = ImageSource.FromStream(() =>
-                {
-                    var stream = file.GetStream();
-                    User.ImagePath = file.Path;
-                    return stream;
-                });
+                User.ImageArray = FilesHelper.ReadFully(this.file.GetStream());
+                this.ImageSource = ImageSource.FromStream(() => new MemoryStream(User.ImageArray));
+
             }
         }
 
@@ -212,13 +219,9 @@
                 return;
             }
 
-            byte[] imageArray = null;
-            if (this.file != null)
-            {
-                imageArray = FilesHelper.ReadFully(this.file.GetStream());
-            }
+      
           
-            var userDomain = Converter.ToUserDomain(this.User, null);
+            var userDomain = Converter.ToUserDomain(this.User);
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
             var response = await this.apiService.Post(
                 apiSecurity,
@@ -244,11 +247,12 @@
                 MainViewModel.GetInstance().Token.TokenType,
                 MainViewModel.GetInstance().Token.AccessToken,
                 MainViewModel.GetInstance().Token.UserName);
+            userApi.ImageArray = User.ImageArray;
             var userLocal = Converter.ToUserLocal(userApi, Convert.ToInt32(MainViewModel.GetInstance().Token.UserName));
 
             MainViewModel.GetInstance().User = userLocal;
             MainViewModel.GetInstance().Login.registerDataService(userApi, MainViewModel.GetInstance().Token);
-            MainViewModel.GetInstance().ImageSource = userLocal.ImageFullPath;
+            MainViewModel.GetInstance().ImageSource = ImageSource.FromStream(() => new MemoryStream(User.ImageArray));
             this.dataService.Update(userLocal);
 
             this.IsRunning = false;

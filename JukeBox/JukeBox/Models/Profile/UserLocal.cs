@@ -44,6 +44,8 @@ namespace JukeBox.Models.Profile
             }
         }
 
+        public byte[] ImageArray { get; set; }
+
         public string FullName
         {
             get

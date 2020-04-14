@@ -18,12 +18,13 @@
                 Telephone = user.Telephone,
                 UserId = userId,
                 UserTypeId = user.UserId,
+                ImageArray = user.ImageArray,
                 BalanceAvailable = user.BalanceAvailable
 
             };
         }
 
-		public static User ToUserDomain(UserLocal user, byte[] imageArray)
+		public static User ToUserDomain(UserLocal user)
 		{
             return new User
             {
@@ -34,7 +35,7 @@
                 Telephone = user.Telephone,
                 UserId = user.UserId,
                 UserTypeId = user.UserTypeId.Value,
-                ImageArray = imageArray,
+                ImageArray = user.ImageArray,
                 BalanceAvailable = user.BalanceAvailable
                
             };
