@@ -19,11 +19,11 @@
         </StackLayout>
 
         
-        <ffimageloading:CachedImage Grid.Column="2" Source="dots_w.png" HeightRequest="20" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+        <!--<ffimageloading:CachedImage Grid.Column="2" Source="dots_w.png" HeightRequest="20" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
             <ffimageloading:CachedImage.GestureRecognizers>
                 <TapGestureRecognizer Tapped="SongOptionsPopup" />
             </ffimageloading:CachedImage.GestureRecognizers>
-        </ffimageloading:CachedImage>
+        </ffimageloading:CachedImage>-->
     </Grid>
     
 </ViewCell>

@@ -7,10 +7,10 @@
              x:Class="JukeBox.Views.FeaturedPage" 
              x:Name="BrowseFeaturedPage"
              Title="Store"
-                        BackgroundColor="#2f3037"
+                        BackgroundColor="#232323"
        BindingContext="{Binding Main, Source={StaticResource Locator}}" >
-    <StackLayout BackgroundColor="#2f3037">
-        <Grid   BackgroundColor="#2f3037" >
+    <StackLayout BackgroundColor="#232323">
+        <Grid   BackgroundColor="#232323" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
@@ -18,8 +18,8 @@
                 <RowDefinition Height="80"  />
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackLayout Grid.Row="0"  Grid.Column="0" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,0,0" BackgroundColor="#2f3037" >
-                <Frame BackgroundColor="#2f3037">
+            <StackLayout Grid.Row="0"  Grid.Column="0" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,0,0" BackgroundColor="#232323" >
+                <Frame BackgroundColor="#232323">
                     <Grid  BindingContext="{Binding LibraryTypeModel}"  >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -30,7 +30,7 @@
                         <controls:TLScrollView  x:Name="genreList" HorizontalScrollBarVisibility="Never" 
 				Orientation="Horizontal" 
 				ItemsSource="{Binding LibraryType ,Mode=TwoWay}" 
-                BackgroundColor="#2f3037" >
+                BackgroundColor="#232323" >
                             <controls:TLScrollView.ItemTemplate >
                                 <DataTemplate >
                                     <ViewCell>
@@ -46,7 +46,7 @@
                 </Frame>
             </StackLayout>
             
-            <StackLayout   BindingContext="{Binding LibraryModel}" x:Name="SLMovies" Grid.Row="1"  AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,0,0" BackgroundColor="#2f3037">
+            <StackLayout   BindingContext="{Binding LibraryModel}" x:Name="SLMovies" Grid.Row="1"  AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,0,0" BackgroundColor="#232323">
                 <StackLayout IsVisible="{Binding IsRunning, Mode=TwoWay}" Padding="12" Grid.Row="1" 
                      AbsoluteLayout.LayoutFlags="PositionProportional"
                      AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1">
@@ -56,14 +56,14 @@
                     <Label Text="Loading..." HorizontalOptions="Center" TextColor="Red"/>
 
                 </StackLayout>
-                <ListView x:Name="MovieListView" Grid.Row="1" HasUnevenRows="True" SeparatorVisibility="Default"  BackgroundColor="#2f3037" 
+                <ListView x:Name="MovieListView" Grid.Row="1" HasUnevenRows="True" SeparatorVisibility="Default"  BackgroundColor="#232323" 
                   SeparatorColor="Gray" ItemsSource="{Binding Library,Mode=TwoWay}" ItemSelected="MovieListView_OnItemSelected">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <StackLayout>
-                                    <Frame Padding="0" BackgroundColor="#2f3037">
-                                        <Grid BackgroundColor="#2f3037">
+                                    <Frame Padding="0" BackgroundColor="#232323">
+                                        <Grid BackgroundColor="#232323">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="0.4*"/>
                                                 <ColumnDefinition Width="*"/>

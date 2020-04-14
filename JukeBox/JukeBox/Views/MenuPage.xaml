@@ -4,30 +4,49 @@
              xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
              x:Class="JukeBox.Views.MenuPage"
                  BindingContext="{Binding Main, Source={StaticResource Locator}}"
-                  BackgroundColor="#2f3037"
+                  BackgroundColor="#232323"
     Title="Menu">
     <ContentPage.Content>
         <StackLayout >
 
-            <StackLayout BackgroundColor="#f5deb3">
-
-                <controls:CircleImage 
+            <StackLayout BackgroundColor="#2f3037">
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackLayout Grid.Row="0" Grid.Column="0" HeightRequest="80">
+                        <controls:CircleImage 
                 Aspect="AspectFill"
-                HeightRequest="100"
+                HeightRequest="70"
             Source="{Binding ImageSource}"
-               >   
-            </controls:CircleImage>
-            <Label
+               >
+                        </controls:CircleImage>
+                    </StackLayout>
+                    <StackLayout Grid.Row="0" Grid.Column="1">
+                        <Label
                 FontSize="Large"
                 FontAttributes="Bold"
                 HorizontalOptions="Center"
                 Text="{Binding User.FullName}"
-                TextColor="Black">
-            </Label>
+                TextColor="White">
+                        </Label>
+                    </StackLayout>
+
+
+                    <!--<ffimageloading:CachedImage Grid.Column="2" Source="dots_w.png" HeightRequest="20" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+            <ffimageloading:CachedImage.GestureRecognizers>
+                <TapGestureRecognizer Tapped="SongOptionsPopup" />
+            </ffimageloading:CachedImage.GestureRecognizers>
+        </ffimageloading:CachedImage>-->
+                </Grid>
+
+               
+        
                 
         </StackLayout>
         <ListView 
-                BackgroundColor="#2f3037"
+                BackgroundColor="#232323"
                 ItemsSource="{Binding Menus}"
                 HasUnevenRows="True"
                 SeparatorVisibility="Default" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">

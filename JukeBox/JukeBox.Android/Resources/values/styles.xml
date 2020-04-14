@@ -17,9 +17,9 @@
     <item name="windowActionBar">false</item>
     <!-- Set theme colors from http://www.google.com/design/spec/style/color.html#color-color-palette -->
     <!-- colorPrimary is used for the default action bar background -->
-    <item name="colorPrimary">#f5deb3</item>
+    <item name="colorPrimary">#2f3037</item>
     <!-- colorPrimaryDark is used for the status bar -->
-    <item name="colorPrimaryDark">#2f3037</item>
+    <item name="colorPrimaryDark">#232323</item>
     <!-- colorAccent is used as the default value for colorControlActivated
          which is used to tint widgets -->
     <item name="colorAccent">#FF4081</item>
@@ -33,8 +33,8 @@
   <style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog">
     <item name="colorAccent">#FF4081</item>
   </style>
-  <color name="ListViewSelected">#f5deb3</color>
-  <color name="ListViewHighlighted">#f5deb3</color>
-  <color name="SpashColor1">#2f3037</color>
-  <color name="SpashColor">#2f3037</color>
+  <color name="ListViewSelected">#2f3037</color>
+  <color name="ListViewHighlighted">#2f3037</color>
+  <color name="SpashColor1">#232323</color>
+  <color name="SpashColor">#232323</color>
 </resources>

@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="JukeBox.Views.PromoPage"
-                        BackgroundColor="#2f3037"
+                        BackgroundColor="#232323"
              Title="Store"
        BindingContext="{Binding Main, Source={StaticResource Locator}}" >
     <StackLayout>
@@ -22,8 +22,8 @@
                         <DataTemplate>
                             <ViewCell>
                                 <StackLayout>
-                                    <Frame Padding="0" BackgroundColor="#2f3037">
-                                        <Grid BackgroundColor="#2f3037">
+                                    <Frame Padding="0" BackgroundColor="#232323">
+                                        <Grid BackgroundColor="#232323">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="0.4*"/>
                                                 <ColumnDefinition Width="*"/>

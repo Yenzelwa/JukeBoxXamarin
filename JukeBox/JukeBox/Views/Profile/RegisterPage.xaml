@@ -7,7 +7,7 @@
     x:Class="JukeBox.Views.Profile.RegisterPage"
     BindingContext="{Binding Main, Source={StaticResource Locator}}"
     Title="{i18n:Translate RegisterTitle}"
-     BackgroundColor="#2f3037">
+     BackgroundColor="#232323">
     <ContentPage.Content>
         <ScrollView  
             BindingContext="{Binding Register}">
@@ -128,10 +128,8 @@
                     IsRunning="{Binding IsRunning, Mode=TwoWay}">
                 </ActivityIndicator>
                 <Button 
-                   BackgroundColor="DarkGreen"
-                    BorderRadius="23" 
+                   BackgroundColor="#f5deb3"
                     Command="{Binding RegisterCommand}" 
-                    HeightRequest="46" 
                     IsEnabled="{Binding IsEnabled, Mode=TwoWay}" 
                     Margin="50,0,50,0" 
                     Text="{i18n:Translate Register}" 

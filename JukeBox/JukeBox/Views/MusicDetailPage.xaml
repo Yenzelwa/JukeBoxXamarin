@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="JukeBox.Views.MusicDetailPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
-                        BackgroundColor="#2f3037">
+                        BackgroundColor="#232323">
 
  
     <ScrollView  Padding="0">
@@ -24,7 +24,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Frame Grid.Row="0" Padding="0" BackgroundColor="#2f3037">
+                <Frame Grid.Row="0" Padding="0" BackgroundColor="#232323">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.5*"/>
@@ -74,7 +74,7 @@
                                 <DataTemplate>
                                     <ViewCell>
                                         <StackLayout>
-                                            <Frame BackgroundColor="#2f3037" >
+                                            <Frame BackgroundColor="#232323" >
                                                 <Grid >
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="0.8*"/>

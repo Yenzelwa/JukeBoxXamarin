@@ -7,7 +7,7 @@
     x:Class="JukeBox.Views.MyProfilePage"
     BindingContext="{Binding Main, Source={StaticResource Locator}}"
     Title="{i18n:Translate MyProfile}"
-     BackgroundColor="#2f3037">
+     BackgroundColor="#232323">
     <ContentPage.Content>
         <ScrollView  
             BindingContext="{Binding MyProfile}">
@@ -100,16 +100,16 @@
                     Orientation="Horizontal"
                     VerticalOptions="End">
                     <Button
-                        BackgroundColor="Navy"
-                        BorderRadius="23"
+                        BackgroundColor="#f5deb3"
                         Command="{Binding SaveCommand}"
                         HeightRequest="46"
+                        Margin="50,0,50,0"
                         HorizontalOptions="FillAndExpand"
                         IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
                         Text="{i18n:Translate Save}"
                         TextColor="White">
                     </Button>
-                    <Button
+                    <!--<Button
                         BackgroundColor="Purple"
                         BorderRadius="23"
                         Command="{Binding ChangePasswordCommand}"
@@ -118,7 +118,7 @@
                         IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
                         Text="{i18n:Translate ChangePassword}"
                         TextColor="White">
-                    </Button>
+                    </Button>-->
                 </StackLayout>
             </StackLayout>
         </ScrollView>

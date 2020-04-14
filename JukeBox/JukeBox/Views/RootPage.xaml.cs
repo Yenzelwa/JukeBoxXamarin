@@ -24,7 +24,7 @@ namespace JukeBox.Views
             if (IsUWPDesktop)
               this.MasterBehavior = MasterBehavior.Popover;
            App.Navigator = Navigator;
-            App.Master = this;
+           App.Master = this;
            // Master = new MenuPage();
             
 
@@ -39,7 +39,7 @@ namespace JukeBox.Views
             LandingTabbedPage page = new LandingTabbedPage(PlaylistItems[0]);
             Detail = new NavigationPage(page)
             {
-                BarBackgroundColor = Color.FromHex("#2f3037"),
+                BarBackgroundColor = Color.FromHex("#232323"),
                 BarTextColor = Color.White,
                 Title = "Home"
             };

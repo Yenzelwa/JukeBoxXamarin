@@ -25,17 +25,18 @@ namespace JukeBox.Views
     new PlaylistPage(playlistItem)
     {
         Title = "My Music"
+       
     });
             this.Children.Add(
   new PromoPage()
   {
-      Title = "Promo"
+      Title = "Campaigns"
   });
 
             this.Children.Add(
              new RechargePage()
              {
-                 Title = "Recharge"
+                 Title = "Top Up"
              });
         //    this.CurrentPageChanged += tabChanged;
         }

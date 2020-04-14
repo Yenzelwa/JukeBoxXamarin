@@ -6,10 +6,10 @@
              x:Name="Playlist"
               BindingContext="{Binding Main,  Source={StaticResource Locator}}"
              Title="{Binding Title}"
-             BackgroundColor="#2f3037">
-    <ContentPage.ToolbarItems>
+             BackgroundColor="#232323">
+    <!--<ContentPage.ToolbarItems>
         <ToolbarItem Text="Queue" Clicked="ToolbarItem_Clicked"></ToolbarItem>
-    </ContentPage.ToolbarItems>
+    </ContentPage.ToolbarItems>-->
     <Grid  BindingContext="{Binding PlaylistViewModel ,Mode=TwoWay}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -20,7 +20,7 @@
         <ListView x:Name="playlistListView" ItemsSource="{Binding Songs,Mode=TwoWay}"
                   ItemTapped="playlistListView_ItemTapped"
                   Grid.Row="0"
-                  BackgroundColor="#2f3037"
+                  BackgroundColor="#232323"
                   SeparatorColor="Gray">
             <ListView.Header>
                 <StackLayout Orientation="Horizontal" BindingContext="{Binding Source={x:Reference Playlist}, Path=BindingContext}">
