@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:dlcontrols="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
              xmlns:renderedViews="clr-namespace:Sharpnado.Presentation.Forms.RenderedViews;assembly=Sharpnado.Presentation.Forms"
-             xmlns:controls="clr-namespace:JukeBox.RenderedViews"
+             xmlns:controls="clr-namespace:JukeBox.RenderedViews" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="JukeBox.Views.FeaturedPage" 
              x:Name="BrowseFeaturedPage"
              Title="Store"
@@ -69,14 +69,21 @@
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <Image Source="{Binding CoverFilePath}" Grid.Column="0"  WidthRequest="250" HeightRequest="60"/>
+                                            <!--<Image Source="{Binding CoverFilePath}" Grid.Column="0"  WidthRequest="250" HeightRequest="60"/>-->
+                                            <ffimageloading:CachedImage Grid.Column="0"
+                                                    x:Name="ImgDetail"  
+                                                    Source="{Binding CoverFilePath}"
+                                                   HeightRequest="130"
+                                                    WidthRequest="300"
+                                                    VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                                            </ffimageloading:CachedImage>
                                             <StackLayout Grid.Column="1">
                                                 <Label Text="{Binding Artist ,Mode=TwoWay}"  TextColor="White" FontAttributes="Bold"/>
                                                 <Label Text="{Binding ShowTime}" TextColor="Gray"/>
                                                 <Label Text="{Binding Type} " TextColor="Gray"/>
                                                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                                                     <Label Text="{Binding Name}" TextColor="Gray"/>
-                                                    <Label HorizontalOptions="EndAndExpand"  TextColor="White" Text="{Binding Price ,StringFormat='{0:C}' }"/>
+                                                    <Label HorizontalOptions="EndAndExpand"  TextColor="White" Text="{Binding PriceFormat } "/>
                                                 </StackLayout>
                                             </StackLayout>
                                         </Grid>

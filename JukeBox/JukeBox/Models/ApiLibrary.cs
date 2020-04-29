@@ -1,6 +1,8 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms;
 
 namespace JukeBox.Models
 {
@@ -17,6 +19,7 @@ namespace JukeBox.Models
         public string Artist { get; set; }
         public bool AlbumDownload { get; set; }
         public DateTime DateCreated { get; set; }
+        public ImageSource AlbumPicture => ImageSource.FromUri(new Uri(CoverFilePath));
 
         public string Purchase
         {
@@ -32,5 +35,8 @@ namespace JukeBox.Models
                 }
             }
         }
+        public string PriceFormat => string.Format("R {0}", Math.Round(Price ?? 0, 2));
+            
+        
     }
 }

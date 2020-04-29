@@ -30,7 +30,7 @@ namespace JukeBox.Views
             this.Children.Add(
   new PromoPage()
   {
-      Title = "Campaigns"
+      Title = "Campaign"
   });
 
             this.Children.Add(

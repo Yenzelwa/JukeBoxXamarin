@@ -19,7 +19,7 @@
 
                 <StackLayout Grid.Row="0"   Grid.Column="0" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,0,0" >
 
-                    <Label  Text="Redeem Your Flash Voucher Pin Here" 
+                    <Label  Text="Redeem  1 Voucher Pin Here" 
                             FontSize="Medium"  Margin="2, 20, 0, 0" HorizontalOptions="Center"
                             TextColor="Gray"/>
                     <Label />

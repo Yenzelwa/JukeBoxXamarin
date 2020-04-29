@@ -344,9 +344,16 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\close_good.png" />
+    <AndroidResource Include="Resources\drawable\download.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\download.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\download.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\download.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\download.png" />
+    <AndroidResource Include="Resources\mipmap-anydpi-v26\download.png" />
     <Content Include="Resources\mipmap-anydpi-v26\play_w.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\download.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\mipmap-anydpi-v26\prev.png" />
@@ -369,6 +376,7 @@
     <AndroidResource Include="Resources\mipmap-hdpi\pause_w.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-hdpi\download.png" />
     <Content Include="Resources\mipmap-hdpi\play_w.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -392,6 +400,7 @@
     <AndroidResource Include="Resources\mipmap-mdpi\pause_w.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-mdpi\download.png" />
     <Content Include="Resources\mipmap-mdpi\play_w.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
@@ -416,6 +425,7 @@
     <AndroidResource Include="Resources\mipmap-xhdpi\pause_w.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-xhdpi\download.png" />
     <Content Include="Resources\mipmap-xhdpi\play_w.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -439,6 +449,7 @@
     <AndroidResource Include="Resources\mipmap-xxhdpi\pause_w.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-xxhdpi\download.png" />
     <Content Include="Resources\mipmap-xxhdpi\play_w.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -470,4 +481,9 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\prev.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties XamarinHotReloadXFormsNugetUpgradeInfoBarJukeBoxAndroidHideInfoBar="True" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

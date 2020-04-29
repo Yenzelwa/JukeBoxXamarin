@@ -33,7 +33,8 @@
         [Display(Name = "Image")]
         public string ImagePath { get; set; }
 
-        public decimal BalanceAvailable { get; set; }
+        public decimal? BalanceAvailable { get; set; }
+        public string BalanceAvailableFormat { get; set; }
         public int UserTypeId { get; set; }
 
         [JsonIgnore]

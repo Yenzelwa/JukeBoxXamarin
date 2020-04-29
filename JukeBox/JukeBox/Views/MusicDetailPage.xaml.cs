@@ -89,7 +89,7 @@ namespace JukeBox.Views
                 LblPrice.Text = "R" + price;
                 LblLanguage.Text = library.Name;
                 LblDescription.Text = library.Description;
-                ImgDetail.Source = library.CoverFilePath;
+                ImgDetail.Source = ImageSource.FromUri(new Uri(library.CoverFilePath));
                 BtnBuy.Text = library.Purchase;
                 filePath = library.FilePath;
                 DownloadAlbum = library.AlbumDownload;
@@ -142,6 +142,7 @@ namespace JukeBox.Views
             var items = apiLibraryDetails;
             var mainViewModel = MainViewModel.GetInstance();
             var apiService = new ApiService();
+
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
             if (items != null)
             {
@@ -183,12 +184,19 @@ namespace JukeBox.Views
                             var response = await BLL.Library.Library.GetLibrary(1, Convert.ToInt32(mainViewModel.Token.UserName));
                             if (response != null)
                                 mainViewModel.LibraryModel.Library = response.ResponseObject;
+                            SongListView.IsEnabled = false;
+                            Download.IsVisible = true;
+                            BtnBuy.IsEnabled = false;
                             await Task.Run(async () =>
                             {
+                                
+
                                 foreach (var item in items)
                                 {
                                     if (dataService.GetFileById(item.Id) == null)
                                     {
+                                    
+                                        // ImgDetail.te = "download";
 
                                         var audiobyte = getArrayFromUrl(item.FilePath);
                                         var fileLocal = new AudioLocal
@@ -207,9 +215,14 @@ namespace JukeBox.Views
 
                             });
 
+                            SongListView.IsEnabled = true;
+                            Download.IsVisible = false;
+                            BtnBuy.IsEnabled = true;
+
                         }
                         else
                         {
+                            
                             await DisplayAlert(Languages.Error, orderResponse.ResponseMessage, Languages.Accept);
                             return;
 
@@ -218,12 +231,18 @@ namespace JukeBox.Views
                 }
                 else
                 {
+                    SongListView.IsEnabled = false;
+                    Download.IsVisible = true;
+                    BtnBuy.IsEnabled = false;
                     await Task.Run(async () =>
                     {
+                       
                         foreach (var item in items)
                         {
                             if (dataService.GetFileById(item.Id) == null)
                             {
+                                
+
                                 var audiobyteArray = getArrayFromUrl(item.FilePath);
 
                                 var fileLocal = new AudioLocal
@@ -239,6 +258,10 @@ namespace JukeBox.Views
                                 dataService.Insert(fileLocal);
                             }
                         }
+                        SongListView.IsEnabled = true;
+                        Download.IsVisible = false;
+                        BtnBuy.IsEnabled = true;
+
                     });
                 }
             }
@@ -281,7 +304,6 @@ namespace JukeBox.Views
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
             if (img.BindingContext is ApiLibraryDetail song)
             {
-
 
                 var request = new PurchaseOrderRequest
                 {
@@ -326,6 +348,13 @@ namespace JukeBox.Views
                                 mainViewModel.LibraryModel.Library = response.ResponseObject;
                             if (dataService.GetFileById(song.Id) == null)
                             {
+                                var viewCell = img.Parent as Grid;
+                                var viewControls = viewCell.Children;
+                                viewControls[2].IsVisible = true;
+                                viewControls[5].IsVisible = true;
+                                viewControls[3].IsVisible = false;
+                                img.IsVisible = false;
+
                                 await Task.Run(async () =>
                                 {
                                     var audiobyte = getArrayFromUrl(song.FilePath);
@@ -343,15 +372,18 @@ namespace JukeBox.Views
                                     dataService.Insert(fileLocal);
 
                                 });
-                                
+
+                                viewControls[2].IsVisible = false;
+                                viewControls[5].IsVisible = false;
+                                viewControls[3].IsVisible = true;
+                                img.IsVisible = true;
                             }
-
-
                         }
                         else
                         {
                             await DisplayAlert(Languages.Error, orderResponse.ResponseMessage, Languages.Accept);
                             return;
+
 
                         }
                     }
@@ -361,6 +393,12 @@ namespace JukeBox.Views
 
                   if(dataService.GetFileById(song.Id) == null)
                     {
+                        var viewCell = img.Parent as Grid;
+                        var viewControls = viewCell.Children;
+                        viewControls[2].IsVisible = true;
+                        viewControls[5].IsVisible = true;
+                        viewControls[3].IsVisible = false;
+                        img.IsVisible = false;
                         await Task.Run(async () =>
                         {
                             var audiobyteArray = getArrayFromUrl(song.FilePath);
@@ -377,6 +415,10 @@ namespace JukeBox.Views
                             var dataService = new DataService();
                             dataService.Insert(fileLocal);
                         });
+                        viewControls[2].IsVisible = false;
+                        viewControls[5].IsVisible = false;
+                        viewControls[3].IsVisible = true;
+                        img.IsVisible = true;
                     }
                        
                 }
@@ -410,6 +452,7 @@ namespace JukeBox.Views
             mainViewModel.PlaylistViewModel = new PlaylistViewModel(mainViewModel.PlaylistItems[0]);
             // await DisplayAlert("File Status", "File Downloaded", "OK");
 
+          
         }
 
     

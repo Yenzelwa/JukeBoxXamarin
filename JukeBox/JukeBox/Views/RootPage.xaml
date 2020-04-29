@@ -5,7 +5,7 @@
                   xmlns:views="clr-namespace:JukeBox.Views"
                   BindingContext="{Binding Main, Source={StaticResource Locator}}">
     <MasterDetailPage.ToolbarItems>
-        <ToolbarItem Text="{Binding User.BalanceAvailable ,StringFormat='{0:C}'}"></ToolbarItem>
+        <ToolbarItem Text="{Binding User.BalanceAvailableFormat}"></ToolbarItem>
     </MasterDetailPage.ToolbarItems>
     <MasterDetailPage.Master>
         <views:MenuPage/>

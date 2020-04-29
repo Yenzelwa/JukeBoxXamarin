@@ -36,7 +36,9 @@
                 UserId = user.UserId,
                 UserTypeId = user.UserTypeId.Value,
                 ImageArray = user.ImageArray,
-                BalanceAvailable = user.BalanceAvailable
+                BalanceAvailable = user.BalanceAvailable,
+                BalanceAvailableFormat = user.BalanceAvailableFormat
+           
                
             };
 		}

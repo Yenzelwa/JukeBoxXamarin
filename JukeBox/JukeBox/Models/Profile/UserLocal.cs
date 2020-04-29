@@ -1,5 +1,6 @@
-﻿using SQLite;
-
+﻿using Java.Lang;
+using SQLite;
+using System;
 namespace JukeBox.Models.Profile
 {
   
@@ -22,7 +23,8 @@ namespace JukeBox.Models.Profile
         public int? UserTypeId { get; set; }
 
         public string Password { get; set; }
-        public decimal BalanceAvailable { get; set; }
+        public decimal? BalanceAvailable { get; set; }
+        public string BalanceAvailableFormat => string.Format("R {0}", System.Math.Round(BalanceAvailable ?? 0, 2));
 
         public string ImageFullPath
         {
