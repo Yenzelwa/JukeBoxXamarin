@@ -107,12 +107,20 @@ namespace JukeBox.ViewModels
 
             if (response !=null)
             {
-                this.IsRunning = false;
-               // var mainViewModel = MainViewModel.GetInstance();
-               // mainViewModel.Library = response.ResponseObject; 
+                if(response.ResponseObject ==null && String.IsNullOrWhiteSpace(response.ResponseMessage))
+                {
+                    this.IsRunning = false;
+                    if (Application.Current.MainPage != null)
+                    {
+                        await Application.Current.MainPage.DisplayAlert(
+                            Languages.Error,
+                          Languages.ConnectionError2,
+                            Languages.Accept);
+                    }
+                    return;
+                }
+                this.IsRunning = false; 
                 this.Library = response.ResponseObject;
-                
-              // Application.Current.MainPage = new RootPage();
 
             }
             else

@@ -17862,7 +17862,10 @@ namespace JukeBox.Droid
 			public const int pause_w = 2131492870;
 			
 			// aapt resource value: 0x7F0C0007
-			public const int prev = 2131492871;
+			public const int play_w = 2131492871;
+			
+			// aapt resource value: 0x7F0C0008
+			public const int prev = 2131492872;
 			
 			static Mipmap()
 			{

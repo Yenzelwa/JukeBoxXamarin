@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using JukeBox.Views;
 using System.ComponentModel;
+using System;
 
 namespace JukeBox.ViewModels
 {
@@ -93,12 +94,22 @@ namespace JukeBox.ViewModels
 
             if (response != null)
             {
+
+                if (response.ResponseObject == null && String.IsNullOrWhiteSpace(response.ResponseMessage))
+                {
+                    this.IsRunning = false;
+                    //if (Application.Current.MainPage != null)
+                    //{
+                    //    await Application.Current.MainPage.DisplayAlert(
+                    //        Languages.Error,
+                    //      Languages.ConnectionError2,
+                    //        Languages.Accept);
+                    //}
+                    return;
+                }
                 this.IsRunning = false;
-                // var mainViewModel = MainViewModel.GetInstance();
-                // mainViewModel.Library = response.ResponseObject; 
                 this.Library = response.ResponseObject;
 
-                // Application.Current.MainPage = new RootPage();
 
             }
             else

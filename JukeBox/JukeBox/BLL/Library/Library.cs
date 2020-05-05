@@ -44,7 +44,7 @@ namespace JukeBox.BLL.Library
                     }
                     return null;
                 }
-                catch (HttpRequestException e)
+                catch (Java.Net.SocketException e)
                 {
                     // Console.WriteLine("\nException Caught!");
                     // Console.WriteLine("Message :{0} ", e.Message);
@@ -54,26 +54,23 @@ namespace JukeBox.BLL.Library
 
             }
         }
-        public static async Task<LibraryResponse> GetLibrary(int filter , int? clientId)
+        public static async Task<LibraryResponse> GetLibrary(int filter, int? clientId)
         {
-         
 
 
-            using (HttpClient client = new HttpClient())
+
+
+            // Call asynchronous network methods in a try/catch block to handle exceptions
+            try
             {
-                // Call asynchronous network methods in a try/catch block to handle exceptions
-                try
+                using (HttpClient client = new HttpClient())
                 {
                     client.Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite);
                     var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
                     HttpResponseMessage response = await client.GetAsync($"{apiSecurity}/api/library/{filter}?clientid={clientId}", HttpCompletionOption.ResponseHeadersRead);
-                    
+
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    // Above three lines can be replaced with new helper method below
-                    // string responseBody = await client.GetStringAsync(uri);
-
-                   // Console.WriteLine(responseBody);
                     if (response.StatusCode != HttpStatusCode.OK)
                     {
                         if (response.StatusCode != HttpStatusCode.Accepted)
@@ -88,34 +85,17 @@ namespace JukeBox.BLL.Library
                     }
                     return null;
                 }
-                catch (HttpRequestException e)
-                {
-                 //   Console.WriteLine("\nException Caught!");
-                  //  Console.WriteLine("Message :{0} ", e.Message);
-
-                    return new LibraryResponse();
-                }
-
-                // var client = new HttpClient();
-                // client.BaseAddress = new Uri("http://localhost:58806");
-
-                //string jsonData = @"{""username"" : ""myusername"", ""password"" : ""mypassword""}"
-
-                // var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-                // HttpResponseMessage response = await client.GetAsync("/api/library");
-
-                // this result string should be something like: "{"token":"rgh2ghgdsfds"}"
-                // var result = await response.Content.ReadAsStringAsync();
-                //var client = new RestClient(orionApiUrl);
-                //var request = new RestRequest(Method.POST);
-                //  var client = new RestClient("/api/library");
-                //  var request = new RestRequest(Method.GET);
-                // request.AddHeader("cache-control", "no-cache");
-                // request.AddHeader("content-type", "text/xml");
-                //  var response =  client.Execute(request);
-
             }
-        }
+
+
+            catch (Java.Net.SocketException e)
+            {
+
+                return new LibraryResponse();
+            }
+        
+    }
+        
         public static async Task<LibraryDetailResponse> GetLibraryDetail(long libraryId , int? clientId)
         {
 
@@ -145,7 +125,7 @@ namespace JukeBox.BLL.Library
                     }
                     return null;
                 }
-                catch (HttpRequestException e)
+                catch (Java.Net.SocketException e)
                 {
                    // Console.WriteLine("\nException Caught!");
                   // Console.WriteLine("Message :{0} ", e.Message);

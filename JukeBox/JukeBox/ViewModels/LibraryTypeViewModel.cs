@@ -68,7 +68,7 @@ namespace JukeBox.ViewModels
                 {
                     await Application.Current.MainPage.DisplayAlert(
                         Languages.Error,
-                        checkConnetion.Message,
+                       Languages.ConnectionError2,
                         Languages.Accept);
                 }
                 return;
@@ -86,9 +86,21 @@ namespace JukeBox.ViewModels
 
             };
             var modelList = new ObservableCollection<ApiLibraryType>();
-           
+          
             if (response.ResponseObject != null)
             {
+                if (response.ResponseObject == null && String.IsNullOrWhiteSpace(response.ResponseMessage))
+                {
+                    this.IsRunning = false;
+                    //if (Application.Current.MainPage != null)
+                    //{
+                    //    await Application.Current.MainPage.DisplayAlert(
+                    //        Languages.Error,
+                    //        checkConnetion.Message,
+                    //        Languages.Accept);
+                    //}
+                    return;
+                }
 
                 foreach (var item in response.ResponseObject)
                 {

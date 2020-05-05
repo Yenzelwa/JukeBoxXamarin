@@ -167,7 +167,7 @@
                 this.IsEnabled = true;
                 await Application.Current.MainPage.DisplayAlert(
                     Languages.Error,
-                    Languages.ErrorChangingPassword,
+                    response.Message,
                     Languages.Accept);
                 return;
             }
