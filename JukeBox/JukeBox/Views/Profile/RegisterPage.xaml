@@ -25,7 +25,7 @@
                     HorizontalOptions="Center" 
                     FontSize="Small" 
                     Text="{i18n:Translate ChangeImage}" 
-                    TextColor="Gray">
+                    TextColor="White">
                 </Label>
                 <ActivityIndicator
                     IsRunning="{Binding IsRunning, Mode=TwoWay}">
@@ -39,35 +39,35 @@
                         Grid.Column="0" 
                         Grid.Row="0" 
                         Text="{i18n:Translate FirstNameLabel}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         VerticalOptions="Center">
                     </Label>
                     <Entry 
                         Grid.Column="1" 
                         Grid.Row="0" 
                         Placeholder="{i18n:Translate FirstNamePlaceHolder}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         Text="{Binding FirstName, Mode=TwoWay}">
                     </Entry>
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="1" 
                         Text="{i18n:Translate LastNameLabel}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         VerticalOptions="Center">
                     </Label>
                     <Entry 
                         Grid.Column="1" 
                         Grid.Row="1" 
                         Placeholder="{i18n:Translate LastNamePlaceHolder}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         Text="{Binding LastName, Mode=TwoWay}">
                     </Entry>
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="2" 
                         Text="{i18n:Translate EMail}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         VerticalOptions="Center">
                     </Label>
                     <Entry 
@@ -75,14 +75,14 @@
                         Grid.Column="1" 
                         Grid.Row="2" 
                         Placeholder="{i18n:Translate EmailPlaceHolder}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         Text="{Binding Email, Mode=TwoWay}">
                     </Entry>
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="3" 
                         Text="{i18n:Translate PhoneLabel}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         VerticalOptions="Center">
                     </Label>
                     <Entry 
@@ -90,14 +90,14 @@
                         Grid.Row="3" 
                         Keyboard="Telephone" 
                         Placeholder="{i18n:Translate PhonePlaceHolder}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         Text="{Binding Telephone, Mode=TwoWay}">
                     </Entry>
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="4" 
                         Text="{i18n:Translate Password}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         VerticalOptions="Center">
                     </Label>
                     <Entry 
@@ -105,14 +105,14 @@
                         Grid.Row="4" 
                         IsPassword="true" 
                         Placeholder="{i18n:Translate PasswordPlaceHolder}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         Text="{Binding Password, Mode=TwoWay}">
                     </Entry>
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="5" 
                         Text="{i18n:Translate ConfirmLabel}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         VerticalOptions="Center">
                     </Label>
                     <Entry 
@@ -120,7 +120,7 @@
                         Grid.Row="5" 
                         IsPassword="true" 
                         Placeholder="{i18n:Translate ConfirmPlaceHolder}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         Text="{Binding Confirm, Mode=TwoWay}">
                     </Entry>
                 </Grid>
@@ -128,7 +128,8 @@
                     IsRunning="{Binding IsRunning, Mode=TwoWay}">
                 </ActivityIndicator>
                 <Button 
-                   BackgroundColor="#f5deb3"
+                   
+                    
                     Command="{Binding RegisterCommand}" 
                     IsEnabled="{Binding IsEnabled, Mode=TwoWay}" 
                     Margin="50,0,50,0" 

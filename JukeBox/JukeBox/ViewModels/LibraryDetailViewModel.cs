@@ -87,6 +87,19 @@ namespace JukeBox.ViewModels
             if (response != null)
             {
                 this.IsRunning = false;
+
+                if (response.ResponseObject == null && String.IsNullOrWhiteSpace(response.ResponseMessage))
+                {
+                    this.IsRunning = false;
+                    //if (Application.Current.MainPage != null)
+                    //{
+                    //    await Application.Current.MainPage.DisplayAlert(
+                    //        Languages.Error,
+                    //      Languages.ConnectionError2,
+                    //        Languages.Accept);
+                    //}
+                    return;
+                }
                 var lis = new ObservableCollection<ApiLibraryDetail>();
                 foreach (var item in response.ResponseObject)
                 {
@@ -100,13 +113,13 @@ namespace JukeBox.ViewModels
             {
 
                 this.IsRunning = false;
-                if (Application.Current.MainPage != null)
-                {
-                    await Application.Current.MainPage.DisplayAlert(
-                        Languages.Error,
-                        checkConnetion.Message,
-                        Languages.Accept);
-                }
+                //if (Application.Current.MainPage != null)
+                //{
+                //    await Application.Current.MainPage.DisplayAlert(
+                //        Languages.Error,
+                //        checkConnetion.Message,
+                //        Languages.Accept);
+                //}
                 return;
             }
         }

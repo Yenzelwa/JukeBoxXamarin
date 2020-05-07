@@ -21,14 +21,15 @@
                         Grid.Row="0" FontSize="Small"
                         Keyboard="Email"
                         Text="{Binding Email, Mode=TwoWay}"
-                        Placeholder="Email/Cellphone">
+                        Placeholder="Email/Cellphone"
+                        TextColor="White" >
                     </Entry>
                     <Entry PlaceholderColor="Gray"
                         Grid.Row="1"
                            FontSize="Small"
                         IsPassword="true"
                         Text="{Binding Password, Mode=TwoWay}"
-                        TextColor="Gray"
+                        TextColor="White"
                         Placeholder="Password">
                     </Entry>
 

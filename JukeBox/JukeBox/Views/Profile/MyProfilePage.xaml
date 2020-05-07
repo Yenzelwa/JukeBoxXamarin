@@ -36,35 +36,35 @@
                         Grid.Column="0" 
                         Grid.Row="0" 
                         Text="{i18n:Translate FirstNameLabel}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         VerticalOptions="Center">
                     </Label>
                     <Entry 
                         Grid.Column="1" 
                         Grid.Row="0" 
                         Placeholder="{i18n:Translate FirstNamePlaceHolder}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         Text="{Binding User.FirstName, Mode=TwoWay}">
                     </Entry>
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="1" 
                         Text="{i18n:Translate LastNameLabel}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         VerticalOptions="Center">
                     </Label>
                     <Entry 
                         Grid.Column="1" 
                         Grid.Row="1" 
                         Placeholder="{i18n:Translate LastNamePlaceHolder}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         Text="{Binding User.LastName, Mode=TwoWay}">
                     </Entry>
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="2" 
                         Text="{i18n:Translate EMail}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         VerticalOptions="Center">
                     </Label>
                     <Entry 
@@ -72,14 +72,14 @@
                         Grid.Column="1" 
                         Grid.Row="2" 
                         Placeholder="{i18n:Translate EmailPlaceHolder}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         Text="{Binding User.Email, Mode=TwoWay}">
                     </Entry>
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="3" 
                         Text="{i18n:Translate PhoneLabel}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         VerticalOptions="Center">
                     </Label>
                     <Entry 
@@ -87,7 +87,7 @@
                         Grid.Row="3" 
                         Keyboard="Telephone" 
                         Placeholder="{i18n:Translate PhonePlaceHolder}" 
-                        TextColor="Gray" 
+                        TextColor="White" 
                         Text="{Binding User.Telephone, Mode=TwoWay}">
                     </Entry>
                 </Grid>

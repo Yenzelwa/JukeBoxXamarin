@@ -113,13 +113,13 @@ namespace JukeBox.ViewModels
             else
             {
 
-                if (Application.Current.MainPage != null)
-                {
-                    await Application.Current.MainPage.DisplayAlert(
-                        Languages.Error,
-                        checkConnetion.Message,
-                        Languages.Accept);
-                }
+                //if (Application.Current.MainPage != null)
+                //{
+                //    await Application.Current.MainPage.DisplayAlert(
+                //        Languages.Error,
+                //        checkConnetion.Message,
+                //        Languages.Accept);
+                //}
                 return;
             }
 

@@ -110,13 +110,13 @@ namespace JukeBox.ViewModels
                 if(response.ResponseObject ==null && String.IsNullOrWhiteSpace(response.ResponseMessage))
                 {
                     this.IsRunning = false;
-                    if (Application.Current.MainPage != null)
-                    {
-                        await Application.Current.MainPage.DisplayAlert(
-                            Languages.Error,
-                          Languages.ConnectionError2,
-                            Languages.Accept);
-                    }
+                    //if (Application.Current.MainPage != null)
+                    //{
+                    //    await Application.Current.MainPage.DisplayAlert(
+                    //        Languages.Error,
+                    //      Languages.ConnectionError2,
+                    //        Languages.Accept);
+                    //}
                     return;
                 }
                 this.IsRunning = false; 
@@ -126,13 +126,13 @@ namespace JukeBox.ViewModels
             else
             {
                 this.IsRunning = false;
-                if (Application.Current.MainPage != null)
-                {
-                    await Application.Current.MainPage.DisplayAlert(
-                        Languages.Error,
-                        checkConnetion.Message,
-                        Languages.Accept);
-                }
+                //if (Application.Current.MainPage != null)
+                //{
+                //    await Application.Current.MainPage.DisplayAlert(
+                //        Languages.Error,
+                //        checkConnetion.Message,
+                //        Languages.Accept);
+                //}
                 return;
             }
 
@@ -140,48 +140,6 @@ namespace JukeBox.ViewModels
 
 
         }
-        //private async void GetLibraryType()
-        //{
 
-
-
-        //    var checkConnetion = await this.apiService.CheckConnection();
-        //    if (!checkConnetion.IsSuccess)
-        //    {
-
-        //        await Application.Current.MainPage.DisplayAlert(
-        //            Languages.Error,
-        //            checkConnetion.Message,
-        //            Languages.Accept);
-        //        return;
-        //    }
-        //    var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
-        //    var response = await BLL.Library.Library.GetLibraryTypes();
-
-
-
-        //    if (response != null)
-        //    {
-
-        //        this.LibraryType = response.ResponseObject;
-
-        //    }
-        //    else
-        //    {
-
-        //        await Application.Current.MainPage.DisplayAlert(
-        //            Languages.Error,
-        //            response.ResponseMessage,
-        //            Languages.Accept);
-        //        return;
-        //    }
-
-
-
-
-        //}
-
-
-     
     }
 }
