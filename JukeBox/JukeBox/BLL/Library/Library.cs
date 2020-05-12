@@ -49,7 +49,7 @@ namespace JukeBox.BLL.Library
                     // Console.WriteLine("\nException Caught!");
                     // Console.WriteLine("Message :{0} ", e.Message);
 
-                    return new ApiLibraryTypeResponse();
+                    return null;
                 }
 
             }
@@ -91,7 +91,7 @@ namespace JukeBox.BLL.Library
             catch (Java.Net.SocketException e)
             {
 
-                return new LibraryResponse();
+                return null;
             }
         
     }
@@ -130,7 +130,7 @@ namespace JukeBox.BLL.Library
                    // Console.WriteLine("\nException Caught!");
                   // Console.WriteLine("Message :{0} ", e.Message);
 
-                    return new LibraryDetailResponse();
+                    return null;
                 }
 
             }

@@ -207,9 +207,6 @@
     <AndroidResource Include="Resources\mipmap-anydpi-v26\no_image.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\mipmap-anydpi-v26\pause_w.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\home.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
@@ -281,13 +278,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\no_image.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\pause_w.jpg">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\play_w.jpg">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\prev.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
@@ -439,9 +429,6 @@
     <AndroidResource Include="Resources\mipmap-xhdpi\no_image.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\mipmap-xhdpi\pause_w.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\mipmap-xhdpi\download.png" />
     <AndroidResource Include="Resources\mipmap-mdpi\play_w.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
@@ -476,9 +463,6 @@
     <AndroidResource Include="Resources\mipmap-xxhdpi\no_image.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\mipmap-xxhdpi\pause_w.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\mipmap-xxhdpi\download.png" />
     <AndroidResource Include="Resources\mipmap-xhdpi\pause_w.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
@@ -507,9 +491,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\mipmap-xxxhdpi\no_image.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\mipmap-xxxhdpi\pause_w.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\mipmap-xxxhdpi\play_w.jpng">

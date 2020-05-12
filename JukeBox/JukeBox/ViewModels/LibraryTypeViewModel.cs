@@ -64,13 +64,13 @@ namespace JukeBox.ViewModels
             var checkConnetion = await this.apiService.CheckConnection();
             if (!checkConnetion.IsSuccess)
             {
-                if (Application.Current.MainPage != null)
-                {
-                    await Application.Current.MainPage.DisplayAlert(
-                        Languages.Error,
-                       Languages.ConnectionError2,
-                        Languages.Accept);
-                }
+                //if (Application.Current.MainPage != null)
+                //{
+                //    await Application.Current.MainPage.DisplayAlert(
+                //        Languages.Error,
+                //       Languages.ConnectionError2,
+                //        Languages.Accept);
+                //}
                 return;
             }
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
@@ -87,20 +87,20 @@ namespace JukeBox.ViewModels
             };
             var modelList = new ObservableCollection<ApiLibraryType>();
           
-            if (response.ResponseObject != null)
+            if (response != null)
             {
-                if (response.ResponseObject == null && String.IsNullOrWhiteSpace(response.ResponseMessage))
-                {
-                    this.IsRunning = false;
-                    //if (Application.Current.MainPage != null)
-                    //{
-                    //    await Application.Current.MainPage.DisplayAlert(
-                    //        Languages.Error,
-                    //        checkConnetion.Message,
-                    //        Languages.Accept);
-                    //}
-                    return;
-                }
+                //if (response.ResponseObject == null && String.IsNullOrWhiteSpace(response.ResponseMessage))
+                //{
+                //    this.IsRunning = false;
+                //    //if (Application.Current.MainPage != null)
+                //    //{
+                //    //    await Application.Current.MainPage.DisplayAlert(
+                //    //        Languages.Error,
+                //    //        checkConnetion.Message,
+                //    //        Languages.Accept);
+                //    //}
+                //    return;
+                //}
 
                 foreach (var item in response.ResponseObject)
                 {

@@ -135,23 +135,13 @@
                 var request = JsonConvert.SerializeObject(changePasswordRequest);
                 var content = new StringContent(request, Encoding.UTF8, "application/json");
                 var client = new HttpClient();
-               // client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenType, accessToken);
+                // client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenType, accessToken);
                 client.BaseAddress = new Uri(urlBase);
-                var url = string.Format("{0}{1}{2}", servicePrefix, controller,changePasswordRequest);
-                var response = await client.GetAsync(url);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    return new Response
-                    {
-                        IsSuccess = false,
-                    };
-                }
-
-                return new Response
-                {
-                    IsSuccess = true,
-                };
+                var url = string.Format("{0}{1}{2}", servicePrefix, controller, changePasswordRequest);
+                var result = await client.GetAsync(url);
+                var resultJSON = await result.Content.ReadAsStringAsync();
+                var response = JsonConvert.DeserializeObject<Response>(resultJSON);
+                return response;
             }
             catch (Exception ex)
             {
@@ -181,20 +171,10 @@
               //  client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenType, accessToken);
                 client.BaseAddress = new Uri(urlBase);
                 var url = string.Format("{0}{1}", servicePrefix, controller);
-                var response = await client.PostAsync(url, content);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    return new Response
-                    {
-                        IsSuccess = false,
-                    };
-                }
-
-                return new Response
-                {
-                    IsSuccess = true,
-                };
+                var result = await client.PostAsync(url, content);
+                var resultJSON = await result.Content.ReadAsStringAsync();
+                var response = JsonConvert.DeserializeObject<Response>(resultJSON);
+                return response;
             }
             catch (Exception ex)
             {

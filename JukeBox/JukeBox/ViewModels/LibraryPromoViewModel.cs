@@ -77,13 +77,13 @@ namespace JukeBox.ViewModels
             if (!checkConnetion.IsSuccess)
             {
                 this.IsRunning = false;
-                if (Application.Current.MainPage != null)
-                {
-                    await Application.Current.MainPage.DisplayAlert(
-                        Languages.Error,
-                        checkConnetion.Message,
-                        Languages.Accept);
-                }
+                //if (Application.Current.MainPage != null)
+                //{
+                //    await Application.Current.MainPage.DisplayAlert(
+                //        Languages.Error,
+                //        checkConnetion.Message,
+                //        Languages.Accept);
+                //}
                 return;
             }
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
@@ -95,18 +95,18 @@ namespace JukeBox.ViewModels
             if (response != null)
             {
 
-                if (response.ResponseObject == null && String.IsNullOrWhiteSpace(response.ResponseMessage))
-                {
-                    this.IsRunning = false;
-                    //if (Application.Current.MainPage != null)
-                    //{
-                    //    await Application.Current.MainPage.DisplayAlert(
-                    //        Languages.Error,
-                    //      Languages.ConnectionError2,
-                    //        Languages.Accept);
-                    //}
-                    return;
-                }
+                //if (response.ResponseObject == null && String.IsNullOrWhiteSpace(response.ResponseMessage))
+                //{
+                //    this.IsRunning = false;
+                //    //if (Application.Current.MainPage != null)
+                //    //{
+                //    //    await Application.Current.MainPage.DisplayAlert(
+                //    //        Languages.Error,
+                //    //      Languages.ConnectionError2,
+                //    //        Languages.Accept);
+                //    //}
+                //    return;
+                //}
                 this.IsRunning = false;
                 this.Library = response.ResponseObject;
 
@@ -115,13 +115,13 @@ namespace JukeBox.ViewModels
             else
             {
                 this.IsRunning = false;
-                if (Application.Current.MainPage != null)
-                {
-                    await Application.Current.MainPage.DisplayAlert(
-                        Languages.Error,
-                        checkConnetion.Message,
-                        Languages.Accept);
-                }
+                //if (Application.Current.MainPage != null)
+                //{
+                //    await Application.Current.MainPage.DisplayAlert(
+                //        Languages.Error,
+                //        checkConnetion.Message,
+                //        Languages.Accept);
+                //}
                 return;
             }
 
@@ -137,13 +137,13 @@ namespace JukeBox.ViewModels
             var checkConnetion = await this.apiService.CheckConnection();
             if (!checkConnetion.IsSuccess)
             {
-                if(Application.Current.MainPage !=null)
-                {
-                    await Application.Current.MainPage.DisplayAlert(
-                        Languages.Error,
-                        checkConnetion.Message,
-                        Languages.Accept);
-                }
+                //if(Application.Current.MainPage !=null)
+                //{
+                //    await Application.Current.MainPage.DisplayAlert(
+                //        Languages.Error,
+                //        checkConnetion.Message,
+                //        Languages.Accept);
+                //}
 
                 return;
             }
@@ -154,19 +154,19 @@ namespace JukeBox.ViewModels
 
             if (response != null)
             {
-                this.LibraryType = response.ResponseObject;
+             //   this.LibraryType = response.ResponseObject;
 
             }
             else
             {
 
-                if (Application.Current.MainPage != null)
-                {
-                    await Application.Current.MainPage.DisplayAlert(
-                        Languages.Error,
-                        checkConnetion.Message,
-                        Languages.Accept);
-                }
+                //if (Application.Current.MainPage != null)
+                //{
+                //    await Application.Current.MainPage.DisplayAlert(
+                //        Languages.Error,
+                //        checkConnetion.Message,
+                //        Languages.Accept);
+                //}
                 return;
             }
 

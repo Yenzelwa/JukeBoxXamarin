@@ -81,42 +81,45 @@ namespace JukeBox.Views
                 var main = MainViewModel.GetInstance();
                 var clientId = main.User.UserId > 0 ? main.User.UserId : 0;
                 var response = await Library.GetLibraryDetail(library.Id, clientId);
-                if (response.ResponseObject != null)
+                if (response != null )
                 {
-                    libraryId = library.Id;
-                    var songs = response.ResponseObject;
-                    LblMovieName.Text = library.Artist;
-                    LblType.Text = library.Type;
-                    var price = Math.Round(library.Price ?? 0, 2);
-                    LblPrice.Text = "R" + price;
-                    LblLanguage.Text = library.Name;
-                    LblDescription.Text = library.Description;
-                    ImgDetail.Source = ImageSource.FromUri(new Uri(library.CoverFilePath));
-                    BtnBuy.Text = library.Purchase;
-                    filePath = library.FilePath;
-                    DownloadAlbum = library.AlbumDownload;
-
-
-                    if (library != null)
+                    if (response.ResponseObject != null)
                     {
-                        var mainViewModel = MainViewModel.GetInstance();
-                        mainViewModel.LibraryDetailModel.LibraryId = library.Id;
-                        mainViewModel.LibraryDetailModel.libraryDetail();
-                        GridMoviesDetail.IsVisible = true;
-                        // BindingContext = mainViewModel;
-                        apiLibraryDetails = new List<ApiLibraryDetail>();
-                        foreach (var item in response.ResponseObject)
+                        libraryId = library.Id;
+                        var songs = response.ResponseObject;
+                        LblMovieName.Text = library.Artist;
+                        LblType.Text = library.Type;
+                        var price = Math.Round(library.Price ?? 0, 2);
+                        LblPrice.Text = "R" + price;
+                        LblLanguage.Text = library.Name;
+                        LblDescription.Text = library.Description;
+                        ImgDetail.Source = ImageSource.FromUri(new Uri(library.CoverFilePath));
+                        BtnBuy.Text = library.Purchase;
+                        filePath = library.FilePath;
+                        DownloadAlbum = library.AlbumDownload;
+
+
+                        if (library != null)
                         {
-                            item.IsStream = true;
-                            apiLibraryDetails.Add(item);
+                            var mainViewModel = MainViewModel.GetInstance();
+                            mainViewModel.LibraryDetailModel.LibraryId = library.Id;
+                            mainViewModel.LibraryDetailModel.libraryDetail();
+                            GridMoviesDetail.IsVisible = true;
+                            // BindingContext = mainViewModel;
+                            apiLibraryDetails = new List<ApiLibraryDetail>();
+                            foreach (var item in response.ResponseObject)
+                            {
+                                item.IsStream = true;
+                                apiLibraryDetails.Add(item);
+                            }
+                            if (apiLibraryDetails != null)
+                            {
+                                lblSongs.IsVisible = true;
+                            }
+
+
+
                         }
-                        if (apiLibraryDetails != null)
-                        {
-                            lblSongs.IsVisible = true;
-                        }
-
-
-
                     }
                 }
             }

@@ -69,6 +69,7 @@ namespace JukeBox.Droid.Audio
         private ComponentName _remoteComponentName;
         private Random _random;
         private SongComparer _comparer;
+        private bool btnStop_Pressed;
 
         private static string[] _playlistSongsProjections =
               {
@@ -482,7 +483,9 @@ namespace JukeBox.Droid.Audio
         {
             if (_player.IsPlaying)
             {
+                
                 builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPause, "Pause", ActionPause));
+
             }
             else
             {
@@ -622,7 +625,7 @@ namespace JukeBox.Droid.Audio
                 case AudioFocus.Gain:
                     if (_player != null)
                     {
-                        if (!_player.IsPlaying)
+                        if (!_player.IsPlaying && btnStop_Pressed == true)
                         {
                             Play();
                             UpdatePlaybackState(PlaybackStateCompat.StatePlaying);
@@ -638,7 +641,16 @@ namespace JukeBox.Droid.Audio
                     }
                     break;
                 case AudioFocus.LossTransient:
-                    Pause();
+                    if (_player.IsPlaying)
+                    {
+                        btnStop_Pressed = true;
+                        Pause();
+                    }
+                    else
+                    {
+                        btnStop_Pressed = false;
+                        
+                    }
                     break;
                 case AudioFocus.LossTransientCanDuck:
                     if (_player != null && _player.IsPlaying)
