@@ -38,7 +38,7 @@ namespace JukeBox.Models
                 var modelList = new ObservableCollection<ApiLibraryType>();
                 foreach (var item in mainViewModel.LibraryTypeModel.LibraryType)
                 {
-                    item.Color = item.TypeId == this.TypeId ? "Black" : "Gray";
+                    item.Color = item.TypeId == this.TypeId ? "White" : "Gray";
                     modelList.Add(item);
                 }
                 mainViewModel.LibraryTypeModel.LibraryType = modelList;

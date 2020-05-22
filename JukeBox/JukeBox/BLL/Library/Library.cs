@@ -51,6 +51,10 @@ namespace JukeBox.BLL.Library
 
                     return null;
                 }
+                catch (System.Net.Http.HttpRequestException)
+                {
+                    return null;
+                }
 
             }
         }
@@ -93,6 +97,10 @@ namespace JukeBox.BLL.Library
 
                 return null;
             }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                return null;
+            }
         
     }
         
@@ -130,6 +138,10 @@ namespace JukeBox.BLL.Library
                    // Console.WriteLine("\nException Caught!");
                   // Console.WriteLine("Message :{0} ", e.Message);
 
+                    return null;
+                }
+                catch (System.Net.Http.HttpRequestException)
+                {
                     return null;
                 }
 

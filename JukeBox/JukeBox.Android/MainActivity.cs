@@ -133,9 +133,9 @@ namespace JukeBox.Droid
             // updateUI("Encrypting file...");
             try
             {
-                byte[] fileData = FileUtils.readFile("/storage/emulated/0/jukebox/"+filename);
-                byte[] encodedBytes = EncryptDecryptUtils.encode( fileData);
-                FileUtils.saveFile(encodedBytes,"/storage/emulated/0/jukebox/"+filename);
+              //  byte[] fileData = FileUtils.readFile("/storage/emulated/0/jukebox/"+filename);
+             //   byte[] encodedBytes = EncryptDecryptUtils.encode( fileData);
+               // FileUtils.saveFile(encodedBytes,"/storage/emulated/0/jukebox/"+filename);
                 return true;
             }
             catch (Exception e)

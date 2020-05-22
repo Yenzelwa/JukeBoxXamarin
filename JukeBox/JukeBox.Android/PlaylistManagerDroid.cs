@@ -114,9 +114,9 @@ namespace JukeBox
 
             try
             {
-                byte[] fileData = FileUtils.readFile("/storage/emulated/0/jukebox/Songs/" + filename);
-                byte[] encodedBytes = EncryptDecryptUtils.encode(fileData);
-                FileUtils.saveFile(encodedBytes, "/storage/emulated/0/jukebox/Songs/" + filename);
+              //  byte[] fileData = FileUtils.readFile("/storage/emulated/0/jukebox/Songs/" + filename);
+              //  byte[] encodedBytes = EncryptDecryptUtils.encode(fileData);
+              //  FileUtils.saveFile(encodedBytes, "/storage/emulated/0/jukebox/Songs/" + filename);
                 return true;
             }
             catch (Exception e)
@@ -131,10 +131,10 @@ namespace JukeBox
 
             try
             {
-                byte[] fileData = FileUtils.readFile("/storage/emulated/0/jukebox/Songs/" + filename);
-                byte[] decryptedBytes = EncryptDecryptUtils.decode(fileData);
-                FileUtils.saveDecFile(decryptedBytes, "/storage/emulated/0/jukebox/Songs/" + filename, filename);
-                return decryptedBytes;
+              //  byte[] fileData = FileUtils.readFile("/storage/emulated/0/jukebox/Songs/" + filename);
+               // byte[] decryptedBytes = EncryptDecryptUtils.decode(fileData);
+              //  FileUtils.saveDecFile(decryptedBytes, "/storage/emulated/0/jukebox/Songs/" + filename, filename);
+                return new byte[555];
             }
             catch (Exception e)
             {
@@ -390,7 +390,7 @@ namespace JukeBox
                         {
                             title = songCursor.GetString(titleColumn);
                             var decrypt = DencryptFile(title + ".mp3", "");
-                            var file = FileUtils.getTempFileDescriptor(title + ".mp3", decrypt);
+                          //  var file = FileUtils.getTempFileDescriptor(title + ".mp3", decrypt);
                             artist = songCursor.GetString(artistColumn);
                             album = songCursor.GetString(albumColumn);
                             duration = ulong.Parse(songCursor.GetString(durationColumn));

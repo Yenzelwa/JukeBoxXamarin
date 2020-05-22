@@ -117,7 +117,18 @@
                     resultJSON);
                 return result;
             }
-            catch(Exception e)
+            catch (Java.Net.SocketException e)
+            {
+                // Console.WriteLine("\nException Caught!");
+                // Console.WriteLine("Message :{0} ", e.Message);
+
+                return null;
+            }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                return null;
+            }
+            catch (Exception e)
             {
               //  E.Message;
                 return null;
@@ -142,6 +153,17 @@
                 var resultJSON = await result.Content.ReadAsStringAsync();
                 var response = JsonConvert.DeserializeObject<Response>(resultJSON);
                 return response;
+            }
+            catch (Java.Net.SocketException e)
+            {
+                // Console.WriteLine("\nException Caught!");
+                // Console.WriteLine("Message :{0} ", e.Message);
+
+                return null;
+            }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                return null;
             }
             catch (Exception ex)
             {
@@ -175,6 +197,17 @@
                 var resultJSON = await result.Content.ReadAsStringAsync();
                 var response = JsonConvert.DeserializeObject<Response>(resultJSON);
                 return response;
+            }
+            catch (Java.Net.SocketException e)
+            {
+                // Console.WriteLine("\nException Caught!");
+                // Console.WriteLine("Message :{0} ", e.Message);
+
+                return null;
+            }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                return null;
             }
             catch (Exception ex)
             {
@@ -402,6 +435,17 @@
                     Result = list,
                 };
             }
+            catch (Java.Net.SocketException e)
+            {
+                // Console.WriteLine("\nException Caught!");
+                // Console.WriteLine("Message :{0} ", e.Message);
+
+                return null;
+            }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                return null;
+            }
             catch (Exception ex)
             {
                 return new Response
@@ -450,6 +494,17 @@
                     Result = newRecord,
                 };
             }
+            catch (Java.Net.SocketException e)
+            {
+                // Console.WriteLine("\nException Caught!");
+                // Console.WriteLine("Message :{0} ", e.Message);
+
+                return null;
+            }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                return null;
+            }
             catch (Exception ex)
             {
                 return new Response
@@ -497,6 +552,17 @@
                     Result = newRecord,
                 };
             }
+            catch (Java.Net.SocketException e)
+            {
+                // Console.WriteLine("\nException Caught!");
+                // Console.WriteLine("Message :{0} ", e.Message);
+
+                return null;
+            }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                return null;
+            }
             catch (Exception ex)
             {
                 return new Response
@@ -542,7 +608,14 @@
                 var result = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<User>(result);
             }
-            catch
+            catch (Java.Net.SocketException e)
+            {
+                // Console.WriteLine("\nException Caught!");
+                // Console.WriteLine("Message :{0} ", e.Message);
+
+                return null;
+            }
+            catch (System.Net.Http.HttpRequestException)
             {
                 return null;
             }
@@ -580,7 +653,14 @@
                 var result = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<ApiResponse>(result);
             }
-            catch
+            catch (Java.Net.SocketException e)
+            {
+                // Console.WriteLine("\nException Caught!");
+                // Console.WriteLine("Message :{0} ", e.Message);
+
+                return null;
+            }
+            catch (System.Net.Http.HttpRequestException)
             {
                 return null;
             }
@@ -616,7 +696,14 @@
                 var result = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<ApiResponse>(result);
             }
-            catch
+            catch (Java.Net.SocketException e)
+            {
+                // Console.WriteLine("\nException Caught!");
+                // Console.WriteLine("Message :{0} ", e.Message);
+
+                return null;
+            }
+            catch (System.Net.Http.HttpRequestException)
             {
                 return null;
             }
@@ -663,6 +750,17 @@
                     Result = newRecord,
                 };
             }
+            catch (Java.Net.SocketException e)
+            {
+                // Console.WriteLine("\nException Caught!");
+                // Console.WriteLine("Message :{0} ", e.Message);
+
+                return null;
+            }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                return null;
+            }
             catch (Exception ex)
             {
                 return new Response
@@ -706,6 +804,17 @@
                 {
                     IsSuccess = true,
                 };
+            }
+            catch (Java.Net.SocketException e)
+            {
+                // Console.WriteLine("\nException Caught!");
+                // Console.WriteLine("Message :{0} ", e.Message);
+
+                return null;
+            }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                return null;
             }
             catch (Exception ex)
             {

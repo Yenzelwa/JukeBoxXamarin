@@ -80,7 +80,7 @@ namespace JukeBox.ViewModels
             {
                 TypeId = 0,
                 TypeName = "ALL",
-                Color = "Black"
+                Color = "White"
                
 
 
@@ -104,7 +104,7 @@ namespace JukeBox.ViewModels
 
                 foreach (var item in response.ResponseObject)
                 {
-                    item.Color = item.TypeId == 0 ? "Black" : "Gray";
+                    item.Color = item.TypeId == 0 ? "White" : "Gray";
                     modelList.Add(item);
                 }
                 this.LibraryType = modelList;

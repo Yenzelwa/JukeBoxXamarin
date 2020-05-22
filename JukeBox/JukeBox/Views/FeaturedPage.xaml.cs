@@ -58,6 +58,14 @@ namespace JukeBox.Views
 
         }
 
+        private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var search = sender as SearchBar;
+            var suggestion = MainViewModel.GetInstance().LibraryModel.Library.Where(c => c.Artist.ToLower().Contains(search.Text.ToLower()) 
+                                                                                    || c.Name.ToLower().Contains(search.Text.ToLower())).ToList();
+
+            MovieListView.ItemsSource = suggestion;
+        }
         private async void MovieListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
 
