@@ -129,9 +129,9 @@ namespace JukeBox
             });
         }
 
-        public async void Shuffle()
+        public  void Shuffle()
         {
-            await Task.Run(() =>
+             Task.Run(() =>
             {
                 if (_isConnected)
                 {
@@ -164,26 +164,23 @@ namespace JukeBox
             });
         }
 
-        public void AddToEndOfQueue(IList<Song> songs)
+        public  void AddToEndOfQueue(IList<Song> songs)
         {
-            Task.Run(() =>
-            {
                 if (_isConnected)
                 {
                     _audioService?.AddToEndOfQueue(songs);
                 }
-            });
+           
         }
 
-        public void PlayNext(Song song)
+        public  void PlayNext(Song song)
         {
-            Task.Run(() =>
-            {
+         
                 if (_isConnected)
                 {
                     _audioService?.PlayNext(song);
                 }
-            });
+           
         }
     }
 }

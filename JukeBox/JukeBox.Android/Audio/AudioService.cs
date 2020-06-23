@@ -39,14 +39,14 @@ namespace JukeBox.Droid.Audio
         MediaPlayer.IOnCompletionListener,
         MediaPlayer.IOnSeekCompleteListener
     {
-        public const string ActionStart = "com.xammusic.START";
-        public const string ActionPlay = "com.xammusic.PLAY";
-        public const string ActionPause = "com.xammusic.PAUSE";
-        public const string ActionNext = "com.xammusic.NEXT";
-        public const string ActionPrev = "com.xammusic.PREV";
-        public const string ActionToggle = "com.xammusic.TOGGLE";
-        public const string ActionStop = "com.xammusic.STOP";
-        public const string ActionTryKill = "com.xammusic.TRY_KILL";
+        public const string ActionStart = "com.jukebox.START";
+        public const string ActionPlay = "com.jukebox.PLAY";
+        public const string ActionPause = "com.jukebox.PAUSE";
+        public const string ActionNext = "com.jukebox.NEXT";
+        public const string ActionPrev = "com.jukebox.PREV";
+        public const string ActionToggle = "com.jukebox.TOGGLE";
+        public const string ActionStop = "com.jukebox.STOP";
+        public const string ActionTryKill = "com.jukebox.TRY_KILL";
         public static string CHANNEL_ID = "JukeBoxChannel";
 
         private MediaPlayer _player;
@@ -232,7 +232,7 @@ namespace JukeBox.Droid.Audio
             else
             {
                 _queue.Insert(_pos + 1, song);
-                _getQueue?.Invoke(_queue);
+               _getQueue?.Invoke(_queue);
             }
         }
 
@@ -315,7 +315,6 @@ namespace JukeBox.Droid.Audio
                 _queue[n] = temp;
             }
             _getQueue(_queue);
-            Start(0);
         }
 
         public void Seek(double position)
@@ -422,15 +421,15 @@ namespace JukeBox.Droid.Audio
                 }
 
                 Bitmap artwork;
-                if (currentSong.Artwork !=null)
-                {
-                    artwork = await BitmapFactory.DecodeFileAsync(currentSong.Artwork.ToString());
+                //if (currentSong.Artwork !=null)
+                //{
+                //    artwork = await BitmapFactory.DecodeByteArrayAsync(currentSong.Artwork, 0, currentSong.Artwork.Length);
 
-                }
-                else
-                {
+                //}
+                //else
+                //{
                     artwork = await BitmapFactory.DecodeResourceAsync(ApplicationContext.Resources, Resource.Drawable.icon);
-                }
+                
                 builder.SetLargeIcon(artwork);
 
                 builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPrevious, "Prev", ActionPrev));
@@ -524,7 +523,7 @@ namespace JukeBox.Droid.Audio
 
                     if (_queue[_pos].Artwork!=null)
                     {
-                        Bitmap artwork = BitmapFactory.DecodeFile(_queue[_pos].Artwork.ToString());
+                        Bitmap artwork = BitmapFactory.DecodeByteArray(_queue[_pos].Artwork, 0, _queue[_pos].Artwork.Length); 
                         builder.PutBitmap(MediaMetadataCompat.MetadataKeyAlbumArt, artwork);
                         builder.PutBitmap(MediaMetadataCompat.MetadataKeyArt, artwork);
                     }

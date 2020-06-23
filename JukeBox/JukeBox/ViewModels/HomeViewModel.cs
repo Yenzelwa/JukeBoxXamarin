@@ -39,30 +39,30 @@ namespace JukeBox.ViewModels
         }
 
 
-        public HomeViewModel()
+        public   HomeViewModel()
         {
-            IsLoading = true;
-            Task.Run(async () =>
-            {
-                var pls = DependencyService.Get<IPlaylistManager>().GetPlaylists().OrderByDescending(p => p.DateModified).ToList();
-                foreach (Playlist pl in pls)
-                {
-                    pl.Songs = await DependencyService.Get<IPlaylistManager>().GetPlaylistSongs(pl.Id);
-                    if (pl.Songs?.Count > 0)
-                    {
-                        foreach (Song song in pl.Songs)
-                        {
-                            if (song.HasArtwork)
-                            {
-                                pl.Artwork = song.Artwork;
-                                break;
-                            }
-                        }
-                    }
-                }
-                IsLoading = false;
-                Playlists = pls;
-            });
+            //IsLoading = true;
+            // Task.Run(() =>
+            //{
+            //    var pls =  DependencyService.Get<IPlaylistManager>().GetPlaylists().Result.ToList().OrderByDescending(x=>x.DateModified);
+            //    foreach (Playlist pl in pls)
+            //    {
+            //        pl.Songs =  DependencyService.Get<IPlaylistManager>().GetPlaylistSongs(pl.Id).Result;
+            //        if (pl.Songs?.Count > 0)
+            //        {
+            //            foreach (Song song in pl.Songs)
+            //            {
+            //                if (song.HasArtwork)
+            //                {
+            //                    pl.Artwork = song.Artwork;
+            //                    break;
+            //                }
+            //            }
+            //        }
+            //    }
+            //    IsLoading = false;
+            //    Playlists = pls.ToList() ;
+            //});
             
 
         }

@@ -2,52 +2,67 @@
 <pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                  xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
-                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
                  x:Class="JukeBox.Controls.SongOptionsPopup"
-                 BackgroundColor="Black">
-    <ScrollView
-        HorizontalOptions="Center"
-        VerticalOptions="Center">
-        <AbsoluteLayout>
-            <Frame
-                x:Name="FrameContainer"
-                Margin="10"
-                HorizontalOptions="Center"
-                BackgroundColor="WhiteSmoke">
-                <StackLayout
-                    IsClippedToBounds="True"
-                    Padding="10, 5"
-                    Spacing="3">
-                    <Label VerticalOptions="Center"
-                           HorizontalOptions="Center"
-                           Text="{Binding Title}"
-                           Font="20"
-                           FontAttributes="Bold"
-                           TextColor="Black"/>
-                    <Button
-                        Margin="10, 5"
-                        TextColor="WhiteSmoke"
-                        BackgroundColor="#2287CA"
+                 >
+
+    <Grid VerticalOptions="End" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Frame Grid.RowSpan="2"  VerticalOptions="End"
+BackgroundColor="#232323">
+            <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Image  HorizontalOptions="Center"  Grid.Row="0" Aspect="Fill" HeightRequest="40" WidthRequest="40" Margin="0,-40,0,0"/>
+
+                <StackLayout Grid.Row="1">
+                    
+                        <Button                
+                        TextColor="White" BackgroundColor="Black" HeightRequest="20"                
                         HorizontalOptions="Fill"
                         Clicked="PlayNext"
                         Text="Play Next">
-                        <Button.HeightRequest>
-                            <OnPlatform x:TypeArguments="x:Double" Android="50" iOS="30"/>
-                        </Button.HeightRequest>
-                    </Button>
-                    <Button
-                        Margin="10, 5"
-                        TextColor="WhiteSmoke"
-                        BackgroundColor="#2287CA"
+                            <Button.HeightRequest>
+                                <OnPlatform x:TypeArguments="x:Double" Android="50" iOS="30"/>
+                            </Button.HeightRequest>
+                        </Button>
+
+                    <!--<Button                
+                        TextColor="White" BackgroundColor="Black" HeightRequest="20"    
                         HorizontalOptions="Fill"
                         Clicked="AddToQueue"
-                        Text="Add To End Of Queue">
-                        <Button.HeightRequest>
-                            <OnPlatform x:TypeArguments="x:Double" Android="50" iOS="30"/>
-                        </Button.HeightRequest>
-                    </Button>
+                        Text="Add To Queue">
+                            <Button.HeightRequest>
+                                <OnPlatform x:TypeArguments="x:Double" Android="50" iOS="30"/>
+                            </Button.HeightRequest>
+                        </Button>-->
+                    <Button                
+                        TextColor="White" BackgroundColor="Black" HeightRequest="20"    
+                        HorizontalOptions="Fill"
+                        Clicked="AddToPlaylist"
+                        Text="Add To Playlist">
+                            <Button.HeightRequest>
+                                <OnPlatform x:TypeArguments="x:Double" Android="50" iOS="30"/>
+                            </Button.HeightRequest>
+                        </Button>
+                    <Button                
+                        TextColor="White" BackgroundColor="Black" HeightRequest="20"    
+                        HorizontalOptions="Fill"
+                        Clicked="DeleteSong"
+                        Text="Delete">
+                            <Button.HeightRequest>
+                                <OnPlatform x:TypeArguments="x:Double" Android="50" iOS="30"/>
+                            </Button.HeightRequest>
+                        </Button>
+               
                 </StackLayout>
-            </Frame>
-        </AbsoluteLayout>
-    </ScrollView>
+
+            </Grid>
+        </Frame>
+    </Grid>
 </pages:PopupPage>

@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+             xmlns:controls="clr-namespace:JukeBox.Views"
              x:Class="JukeBox.Views.MusicDetailPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
                         BackgroundColor="#232323">
 
- 
-    <ScrollView  Padding="0">
+    <StackLayout>
+        <ScrollView x:Name="songs"  Padding="0" IsVisible="True">
 
             <AbsoluteLayout HorizontalOptions="FillAndExpand" 
                             VerticalOptions="FillAndExpand">
@@ -43,12 +45,12 @@
                                                     VerticalOptions="Center" HorizontalOptions="FillAndExpand">
                         </ffimageloading:CachedImage>
                         <StackLayout HeightRequest="200" Grid.Column="1" >
-                            <Label x:Name="LblMovieName"  TextColor="White" FontAttributes="Bold"/>
-                            <Label x:Name="LblLanguage" TextColor="Gray"/>
-                            <Label x:Name="LblType"  TextColor="Gray"/>
+                            <Label x:Name="LblArtist"  TextColor="White" FontAttributes="Bold"/>
+                            <Label x:Name="LblAlbum" TextColor="Gray"/>
+                            <Label x:Name="LblGenre"  TextColor="Gray"/>
                             <Label x:Name="LblPrice" TextColor="Gray"/>
                             <Button x:Name="BtnBuy" 
-                                        BackgroundColor="Black" TextColor="White" BorderColor="#048c0d" BorderWidth="1"
+                                        BackgroundColor="Black" TextColor="White" BorderColor="Gray" BorderWidth="1"
                                         Clicked="BtnTrailor_OnClicked"/>
                         </StackLayout>
 
@@ -87,13 +89,13 @@
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <Image Grid.Column="0" x:Name="imgs"  Source="play_w.png" HeightRequest="20" WidthRequest="20">
+                                                        <Image Grid.Column="0" x:Name="imgs"  Source="play_w.png"  HeightRequest="30" WidthRequest="30">
 
                                                         <Image.GestureRecognizers>
                                                             <TapGestureRecognizer x:Name="TapPausePlay" Tapped="TapPausePlay_OnTapped" ></TapGestureRecognizer>
                                                         </Image.GestureRecognizers>
                                                     </Image>
-                                                    <ActivityIndicator IsVisible="False" x:Name="{Binding Id}" IsRunning="True" Color ="#80000000"/>
+                                                    <ActivityIndicator IsVisible="False" x:Name="{Binding Id}" IsRunning="True" Color ="Black"/>
                                                     <StackLayout IsVisible="False"  Grid.Column="1" >
                                                         <ActivityIndicator IsRunning="True"/>
                                                        
@@ -103,10 +105,10 @@
                                    HorizontalTextAlignment="Center" />
                                                     </StackLayout>
                                                     <Button Grid.Column="2"   Text="{Binding SinglePurchase ,StringFormat='{0:C}'}" 
-                                         BackgroundColor="Black" TextColor="White"
-                                         HorizontalOptions="EndAndExpand" 
+                                         TextColor="White" HeightRequest="40" BackgroundColor="Transparent"
+                                         HorizontalOptions="EndAndExpand" CornerRadius="2"
                                         Clicked="BtnSingleDownload_OnClicked"
-                                         BorderColor="DarkOrange"     BorderWidth="1"  
+                                         BorderColor="Gray"     BorderWidth="1"  
                                          />
                                                     <StackLayout IsVisible="False"  Grid.Column="2" >
                                                         <Label Text="Dowloading ....." HorizontalOptions="Center" TextColor="Red"/>
@@ -146,7 +148,8 @@
         </AbsoluteLayout>
 
         </ScrollView>
-   
+    </StackLayout>
+
 </ContentPage>
 
 

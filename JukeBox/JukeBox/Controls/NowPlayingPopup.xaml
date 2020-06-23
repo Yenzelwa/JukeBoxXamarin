@@ -35,6 +35,7 @@
                 <controls:PrevControl Grid.Column="0" HorizontalOptions="End" />
                 <controls:PlayPauseControl Grid.Column="1" HorizontalOptions="Center" />
                 <controls:NextControl Grid.Column="2" HorizontalOptions="Start" />
+                <!--<controls:ShuffleControl Grid.Column="3" HorizontalOptions="Start" />-->
             </Grid>
 
 
@@ -45,12 +46,12 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Text="{Binding PositionString}" HorizontalOptions="Start" VerticalOptions="Start" TextColor="White" Margin="15, 0, 0, 0"/>
-                <ffimageloading:CachedImage Grid.Column="1" Source="close_good.png" HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="40" WidthRequest="40">
-                    <ffimageloading:CachedImage.GestureRecognizers>
+                <Label Grid.Column="0" Text="{Binding PositionString}" HorizontalOptions="Start"  VerticalOptions="Start" TextColor="White" Margin="15, 0, 0, 0"/>
+                <Image Grid.Column="1" Source="close_good.png" HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="40" WidthRequest="40">
+                    <Image.GestureRecognizers>
                         <TapGestureRecognizer Tapped="ClosePopup" />
-                    </ffimageloading:CachedImage.GestureRecognizers>
-                </ffimageloading:CachedImage>
+                    </Image.GestureRecognizers>
+                </Image>
                 <Label Grid.Column="2" Text="{Binding DurationString}" HorizontalOptions="End" VerticalOptions="Start" TextColor="White"  Margin="0, 0, 15, 0"/>
             </Grid>
         </StackLayout>

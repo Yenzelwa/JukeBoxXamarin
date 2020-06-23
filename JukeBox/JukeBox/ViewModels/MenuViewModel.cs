@@ -54,11 +54,11 @@ namespace JukeBox.ViewModels
                 new Playlist { Title = "About", IsDynamic = false }));
             PlaylistItems.Add(new PlaylistItem(
                 new Playlist { Title = "Profile", IsDynamic = false }));
-            var playlists = DependencyService.Get<IPlaylistManager>().GetPlaylists();
-            foreach (var playlist in playlists)
-            {
-                PlaylistItems.Add(new PlaylistItem(playlist));
-            }
+            //var playlists = DependencyService.Get<IPlaylistManager>().GetPlaylists().Result.ToList();
+            //foreach (var playlist in playlists)
+            //{
+            //    PlaylistItems.Add(new PlaylistItem(playlist));
+            //}
         }
     }
 }

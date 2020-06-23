@@ -1,9 +1,11 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace JukeBox.Models
 {
@@ -19,7 +21,7 @@ namespace JukeBox.Models
 
         public string Genre { get; set; }
 
-        public object Artwork { get; set; }
+        public byte[] Artwork { get; set; }
 
         public double Duration { get; set; }
 
@@ -28,6 +30,7 @@ namespace JukeBox.Models
         //public DateTime Date { get; set; }
 
         public byte[] Uri { get; set; }
+        public ImageSource ImageSource { get; set; }
 
         public bool HasArtwork
         {

@@ -24,6 +24,8 @@ namespace JukeBox
     {
         protected override void OnCreate(Bundle bundle)
         {
+
+            global::Xamarin.Forms.Forms.SetFlags("CollectionView_Experimental");
             base.OnCreate(bundle);
 
             // FFImageLoading

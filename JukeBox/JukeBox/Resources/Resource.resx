@@ -295,7 +295,7 @@
     <value>Confirm</value>
   </data>
   <data name="ConfirmPlaceHolder" xml:space="preserve">
-    <value>Enter the password confirm...</value>
+    <value>Confirm Password</value>
   </data>
   <data name="ConfirmValidation" xml:space="preserve">
     <value>You must enter a confirm.</value>

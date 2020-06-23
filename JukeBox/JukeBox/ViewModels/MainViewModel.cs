@@ -9,6 +9,9 @@
     using JukeBox.Models.Profile;
     using JukeBox.Profile.ViewModels;
     using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using JukeBox.Views.MyMusic;
 
     public class MainViewModel : BaseViewModel
     {
@@ -24,6 +27,8 @@
                 return _instance;
             }
         }
+
+       
 
         #region Attibrutes
         private UserLocal user;
@@ -153,7 +158,6 @@
             new Playlist { Title = "Home", IsDynamic = false }));
             this.PlaylistViewModel = new PlaylistViewModel(PlaylistItems[0]);
             
-
             //   this.Library = this.LibraryModel.Library;
             // this.LibraryDetail = new LibraryDetailViewModel.LibraryDetail();
             this.LoadMenu();
@@ -210,8 +214,9 @@
         #endregion
 
         #region Methods
-        private void LoadMenu()
+        private async void LoadMenu()
         {
+
             PlaylistItems = new ObservableCollection<PlaylistItem>();
             PlaylistItems.Add(new PlaylistItem(
                 new Playlist { Title = "Home", IsDynamic = false }));
@@ -219,7 +224,7 @@
 
             this.Menus.Add(new MenuItemViewModel
             {
-                
+
                 PageName = "MyProfilePage",
                 Title = Languages.MyProfile
             });
@@ -227,14 +232,14 @@
 
             this.Menus.Add(new MenuItemViewModel
             {
-                
+
                 PageName = "AboutPage",
                 Title = "About"
             });
 
             this.Menus.Add(new MenuItemViewModel
             {
-                
+
                 PageName = "LoginPage",
                 Title = Languages.LogOut
             });

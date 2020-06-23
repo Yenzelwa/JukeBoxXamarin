@@ -32,6 +32,7 @@ namespace JukeBox.ViewModels
         public Command ShuffleCommand { get; private set; }
         public Command ToggleCommand { get; private set; }
         public Command ClearQueueCommand { get; private set; }
+        public Command PlayNextCommand { get; private set; }
 
         private MusicStateViewModel()
         {
@@ -79,6 +80,7 @@ namespace JukeBox.ViewModels
             {
                 DependencyService.Get<IMusicManager>().ClearQueue();
             });
+           
         }
 
         public bool IsNotPlaying { get { return !_isPlaying; }}
@@ -109,6 +111,14 @@ namespace JukeBox.ViewModels
                 if (_queue != value)
                 {
                     _queue = value;
+                }
+                if (_queue != null || _queue.Count >0)
+                {
+                    HasSongs = true;
+                }
+                else
+                {
+                    HasSongs = false;
                 }
                 OnPropertyChanged(nameof(Queue));
                 OnPropertyChanged(nameof(Progress));
@@ -146,7 +156,7 @@ namespace JukeBox.ViewModels
                 if (Queue.Contains(value))
                 {
                     QueuePos = Queue.IndexOf(value);
-                    DependencyService.Get<IMusicManager>().Start(_queuePos);
+                  //  DependencyService.Get<IMusicManager>().Start(_queuePos);
                     OnPropertyChanged(nameof(DurationString));
                 }
             }
@@ -165,6 +175,10 @@ namespace JukeBox.ViewModels
                 Position = _actualPosition;
             }
         }
+        private bool _hasSongs;
+
+        public bool HasSongs { get; set; }
+        
 
 
         private double _position;

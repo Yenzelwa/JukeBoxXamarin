@@ -25,8 +25,8 @@ namespace JukeBox.Effects
         protected override void OnAttached()
         {
             var seekBar = (SeekBar)Control;
-            seekBar.ProgressDrawable.SetColorFilter(new PorterDuffColorFilter(new Android.Graphics.Color(34, 135, 202), PorterDuff.Mode.SrcIn));
-            seekBar.Thumb.SetColorFilter(new PorterDuffColorFilter(new Android.Graphics.Color(34, 135, 202), PorterDuff.Mode.SrcIn));
+            seekBar.ProgressDrawable.SetColorFilter(new PorterDuffColorFilter(new Android.Graphics.Color(128, 128, 128), PorterDuff.Mode.SrcIn));
+            seekBar.Thumb.SetColorFilter(new PorterDuffColorFilter(new Android.Graphics.Color(128, 128, 128), PorterDuff.Mode.SrcIn));
         }
 
         protected override void OnDetached()

@@ -1,6 +1,8 @@
-﻿using FFImageLoading.Forms;
+﻿using Android.Graphics;
+using FFImageLoading.Forms;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -11,12 +13,12 @@ namespace JukeBox.Controls
 {
     public class ArtworkImage : CachedImage
     {
-        public static readonly BindableProperty ArtworkProperty = BindableProperty.Create<ArtworkImage, object>(p => p.Artwork, false);
+        public static readonly BindableProperty ArtworkProperty = BindableProperty.Create<ArtworkImage, byte[]>(p => p.Artwork,null);
 
-        public object Artwork
+        public byte[] Artwork
         {
             
-            get { return (object)GetValue(ArtworkProperty); }
+            get { return (byte[])GetValue(ArtworkProperty); }
             set
             {
                 SetValue(ArtworkProperty, value);
@@ -48,7 +50,8 @@ namespace JukeBox.Controls
                         }
                         else if (Device.RuntimePlatform == Device.Android)
                         {
-                            Source = ImageSource.FromFile(Artwork.ToString());
+                            Stream stream = new MemoryStream(Artwork);
+                            Source = ImageSource.FromStream(() => { return stream; });
                         }
                     }
                     else

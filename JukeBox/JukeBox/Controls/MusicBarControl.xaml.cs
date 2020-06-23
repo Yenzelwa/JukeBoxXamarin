@@ -18,7 +18,14 @@ namespace JukeBox.Controls
         {
             InitializeComponent();
             this.BindingContext = MusicStateViewModel.Instance;
-           Carousel.Position = MusicStateViewModel.Instance.QueuePos;
+         
+            //  Carousel.Position = MusicStateViewModel.Instance.QueuePos;
+            var main = MainViewModel.GetInstance();
+            //if(main.PlaylistViewModel.Songs.Count>0)
+            //{
+            //    main.PlaylistViewModel.MusicState.HasSongs = true;
+            //    gridMusicBar.IsVisible = true;
+            //}
         }
 
         private void OpenNowPlayingPopup(object sender, EventArgs e)

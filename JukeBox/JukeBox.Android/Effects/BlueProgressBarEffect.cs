@@ -23,7 +23,7 @@ namespace JukeBox.Effects
         protected override void OnAttached()
         {
             var progressBar = (Android.Widget.ProgressBar)Control;
-            progressBar.ProgressDrawable.SetColorFilter(new PorterDuffColorFilter(new Android.Graphics.Color(34, 135, 202), PorterDuff.Mode.SrcIn));
+            progressBar.ProgressDrawable.SetColorFilter(new PorterDuffColorFilter(new Android.Graphics.Color(128, 128, 128), PorterDuff.Mode.SrcIn));
             //progressBar.Thumb.SetColorFilter(new PorterDuffColorFilter(new Android.Graphics.Color(34, 135, 202), PorterDuff.Mode.SrcIn));
         }
 

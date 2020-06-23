@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                 x:Class="JukeBox.Controls.PlaylistPopup"
+                 >
+   
+        <Grid VerticalOptions="End"  HeightRequest="290" >
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+        <ScrollView>
+            <Frame Grid.RowSpan="2"  VerticalOptions="End"
+BackgroundColor="#232323">
+                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Image  HorizontalOptions="Center"  Grid.Row="0" Aspect="Fill" HeightRequest="40" WidthRequest="40" Margin="0,-40,0,0"/>
+
+                    <StackLayout Grid.Row="1">
+                        <ListView x:Name="ViewMenuItems"
+              SeparatorVisibility="Default"
+                  SeparatorColor="#FFA500"
+              HasUnevenRows="true"
+              ItemsSource="{Binding JukeBoxPlaylist}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <StackLayout Padding="15,10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                            <Button                
+                        TextColor="White" BackgroundColor="Black" HeightRequest="20"                
+                        HorizontalOptions="Fill" Text="{Binding Title}"  Clicked="AddToPlaylist">
+                                                <Button.HeightRequest>
+                                                    <OnPlatform x:TypeArguments="x:Double" Android="50" iOS="30"/>
+                                                </Button.HeightRequest>
+                                            </Button>
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+
+                            <ListView.Footer>
+                                <!--<StackLayout Orientation="Horizontal">
+                                <Button VerticalOptions="Center" HorizontalOptions="FillAndExpand" Text="Create Playlist" TextColor="#2287CA" BorderColor="#2287CA" BorderWidth="1" BackgroundColor="Transparent"
+                         Margin="10">
+                                    <Button.Opacity>
+                                        <OnPlatform x:TypeArguments="x:Double" Android="1" iOS="1"/>
+                                    </Button.Opacity>
+                                </Button>
+                            </StackLayout>-->
+                                <StackLayout
+                    IsClippedToBounds="True"
+                    Padding="10, 5"
+                    Spacing="3">
+                                    <Label VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           Text="Create Playlist"
+                           Font="20"
+                           FontAttributes="Bold"
+                           TextColor="Black"/>
+                                    <Entry
+                        HorizontalOptions="Center"
+                        x:Name="PlaylistNameEntry"
+                        TextColor="Gray"
+                        Placeholder="Playlist Name" />
+                                    <Button
+                        TextColor="WhiteSmoke"
+                        Margin="10, 5"
+                         BackgroundColor="#f5deb3"
+                        HorizontalOptions="Fill"
+                        Clicked="CreatePlaylist"
+                        Text="Create">
+                                        <Button.HeightRequest>
+                                            <OnPlatform x:TypeArguments="x:Double" Android="50" iOS="30"/>
+                                        </Button.HeightRequest>
+                                    </Button>
+                                </StackLayout>
+                            </ListView.Footer>
+
+                        </ListView>
+                    </StackLayout>
+
+                </Grid>
+            </Frame>
+            </ScrollView>
+        </Grid>
+   
+</pages:PopupPage>

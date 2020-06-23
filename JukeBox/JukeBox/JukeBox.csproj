@@ -10,13 +10,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CarouselView" Version="7.0.3.1" />
-    <PackageReference Include="CarouselView.FormsPlugin" Version="5.2.0" />
+    <Compile Remove="RenderedViews\TLScrollViewRenderer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CarouselView.FormsPlugin.Fix" Version="5.2.1" />
     <PackageReference Include="DLToolkit.Forms.Controls.FlowListView" Version="2.0.11" />
     <PackageReference Include="DLToolkit.Forms.Controls.ImageCropView" Version="1.0.7" />
     <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="Plugin.Permissions" Version="3.0.0.12" />
+    <PackageReference Include="Refractored.XamForms.PullToRefresh" Version="2.4.1.1-beta" />
     <PackageReference Include="Rg.Plugins.Popup" Version="1.1.5.188" />
     <PackageReference Include="Sharpnado.Presentation.Forms" Version="1.2.0" />
     <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
@@ -33,7 +37,7 @@
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Forms" Version="4.1.0.555618" />
     <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
-    <PackageReference Include="Xamarin.Forms.CarouselView" Version="2.3.0-pre2" />
+    <PackageReference Include="Xamarin.Forms.PancakeView" Version="1.4.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,6 +62,33 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\ShuffleControl.xaml.cs">
+      <DependentUpon>ShuffleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\PlaylistPopup.xaml.cs">
+      <DependentUpon>PlaylistPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\SongViewCellAlbum.xaml.cs">
+      <DependentUpon>SongViewCellAlbum.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MyMusicTabbedPage.xaml.cs">
+      <DependentUpon>MyMusicTabbedPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MyMusic\AlbumsPage.xaml.cs">
+      <DependentUpon>AlbumsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MyMusic\PlaylistsSongPage.xaml.cs">
+      <DependentUpon>PlaylistsSongPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MyMusic\PlaylistsPage.xaml.cs">
+      <DependentUpon>PlaylistsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MyMusic\SongsPage.xaml.cs">
+      <DependentUpon>SongsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MyMusic\SonglistPage.xaml.cs">
+      <DependentUpon>SonglistPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Profile\ChangePasswordPage.xaml.cs">
       <DependentUpon>ChangePasswordPage.xaml</DependentUpon>
     </Compile>
@@ -76,6 +107,9 @@
     <EmbeddedResource Update="Controls\PlayPauseControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Controls\ShuffleControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Controls\PrevControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
@@ -85,7 +119,13 @@
     <EmbeddedResource Update="Controls\SliderControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Controls\PlaylistPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Controls\SongOptionsPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\SongViewCellAlbum.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Controls\SongViewCell.xaml">
@@ -103,6 +143,9 @@
     <EmbeddedResource Update="Views\HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\MyMusicTabbedPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\LandingTabbedPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
@@ -110,6 +153,21 @@
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\MusicDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\MyMusic\AlbumsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\MyMusic\PlaylistsSongPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\MyMusic\PlaylistsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\MyMusic\SongsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\MyMusic\SonglistPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\PlaylistPage.xaml">
@@ -157,9 +215,5 @@
     <EmbeddedResource Update="Views\TabbedFeatured.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="CustomControls\" />
   </ItemGroup>
 </Project>

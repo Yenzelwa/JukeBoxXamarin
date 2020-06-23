@@ -33,10 +33,7 @@ namespace JukeBox.Views
             // Detail = Pages[(int)MenuType.Browse];
 
             //  InvalidateMeasure();
-         var   PlaylistItems = new ObservableCollection<PlaylistItem>();
-            PlaylistItems.Add(new PlaylistItem(
-            new Playlist { Title = "Home", IsDynamic = false }));
-            LandingTabbedPage page = new LandingTabbedPage(PlaylistItems[0]);
+            LandingTabbedPage page = new LandingTabbedPage();
             Detail = new NavigationPage(page)
             {
                 BarBackgroundColor = Color.FromHex("#232323"),

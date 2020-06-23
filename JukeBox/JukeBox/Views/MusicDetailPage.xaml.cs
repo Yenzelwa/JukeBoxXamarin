@@ -1,4 +1,5 @@
 ﻿using Android.Content;
+using Android.Graphics;
 using Android.Media;
 using Android.Provider;
 using Java.IO;
@@ -11,6 +12,7 @@ using JukeBox.Interfaces;
 using JukeBox.Models;
 using JukeBox.Services;
 using JukeBox.ViewModels;
+using JukeBox.Views.MyMusic;
 using Plugin.DownloadManager;
 using Plugin.DownloadManager.Abstractions;
 using System;
@@ -26,7 +28,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-
+using static Android.Graphics.Bitmap;
 
 namespace JukeBox.Views
 {
@@ -39,8 +41,10 @@ namespace JukeBox.Views
         private PlaylistViewModel _vm;
         private MediaPlayer _player;
         private long libraryId;
+        private long artistId;
         private bool DownloadAlbum;
         private string filePath;
+        private string albumCover;
         private List<ApiLibraryDetail> apiLibraryDetails;
         private DataService dataService;
         long stopTime, startTime;
@@ -87,15 +91,16 @@ namespace JukeBox.Views
                     {
                         libraryId = library.Id;
                         var songs = response.ResponseObject;
-                        LblMovieName.Text = library.Artist;
-                        LblType.Text = library.Type;
+                        LblArtist.Text = library.Artist;
+                        LblGenre.Text = library.Type;
                         var price = Math.Round(library.Price ?? 0, 2);
                         LblPrice.Text = "R" + price;
-                        LblLanguage.Text = library.Name;
+                        LblAlbum.Text = library.Name;
                         LblDescription.Text = library.Description;
                         ImgDetail.Source = ImageSource.FromUri(new Uri(library.CoverFilePath));
                         BtnBuy.Text = library.Purchase;
                         filePath = library.FilePath;
+                        albumCover = library.CoverFilePath;
                         DownloadAlbum = library.AlbumDownload;
 
 
@@ -194,29 +199,32 @@ namespace JukeBox.Views
                             SongListView.IsEnabled = false;
                             Download.IsVisible = true;
                             BtnBuy.IsEnabled = false;
-                         
-                                foreach (var item in items)
+                           
+                            foreach (var item in items)
                                 {
-                                    if (dataService.GetFileById(item.Id) == null)
-                                    {
-
-                                    // ImgDetail.te = "download";
-                                    await Task.Run(() =>
+                                var dataService = new DataService();
+                                // ImgDetail.te = "download";
+                                await Task.Run(() =>
                                     {
                                         var audiobyte = getArrayFromUrl(item.FilePath);
-                                        var fileLocal = new AudioLocal
-                                        {
-                                            LibraryId = item.Id,
-                                            AudioName = item.Name,
-                                            AudioTitle = LblMovieName.Text,
-                                            Album = LblMovieName.Text,
-                                            Genre = LblType.Text,
-                                            AudioData = audiobyte
-                                        };
-                                        var dataService = new DataService();
-                                        dataService.Insert(fileLocal);
+                                        var artWork = getArrayFromUrl(albumCover);
+                                        
+                                            var song = new AudioLocal
+                                            {
+                                                LibraryId = item.Id,
+                                                albumId = libraryId,
+                                                AudioTitle = item.Name,
+                                                ArtistName = LblArtist.Text,
+                                                Album = LblAlbum.Text,
+                                                Genre = LblGenre.Text,
+                                                AudioData = audiobyte,
+                                                ArtWork = artWork
+                                            };
+                                            dataService.Insert(song);
+                                        
+                                        
                                     });
-                                }
+                                
 
                             }
 
@@ -244,24 +252,27 @@ namespace JukeBox.Views
                         foreach (var item in items)
                         {
                             if (dataService.GetFileById(item.Id) == null)
-
                             {
                             await Task.Run(() =>
                             {
 
                                 var audiobyteArray = getArrayFromUrl(item.FilePath);
+                                var artWork = getArrayFromUrl(albumCover);
+                               
+                                    var songs =  new AudioLocal
+                                                  {
+                                                      LibraryId = item.Id,
+                                                      albumId = libraryId,
+                                                      AudioTitle = item.Name,
+                                                       ArtistName = LblArtist.Text,
+                                                       Album = LblAlbum.Text,
+                                                      Genre = LblGenre.Text,
+                                                      AudioData = audiobyteArray,
+                                                      ArtWork = artWork
+                                                  };
 
-                                var fileLocal = new AudioLocal
-                                {
-                                    LibraryId = item.Id,
-                                    AudioName = item.Name,
-                                    AudioTitle = LblMovieName.Text,
-                                    Album = LblMovieName.Text,
-                                    Genre = LblType.Text,
-                                    AudioData = audiobyteArray
-                                };
-                                var dataService = new DataService();
-                                dataService.Insert(fileLocal);
+                                        dataService.Insert(songs);
+                                   
                             });
                         }
                         SongListView.IsEnabled = true;
@@ -276,13 +287,7 @@ namespace JukeBox.Views
                 await DisplayAlert(Languages.Error, Languages.SomethingWrong, Languages.Accept);
                 return;
             }
-            var b = QueuePopup.Instance;
-            var c = SliderControl.Instance;
-            var main = MainViewModel.GetInstance();
-            main.PlaylistItems = new ObservableCollection<PlaylistItem>();
-            main.PlaylistItems.Add(new PlaylistItem(
-            new Playlist { Title = "Home", IsDynamic = false }));
-            main.PlaylistViewModel = new PlaylistViewModel(main.PlaylistItems[0]);
+
             var user = await apiService.GetUserByEmail(
               apiSecurity,
               "/api/account",
@@ -291,13 +296,14 @@ namespace JukeBox.Views
               mainViewModel.Token.AccessToken,
               mainViewModel.Token.UserName);
             mainViewModel.Login.registerDataService(user, mainViewModel.Token);
-            var a = MusicStateViewModel.Instance;
-            mainViewModel.PlaylistItems = new ObservableCollection<PlaylistItem>();
-            mainViewModel.PlaylistItems.Add(new PlaylistItem(
-            new Playlist { Title = "Home", IsDynamic = false }));
-            //  var file = DencryptFile(title + ".mp3", "");
-            mainViewModel.PlaylistViewModel = new PlaylistViewModel(mainViewModel.PlaylistItems[0]);
-            // await DisplayAlert("File Status", "File Downloaded", "OK");
+            mainViewModel.PlaylistViewModel.Songs = await DependencyService.Get<IPlaylistManager>().GetAllSongs();
+            await DependencyService.Get<IMusicManager>().SetQueue(mainViewModel.PlaylistViewModel.Songs);
+            mainViewModel.PlaylistViewModel.Album = await DependencyService.Get<IPlaylistManager>().GetSongsByAlbum();
+            //if (mainViewModel.PlaylistViewModel.Songs != null)
+            //{
+            //    mainViewModel.PlaylistViewModel.MusicState.HasSongs = true;
+            //    new MusicBarControl();
+            //}
 
 
 
@@ -364,18 +370,22 @@ namespace JukeBox.Views
                                 await Task.Run(async () =>
                                 {
                                     var audiobyte = getArrayFromUrl(song.FilePath);
-
-                                    var fileLocal = new AudioLocal
-                                    {
-                                        LibraryId = song.Id,
-                                        AudioName = song.Name,
-                                        AudioTitle = LblMovieName.Text,
-                                        Album = LblMovieName.Text,
-                                        Genre = LblType.Text,
-                                        AudioData = audiobyte
-                                    };
-                                    var dataService = new DataService();
-                                    dataService.Insert(fileLocal);
+                                    var artWork = getArrayFromUrl(albumCover);
+                                        var songs = new List<AudioLocal>
+                                             {
+                                                  new AudioLocal
+                                                  {
+                                                    LibraryId = song.Id,
+                                                    albumId  = libraryId,
+                                                    ArtistName = LblArtist.Text,
+                                                    AudioTitle = song.Name,
+                                                    Album = LblAlbum.Text,
+                                                    Genre = LblGenre.Text,
+                                                    AudioData = audiobyte,
+                                                    ArtWork = artWork
+                                                  }
+                                             };
+                                        dataService.Insert(songs);
 
                                 });
 
@@ -408,18 +418,21 @@ namespace JukeBox.Views
                         await Task.Run(async () =>
                         {
                             var audiobyteArray = getArrayFromUrl(song.FilePath);
-                            var fileLocal = new AudioLocal
-                            {
-                                LibraryId = song.Id,
-                                AudioName = song.Name,
-                                AudioTitle = LblMovieName.Text,
-                                Album = LblMovieName.Text,
-                                Genre = LblType.Text,
-                                AudioData = audiobyteArray
-                            };
-
-                            var dataService = new DataService();
-                            dataService.Insert(fileLocal);
+                            var artWork = getArrayFromUrl(albumCover);
+                           
+                                var songs =  new AudioLocal
+                                                  {
+                                                    LibraryId = song.Id,
+                                                    ArtistName = LblArtist.Text,
+                                                    albumId  = libraryId,
+                                                    AudioTitle = song.Name,
+                                                    Album = LblAlbum.Text,
+                                                    Genre = LblGenre.Text,
+                                                    AudioData = audiobyteArray,
+                                                    ArtWork = artWork
+                                                 
+                                             };
+                                 dataService.Insert(songs);                         
                         });
                         viewControls[2].IsVisible = false;
                         viewControls[5].IsVisible = false;
@@ -435,13 +448,6 @@ namespace JukeBox.Views
                 return;
             }
 
-            var b = QueuePopup.Instance;
-            var c = SliderControl.Instance;
-            var main = MainViewModel.GetInstance();
-            main.PlaylistItems = new ObservableCollection<PlaylistItem>();
-            main.PlaylistItems.Add(new PlaylistItem(
-            new Playlist { Title = "Home", IsDynamic = false }));
-            main.PlaylistViewModel = new PlaylistViewModel(main.PlaylistItems[0]);
             var user = await apiService.GetUserByEmail(
               apiSecurity,
               "/api/account",
@@ -450,15 +456,18 @@ namespace JukeBox.Views
               mainViewModel.Token.AccessToken,
               mainViewModel.Token.UserName);
             mainViewModel.Login.registerDataService(user, mainViewModel.Token);
-            var a = MusicStateViewModel.Instance;
-            mainViewModel.PlaylistItems = new ObservableCollection<PlaylistItem>();
-            mainViewModel.PlaylistItems.Add(new PlaylistItem(
-            new Playlist { Title = "Home", IsDynamic = false }));
-            //  var file = DencryptFile(title + ".mp3", "");
-            mainViewModel.PlaylistViewModel = new PlaylistViewModel(mainViewModel.PlaylistItems[0]);
-            // await DisplayAlert("File Status", "File Downloaded", "OK");
+            mainViewModel.PlaylistViewModel.Songs = await DependencyService.Get<IPlaylistManager>().GetAllSongs();
+            await DependencyService.Get<IMusicManager>().SetQueue(mainViewModel.PlaylistViewModel.Songs);
+            mainViewModel.PlaylistViewModel.Album = await DependencyService.Get<IPlaylistManager>().GetSongsByAlbum();
+            //if (mainViewModel.PlaylistViewModel.Songs != null)
+            //{
+            //    mainViewModel.PlaylistViewModel.MusicState.HasSongs = true;
+            //    new SongsPage();
+            //    new PlaylistsPage();
+            //    new AlbumsPage();
+            //}
 
-          
+
         }
 
     
@@ -593,10 +602,9 @@ namespace JukeBox.Views
                 var b = QueuePopup.Instance;
                 var c = SliderControl.Instance;
                 var main = MainViewModel.GetInstance();
-                main.PlaylistItems = new ObservableCollection<PlaylistItem>();
-                main.PlaylistItems.Add(new PlaylistItem(
-                new Playlist { Title = "Home", IsDynamic = false }));
-                main.PlaylistViewModel = new PlaylistViewModel(main.PlaylistItems[0]);
+                main.PlaylistViewModel.Songs = await DependencyService.Get<IPlaylistManager>().GetAllSongs();
+                await DependencyService.Get<IMusicManager>().SetQueue(main.PlaylistViewModel.Songs);
+                main.PlaylistViewModel.Album = await DependencyService.Get<IPlaylistManager>().GetSongsByAlbum();
                 var reload = new MusicBarControl();
                 var apiService = new ApiService();
                 var checkConnetion = await apiService.CheckConnection();

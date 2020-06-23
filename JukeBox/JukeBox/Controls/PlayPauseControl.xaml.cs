@@ -17,7 +17,7 @@ namespace JukeBox.Controls
         public PlayPauseControl()
         {
             this.BindingContext = MusicStateViewModel.Instance;
-            InitializeComponent();
+             InitializeComponent();
         }
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)

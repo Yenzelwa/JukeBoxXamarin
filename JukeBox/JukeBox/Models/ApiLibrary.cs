@@ -36,6 +36,7 @@ namespace JukeBox.Models
             }
         }
         public string PriceFormat => string.Format("R {0}", Math.Round(Price ?? 0, 2));
+
             
         
     }

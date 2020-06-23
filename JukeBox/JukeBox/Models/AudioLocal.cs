@@ -13,11 +13,12 @@ namespace JukeBox.Models
         public string AudioTitle { get; set; }
         public string Album { get; set; }
         public string Genre { get; set; }
-
-        public string AudioName { get; set; }
+        public long albumId { get; set; }
+        public string ArtistName { get; set; }
             public byte[] AudioData { get; set; }
+        public byte[] ArtWork { get; set; }
 
-            public override int GetHashCode()
+        public override int GetHashCode()
             {
                 return AudioId;
             }

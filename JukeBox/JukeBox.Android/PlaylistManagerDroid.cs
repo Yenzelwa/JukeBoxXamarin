@@ -31,6 +31,7 @@ using JukeBox.Droid.FileEncryption;
 using JukeBox.Droid;
 using Android.Database.Sqlite;
 using JukeBox.Helpers;
+using JukeBox.Services;
 
 [assembly: Dependency(typeof(PlaylistManagerDroid))]
 namespace JukeBox
@@ -85,28 +86,7 @@ namespace JukeBox
                     MediaStore.Audio.Playlists.Members.InterfaceConsts.AlbumId
                 };
 
-        public Playlist CreatePlaylist(string name)
-        {
-            ContentValues contentValues = new ContentValues();
-            contentValues.Put(MediaStore.Audio.Playlists.InterfaceConsts.Name, name);
-            contentValues.Put(MediaStore.Audio.Playlists.InterfaceConsts.DateAdded, Java.Lang.JavaSystem.CurrentTimeMillis());
-            contentValues.Put(MediaStore.Audio.Playlists.InterfaceConsts.DateModified, Java.Lang.JavaSystem.CurrentTimeMillis());
-
-            Android.Net.Uri uri = Android.App.Application.Context.ContentResolver.Insert(
-                MediaStore.Audio.Playlists.ExternalContentUri, contentValues);
-            if (uri != null)
-            {
-                ICursor playlistCursor = Android.App.Application.Context.ContentResolver.Query(uri, _playlistProjections, null, null, null);
-                if (playlistCursor.MoveToFirst())
-                {
-                    ulong id = ulong.Parse(playlistCursor.GetString(playlistCursor.GetColumnIndex(MediaStore.Audio.Playlists.InterfaceConsts.Id)));
-                    return new Playlist { Id = id, Title = name, Songs = new List<Song>(), IsDynamic = true, DateModified = DateTime.Now };
-                }
-                playlistCursor?.Close();
-
-            }
-            return null;
-        }
+       
 
 
         public bool EncryptFile(string filename, string path)
@@ -234,22 +214,24 @@ namespace JukeBox
             return await Task.Run<IList<Song>>(() =>
             {
                 IList<Song> songs = new ObservableCollection<Song>();
-                var db = new DataAccess();
-                var files = db.GetAllFiles();
+                var db = new DataService();
+                var files = db.GetAllSongs();
                 // var duration = 4.5;
                 foreach (var song in files)
                 {
                     songs.Add(new Song
                     {
-                        Id = song.AudioId,
+                        Id = (int)song.LibraryId,
                         Title = song.AudioTitle,
-                        Artist = song.AudioName,
+                        Artist = song.ArtistName,
                         Album = song.Album,
                         Genre = song.Genre,
                         Duration = 1000,
                         Uri = song.AudioData,
-                        Artwork = null
-                    });
+                        Artwork = song.ArtWork,
+                        ImageSource = ImageSource.FromStream(() => new MemoryStream(song.ArtWork))
+
+            });
 
                 }
                 return songs;
@@ -312,164 +294,304 @@ namespace JukeBox
                 Android.Util.Log.Error("lv", e.Message);
             }
         }
-        public IList<Playlist> GetPlaylists()
+
+     
+        public async Task<IList<Albumlist>> GetSongsByAlbum()
         {
-
-            IList<Playlist> playlists = new ObservableCollection<Playlist>();
-
-                ICursor playlistCursor = Android.App.Application.Context.ContentResolver.Query(
-                MediaStore.Audio.Artists.ExternalContentUri ,
-                _playlistProjections, MediaStore.Audio.Media.InterfaceConsts.Data + " like ? ",
-    new string[] { "%jukebox/Songs%" },
-                MediaStore.Audio.Playlists.InterfaceConsts.Name);
-
-            int idColumn = playlistCursor.GetColumnIndex(MediaStore.Audio.Playlists.InterfaceConsts.Id);
-            int nameColumn = playlistCursor.GetColumnIndex(MediaStore.Audio.Playlists.InterfaceConsts.Name);
-            int dateModifiedColumn = playlistCursor.GetColumnIndex(MediaStore.Audio.Playlists.InterfaceConsts.DateModified);
-
-            ulong id;
-            string name;
-            long time;
-
-            if (playlistCursor.MoveToFirst())
+            return await Task.Run<IList<Albumlist>>(() =>
             {
-                do
+                IList<Albumlist> albumlist = new ObservableCollection<Albumlist>();
+                var db = new DataService();
+                // var album = db.GetAbumById(albumId);
+                var songs = db.GetAllSongs();
+                var albumgroup = songs.GroupBy(x => new { Id = x.albumId, Name = x.Album }).Select(album => new
                 {
-                    id = ulong.Parse(playlistCursor.GetString(idColumn));
-                    name = playlistCursor.GetString(nameColumn);
-                    time = long.Parse(playlistCursor.GetString(dateModifiedColumn));
+                    AlbumId = album.Key.Id,
+                    AlbumName = album.Key.Name,
+                    Songs = album.ToList()
+                });
+                // var duration = 4.5;
+                foreach (var album in albumgroup)
+                {
+                    var alb = new Albumlist
+                    {
+                        Id = (int)album.AlbumId,
+                        Name = album.AlbumName,
+                        Artwork = album.Songs[0].ArtWork,
+                        ImageSource = ImageSource.FromStream(() => new MemoryStream(album.Songs[0].ArtWork))
+                    };
+                  //  var songs = db.GetSongById(alb.Id);
+                    if (album.Songs != null)
+                    {
+                        alb.AlbumsSongs = new List<Song>();
+                        foreach (var song in album.Songs)
+                        {
+                           
+                            alb.AlbumsSongs.Add(new Song
+                            {
+                                Id = (int)song.LibraryId,
+                                Title = song.AudioTitle,
+                                Artist = song.ArtistName,
+                                Album = song.Album,
+                                Genre = song.Genre,
+                                Duration = 1000,
+                                Uri = song.AudioData,
+                                Artwork = song.ArtWork,
+                                ImageSource = ImageSource.FromStream(() => new MemoryStream(song.ArtWork))
+                            });
+                        }
+                    }
+                    albumlist.Add(alb);
+                }
+                return albumlist;
+            });
+        }
 
-                    DateTime dateModified = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(time);
+        public Playlist CreatePlaylist(string name , Song song)
+        {
+            //ContentValues contentValues = new ContentValues();
+            //contentValues.Put(MediaStore.Audio.Playlists.InterfaceConsts.Name, name);
+            //contentValues.Put(MediaStore.Audio.Playlists.InterfaceConsts.DateAdded, Java.Lang.JavaSystem.CurrentTimeMillis());
+            //contentValues.Put(MediaStore.Audio.Playlists.InterfaceConsts.DateModified, Java.Lang.JavaSystem.CurrentTimeMillis());
 
-                    playlists.Add(new Playlist { Id = id, Title = name, IsDynamic = true , DateModified = dateModified});
-                } while (playlistCursor.MoveToNext());
+            //Android.Net.Uri uri = Android.App.Application.Context.ContentResolver.Insert(
+            //    MediaStore.Audio.Playlists.ExternalContentUri, contentValues);
+            //if (uri != null)
+            //{
+            //    ICursor playlistCursor = Android.App.Application.Context.ContentResolver.Query(uri, _playlistProjections, null, null, null);
+            //    if (playlistCursor.MoveToFirst())
+            //    {
+            //        ulong id = ulong.Parse(playlistCursor.GetString(playlistCursor.GetColumnIndex(MediaStore.Audio.Playlists.InterfaceConsts.Id)));
+            //        return new Playlist { Id = id, Title = name, Songs = new List<Song>(), IsDynamic = true, DateModified = DateTime.Now };
+            //    }
+            //    playlistCursor?.Close();
+
+            //}
+            //return null;
+            var db = new DataService();
+            var playlist = new PlaylistName
+            {
+                Title = name,
+                DateModified = DateTime.Now
+            };
+            db.Insert(playlist);
+            var inserted = db.GetInsertedPlaylst(name);
+            if(inserted != null)
+            {
+                var playlistModel = new PlaylistModel
+                {
+                    playlistNameId = inserted.PlaylistNameId,
+                    SongId = song.Id
+
+                };
+                db.Insert(playlistModel);
             }
-            playlistCursor?.Close();
-            return playlists;
+            return null;
         }
 
         public async Task<IList<Song>> GetPlaylistSongs(ulong playlistId)
         {
+            //return await Task.Run<IList<Song>>(() =>
+            //{
+            //    IList<Song> songs = new ObservableCollection<Song>();
+            //    ICursor playlistCursor, songCursor;
+            //    var url = MediaStore.Audio.Playlists.Members.GetContentUri("external", (long)playlistId);
+
+            //    playlistCursor = Android.App.Application.Context.ContentResolver.Query(
+            //        MediaStore.Audio.Playlists.ExternalContentUri,
+            //        _playlistProjections,
+            //        $"{MediaStore.Audio.Playlists.InterfaceConsts.Id} = {playlistId}",
+            //        null, null);
+
+            //    if (playlistCursor.MoveToFirst())
+            //    {
+
+            //        songCursor = Android.App.Application.Context.ContentResolver.Query(
+            //            MediaStore.Audio.Playlists.Members.GetContentUri("external", (long)playlistId),
+            //            _playlistProjections, null,
+            //            null,null);
+
+            //        int idColumn = songCursor.GetColumnIndex(MediaStore.Audio.Playlists.Members.AudioId);
+
+
+            //        ulong  id;
+
+
+
+            //        if (songCursor.MoveToFirst())
+            //        {
+            //            do
+            //            {
+
+            //                id = ulong.Parse(songCursor.GetString(idColumn));
+
+            //                var db = new DataService();
+            //                var song  = db.GetFileById((int)id);
+            //                songs.Add(new Song
+            //                {
+            //                    Id = (int)song.LibraryId,
+            //                    Title = song.AudioTitle,
+            //                    Artist = song.ArtistName,
+            //                    Album = song.Album,
+            //                    Genre = song.Genre,
+            //                    Duration = 1000,
+            //                    Uri = song.AudioData,
+            //                    Artwork = song.ArtWork ,
+            //                    ImageSource = ImageSource.FromStream(() => new MemoryStream(song.ArtWork != null ? song.ArtWork : null))
+            //                });
+            //            } while (songCursor.MoveToNext());
+            //            songCursor?.Close();
+            //        }
+            //    }
+            //    playlistCursor?.Close();
+
+            //    return songs;
+            //});
             return await Task.Run<IList<Song>>(() =>
             {
                 IList<Song> songs = new ObservableCollection<Song>();
-                ICursor playlistCursor, songCursor, genreCursor, albumCursor;
+                var db = new DataService();
+                var playSongs = db.GetSongPlaylist((int)playlistId);
 
-
-                playlistCursor = Android.App.Application.Context.ContentResolver.Query(
-                    MediaStore.Audio.Playlists.ExternalContentUri,
-                    _playlistProjections, MediaStore.Audio.Media.InterfaceConsts.Data + " like ? ",
-    new string[] { "%jukebox/Songs%" }, null);
-
-                if (playlistCursor.MoveToFirst())
+                // var duration = 4.5;
+                foreach (var playlist in playSongs)
                 {
-                    songCursor = Android.App.Application.Context.ContentResolver.Query(
-                        MediaStore.Audio.Playlists.Members.GetContentUri("external", (long)playlistId),
-                        _playlistSongsProjections,
-                       MediaStore.Audio.Media.InterfaceConsts.Data + " like ? ",
-    new string[] { "%jukebox/Songs%" },
-                        MediaStore.Audio.Playlists.Members.PlayOrder);
-
-                    int artistColumn = songCursor.GetColumnIndex(MediaStore.Audio.Playlists.Members.InterfaceConsts.Artist);
-                    int titleColumn = songCursor.GetColumnIndex(MediaStore.Audio.Playlists.Members.InterfaceConsts.Title);
-                    int albumColumn = songCursor.GetColumnIndex(MediaStore.Audio.Playlists.Members.InterfaceConsts.Album);
-                    int uriColumn = songCursor.GetColumnIndex(MediaStore.Audio.Playlists.Members.InterfaceConsts.Data);
-                    int durationColumn = songCursor.GetColumnIndex(MediaStore.Audio.Playlists.Members.InterfaceConsts.Duration);
-                    int idColumn = songCursor.GetColumnIndex(MediaStore.Audio.Playlists.Members.AudioId);
-                    int albumIdColumn = songCursor.GetColumnIndex(MediaStore.Audio.Playlists.Members.InterfaceConsts.AlbumId);
-
-
-                    string artist, album, title, artworkId, genre, artwork;
-                    ulong duration, id;
-                    byte[] uri;
-
-
-                    if (songCursor.MoveToFirst())
+                    var files = db.GetSongsByPlaylistId((int)playlistId);
+                    foreach (var song in files)
                     {
-                        do
+                        songs.Add(new Song
                         {
-                            title = songCursor.GetString(titleColumn);
-                            var decrypt = DencryptFile(title + ".mp3", "");
-                          //  var file = FileUtils.getTempFileDescriptor(title + ".mp3", decrypt);
-                            artist = songCursor.GetString(artistColumn);
-                            album = songCursor.GetString(albumColumn);
-                            duration = ulong.Parse(songCursor.GetString(durationColumn));
-                            uri = null;
-                            id = ulong.Parse(songCursor.GetString(idColumn));
-                            artworkId = songCursor.GetString(albumIdColumn);
+                            Id = (int)song.LibraryId,
+                            Title = song.AudioTitle,
+                            Artist = song.ArtistName,
+                            Album = song.Album,
+                            Genre = song.Genre,
+                            Duration = 1000,
+                            Uri = song.AudioData,
+                            Artwork = song.ArtWork,
+                            ImageSource = ImageSource.FromStream(() => new MemoryStream(song.ArtWork))
 
-                            genreCursor = Android.App.Application.Context.ContentResolver.Query(
-                                MediaStore.Audio.Genres.GetContentUriForAudioId("external", (int)id),
-                                _genresProjections, MediaStore.Audio.Media.InterfaceConsts.Data + " like ? ",
-    new string[] { "%jukebox/Songs%" }, null);
-                            int genreColumn = genreCursor.GetColumnIndex(MediaStore.Audio.Genres.InterfaceConsts.Name);
-                            if (genreCursor.MoveToFirst())
-                            {
-                                genre = genreCursor.GetString(genreColumn) ?? string.Empty;
-                            }
-                            else
-                            {
-                                genre = string.Empty;
-                            }
+                        });
 
-                            albumCursor = Android.App.Application.Context.ContentResolver.Query(
-                                MediaStore.Audio.Albums.ExternalContentUri,
-                                _albumProjections,
-                                $"{MediaStore.Audio.Albums.InterfaceConsts.Id}=?",
-                                new string[] { artworkId },
-                                null);
-                            int artworkColumn = albumCursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.AlbumArt);
-                            if (albumCursor.MoveToFirst())
-                            {
-                                artwork = albumCursor.GetString(artworkColumn) ?? string.Empty;
-                            }
-                            else
-                            {
-                                artwork = string.Empty;
-                            }
-
-                            songs.Add(new Song
-                            {
-                                Id = 1,
-                                Title = title,
-                                Artist = artist,
-                                Album = album,
-                                Genre = genre,
-                                Duration = duration / 1000,
-                                Uri = uri,
-                                Artwork = artwork
-                            });
-
-                            genreCursor?.Close();
-                            albumCursor?.Close();
-                        } while (songCursor.MoveToNext());
-                        songCursor?.Close();
-                    }
+                    }               
                 }
-                playlistCursor?.Close();
-
                 return songs;
             });
-            
+               
         }
 
-        public async Task AddToPlaylist(Playlist playlist, Song song)
+        public async  Task<IList<JukeBoxPlaylist>> GetPlaylists()
         {
-            await Task.Run(() =>
+
+            //IList<Playlist> playlists = new ObservableCollection<Playlist>();
+
+            //ICursor playlistCursor = Android.App.Application.Context.ContentResolver.Query(
+            //MediaStore.Audio.Playlists.ExternalContentUri,
+            //_playlistProjections, null ,null,
+            //MediaStore.Audio.Playlists.InterfaceConsts.Name);
+
+            //int idColumn = playlistCursor.GetColumnIndex(MediaStore.Audio.Playlists.InterfaceConsts.Id);
+            //int nameColumn = playlistCursor.GetColumnIndex(MediaStore.Audio.Playlists.InterfaceConsts.Name);
+            //int dateModifiedColumn = playlistCursor.GetColumnIndex(MediaStore.Audio.Playlists.InterfaceConsts.DateModified);
+
+            //ulong id;
+            //string name;
+            //long time;
+
+            //if (playlistCursor.MoveToFirst())
+            //{
+            //    do
+            //    {
+            //        id = ulong.Parse(playlistCursor.GetString(idColumn));
+            //        name = playlistCursor.GetString(nameColumn);
+            //        time = long.Parse(playlistCursor.GetString(dateModifiedColumn));
+
+            //        DateTime dateModified = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(time);
+            //        playlists.Add(new Playlist { Id = id, Title = name, IsDynamic = true, DateModified = dateModified });
+            //    } while (playlistCursor.MoveToNext());
+            //}
+            //playlistCursor?.Close();
+            //return playlists;
+            return await Task.Run<IList<JukeBoxPlaylist>>(() =>
             {
-                ContentValues cv = new ContentValues();
-                cv.Put(MediaStore.Audio.Playlists.Members.PlayOrder, 0);
-                cv.Put(MediaStore.Audio.Playlists.Members.AudioId, song.Id);
-                Android.Net.Uri uri = MediaStore.Audio.Playlists.Members.GetContentUri("external", (long)playlist.Id);
-                ContentResolver resolver = Android.App.Application.Context.ContentResolver;
-                var rUri = resolver.Insert(uri, cv);
-                resolver.NotifyChange(Android.Net.Uri.Parse("content://media"), null);
+                IList<JukeBoxPlaylist> playlists = new ObservableCollection<JukeBoxPlaylist>();
+                var db = new DataService();
+                var playlistList = db.GetAllPlaylist();
+                if (playlistList.Count() > 0)
+                {
+                    foreach (var play in playlistList)
+                    {
+
+                        var playlist = new JukeBoxPlaylist
+                        {
+                            Id = (ulong)play.PlaylistNameId,
+                            Title = play.Title,
+                            PlaylistSongs = new List<Song>()
+                        };
+                        playlist.PlaylistSongs = new List<Song>();
+                        var playlistModels = db.GetSongPlaylist((int)play.PlaylistNameId);
+                        if (playlistModels.Count() > 0)
+                        {
+                            foreach (var playmodel in playlistModels)
+                            {
+                                var file = db.GetFileById(playmodel.SongId);
+                                if (file != null)
+                                {
+                                    var song = new Song
+                                    {
+                                        Id = (int)file.LibraryId,
+                                        Title = file.AudioTitle,
+                                        Artist = file.ArtistName,
+                                        Album = file.Album,
+                                        Genre = file.Genre,
+                                        Duration = 1000,
+                                        Uri = file.AudioData,
+                                        Artwork = file.ArtWork,
+                                        ImageSource = ImageSource.FromStream(() => new MemoryStream(file.ArtWork))
+                                    };
+                                    playlist.PlaylistSongs.Add(song);
+                                }
+                                
+                            }                    
+                        }
+                       // playlist.ImageSource = ImageSource.FromFile("playlist.png");
+                        playlists.Add(playlist);
+                        playlist.Artwork = playlist.PlaylistSongs[0].Artwork;
+                        playlist.ImageSource = ImageSource.FromStream(() => new MemoryStream(playlist.PlaylistSongs[0].Artwork));
+                    }
+                }
+                return playlists;
             });
-            
+
         }
 
 
+        public void AddToPlaylist(JukeBoxPlaylist playlist, Song song)
+        {
+          
+                var db = new DataService();
+                var playlistModel = new PlaylistModel
+                {
+                    playlistNameId = (int)playlist.Id,
+                    SongId = song.Id
 
+                };
+                db.Insert(playlistModel);
+              //  return null;
+        
 
-}
+            //await Task.Run(() =>
+            //{
+            //    ContentValues cv = new ContentValues();
+            //    cv.Put(MediaStore.Audio.Playlists.Members.PlayOrder, 0);
+            //    cv.Put(MediaStore.Audio.Playlists.Members.AudioId, song.Id);
+            //    Android.Net.Uri uri = MediaStore.Audio.Playlists.Members.GetContentUri("external", (long)playlist.Id);
+            //    ContentResolver resolver = Android.App.Application.Context.ContentResolver;
+            //    var rUri = resolver.Insert(uri, cv);
+            //    resolver.NotifyChange(Android.Net.Uri.Parse("content://media"), null);
+            //});
+        }
+
+      
+    }
 }

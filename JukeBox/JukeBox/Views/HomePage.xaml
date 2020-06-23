@@ -19,7 +19,7 @@
             <!--<ScrollView Grid.Row="0">
                 <StackLayout Orientation="Vertical">-->
 
-            <dlcontrols:FlowListView Grid.Row="0" x:Name="PlaylistGridView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FlowItemsSource="{Binding Playlists}" HasUnevenRows="True" RowHeight="210" FlowColumnMinWidth="160" BackgroundColor="Transparent">
+            <dlcontrols:FlowListView Grid.Row="0" x:Name="PlaylistGridView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FlowItemsSource="{Binding Playlists}"  HasUnevenRows="True" RowHeight="210" FlowColumnMinWidth="160" BackgroundColor="Transparent">
                 <dlcontrols:FlowListView.Header>
                     <Label Text="Playlists:" VerticalOptions="Start" HorizontalOptions="Start" FontSize="Medium" FontAttributes="Bold" TextColor="LightGray" Margin="10, 5"/>
                 </dlcontrols:FlowListView.Header>

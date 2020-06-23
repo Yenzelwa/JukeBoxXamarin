@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:JukeBox.Controls" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:controls1="clr-namespace:JukeBox.RenderedViews"
+             x:Class="JukeBox.Views.MyMusic.PlaylistsPage"
+             x:Name="Playlists"
+             BackgroundColor="#232323">
+    <!--<ContentPage.ToolbarItems>
+        <ToolbarItem Text="Queue" Clicked="ToolbarItem_Clicked"></ToolbarItem>
+    </ContentPage.ToolbarItems>-->
+    <StackLayout>
+        <Grid BindingContext="{Binding PlaylistViewModel ,Mode=TwoWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="0.12*" />
+            </Grid.RowDefinitions>
+            <StackLayout  x:Name="playListView"  Grid.Row="0" Orientation="Horizontal"  Margin="0,5">
+                <ScrollView>
+                    <controls1:GridView  Grid.Row="0"  MaxColumns="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ItemsSource="{Binding JukeBoxPlaylist}"   BackgroundColor="Transparent" ItemTappedCommand="{Binding AlbumSongCommand}" >
+                        <!--<dlcontrols:FlowListView.Header>
+                            <Label Text="Albums:" VerticalOptions="Start" HorizontalOptions="Start" FontSize="Medium" FontAttributes="Bold" TextColor="LightGray" Margin="10, 5"/>
+                        </dlcontrols:FlowListView.Header>-->
+                        <controls1:GridView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid BackgroundColor="Transparent">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="5" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="5" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="5" />
+                                        <RowDefinition Height="130" />
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="5" />
+                                    </Grid.RowDefinitions>
+
+                                    <!--<Frame   Padding="0"  VerticalOptions="Start"  HasShadow="True" >
+                                        <Grid Padding="0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <StackLayout >
+                                                <controls:ArtworkImage  Artwork="{Binding Artwork,Mode=TwoWay}" Aspect="AspectFill"/>
+
+                                                <Label  Margin="0,0" HeightRequest="15" HorizontalTextAlignment="Start" TextColor="Gray" Text="{Binding Name}"/>
+                                            </StackLayout>
+                                        </Grid>
+                                    </Frame>-->
+                                    <BoxView   Grid.Row="1" Grid.Column="1" HeightRequest="130" WidthRequest="120" />
+                                    <controls:ArtworkImage  Grid.Row="1" Grid.Column="1" HeightRequest="130" WidthRequest="120" Artwork="{Binding Artwork,Mode=TwoWay}" Aspect="AspectFill">
+                                        <controls:ArtworkImage.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="TapPlayDetail_OnTapped"/>
+                                        </controls:ArtworkImage.GestureRecognizers>
+                                    </controls:ArtworkImage>
+                                    <Label Text="{Binding Title}" Grid.Row="2" Grid.Column="1" TextColor="White" HorizontalOptions="Start" FontSize="Medium"/>
+
+                                </Grid>
+                            </DataTemplate>
+                        </controls1:GridView.ItemTemplate>
+                    </controls1:GridView>
+
+                </ScrollView>
+            </StackLayout>
+           
+            <controls:MusicBarControl Grid.Row="1" x:Name="MusicBarControllerAlbum" HeightRequest="75" WidthRequest="75" VerticalOptions="End"/>
+    </Grid>
+        </StackLayout>
+</ContentPage>
+

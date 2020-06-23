@@ -41,7 +41,7 @@ namespace JukeBox.Views
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushPopupAsync(new CreatePlaylistPopup(), true);
+            await Navigation.PushPopupAsync(new CreatePlaylistPopup(null), true);
         }
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)

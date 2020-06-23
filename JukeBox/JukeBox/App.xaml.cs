@@ -44,9 +44,17 @@ namespace JukeBox
                 if (token != null)
                 {
                     var user = dataService.GetUser();
+                    var shuffleRepeat = dataService.GetSongShuffleRepeat();
                     var mainViewModel = MainViewModel.GetInstance();
                     mainViewModel.Token = token;
                     mainViewModel.User = user;
+                    if(shuffleRepeat != null)
+                    {
+                        mainViewModel.PlaylistViewModel.Repeat = shuffleRepeat.Repeat;
+                        mainViewModel.PlaylistViewModel.Shuffle = true;
+                    }
+                   
+
                     //  mainViewModel.Lands = new LandsViewModel();
                     Application.Current.MainPage = new RootPage();
                 }

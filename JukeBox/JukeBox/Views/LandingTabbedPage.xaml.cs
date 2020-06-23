@@ -12,7 +12,7 @@ namespace JukeBox.Views
     {
         private PlaylistViewModel _vm;
 
-        public LandingTabbedPage(PlaylistItem playlistItem)
+        public LandingTabbedPage()
         {
             InitializeComponent();
             this.Children.Add(
@@ -22,7 +22,7 @@ namespace JukeBox.Views
 
                 });
             this.Children.Add(
-    new PlaylistPage(playlistItem)
+    new MyMusicTabbedPage()
     {
         Title = "My Music"
        

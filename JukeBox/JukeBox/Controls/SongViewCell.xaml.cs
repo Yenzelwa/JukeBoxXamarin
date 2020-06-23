@@ -11,6 +11,7 @@ using JukeBox.Models;
 using Rg.Plugins.Popup.Extensions;
 using JukeBox.Views;
 using JukeBox.ViewModels;
+using JukeBox.Views.MyMusic;
 
 namespace JukeBox.Controls
 {
@@ -22,12 +23,12 @@ namespace JukeBox.Controls
             InitializeComponent();
         }
 
-        private void SongOptionsPopup(object sender, EventArgs e)
+        private  void SongOptionsPopup(object sender, EventArgs e)
         {
             ((CachedImage)sender).Opacity = 0.6;
             ((CachedImage)sender).FadeTo(1);
             Song song = BindingContext as Song;
-            PlaylistPage.Nav?.PushPopupAsync(new SongOptionsPopup(song));
+            SongsPage.Nav?.PushPopupAsync(new SongOptionsPopup(song),true);
         }
     }
 }

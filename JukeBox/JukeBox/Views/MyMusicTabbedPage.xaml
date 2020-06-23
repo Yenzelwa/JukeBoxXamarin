@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="JukeBox.Views.MyMusicTabbedPage" BarTextColor="White" BackgroundColor="#232323" BarBackgroundColor="#232323">
+    <!--<TabbedPage.Children>
+        
+        <mypages:ArtistPage Title="Artists"/>
+        <mypages:AlbumPage Title="Album"/>
+        <mypages:VideoPage Title="Videos"/>
+        
+    </TabbedPage.Children>-->
+</TabbedPage>

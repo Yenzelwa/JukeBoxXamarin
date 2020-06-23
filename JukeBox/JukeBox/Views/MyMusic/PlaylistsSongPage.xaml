@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:controls="clr-namespace:JukeBox.Controls" 
+             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView" 
+         xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+             xmlns:effects="clr-namespace:JukeBox.Effects" xmlns:controls1="clr-namespace:JukeBox.RenderedViews"
+             x:Class="JukeBox.Views.MyMusic.PlaylistsSongPage"
+         
+             BackgroundColor="#232323"
+             x:Name="SongPlaylist">
+    <pv:PancakeView  BindingContext="{Binding PlaylistViewModel ,Mode=TwoWay}"  HasShadow="True" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundGradientAngle="180">
+        <pv:PancakeView.BackgroundGradientStops>
+            <pv:GradientStopCollection>
+                <pv:GradientStop Color="#232323" Offset="0" />
+                <pv:GradientStop Color="#232323" Offset="1" />
+            </pv:GradientStopCollection>
+        </pv:PancakeView.BackgroundGradientStops>
+        <Grid RowSpacing="30" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.4*"/>
+            </Grid.RowDefinitions>
+            <StackLayout>
+                <pv:PancakeView  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Image x:Name="img" Source="playlist.png" Aspect="AspectFill" Grid.RowSpan="2"/>
+                        <Grid Grid.Row="1" HeightRequest="80" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                            <BoxView BackgroundColor="#232323" Opacity="0.9" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+                            <StackLayout Margin="40,0" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                                <Label  x:Name="Title" TextColor="White" FontSize="17"/>
+                                <Label  x:Name="Artist" TextColor="White" FontSize="12" Opacity="0.8"/>
+                            </StackLayout>
+                        </Grid>
+                    </Grid>
+                </pv:PancakeView>
+
+                <Image Source="play_w.png"  HeightRequest="50" WidthRequest="50"  Margin="0,-25,40,0" 
+                            HorizontalOptions="End" VerticalOptions="Start"  >
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AlbumQueueCommand}"></TapGestureRecognizer>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Button
+                        BackgroundColor="White"
+                        HorizontalOptions="FillAndExpand"
+                        Text="RESHUFFLE SONGS"  CornerRadius="20" Command="{Binding ShuffleCommand}"
+                        TextColor="Black"  Margin="15,20"/>
+            </StackLayout>
+            <ListView IsVisible="True" x:Name="playlistListView"  ItemsSource="{Binding PlaylistSongs,Mode=TwoWay}"
+               BackgroundColor="Transparent"
+                       ItemTapped="playlistListView_ItemTapped" 
+                 VerticalScrollBarVisibility="Never"
+                      Grid.Row="1" Margin="20,0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                            SelectionMode="Single"  >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:SongViewCellAlbum />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <controls:MusicBarControl Grid.Row="2" x:Name="MusicBarControllerAlbum" HeightRequest="75" WidthRequest="75" VerticalOptions="End"/>
+        </Grid>
+    </pv:PancakeView>
+</ContentPage>
+

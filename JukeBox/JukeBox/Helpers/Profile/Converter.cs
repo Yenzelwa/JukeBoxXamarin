@@ -19,9 +19,11 @@
                 UserId = userId,
                 UserTypeId = user.UserId,
                 ImageArray = user.ImageArray,
-                BalanceAvailable = user.BalanceAvailable
+                BalanceAvailable = user.BalanceAvailable,
+                BalanceAvailableFormat  = user.BalanceAvailable == 0 ? "R 0.00" : string.Format("R {0}", System.Math.Round(user.BalanceAvailable ?? 0, 2))
 
-            };
+
+        };
         }
 
 		public static User ToUserDomain(UserLocal user)

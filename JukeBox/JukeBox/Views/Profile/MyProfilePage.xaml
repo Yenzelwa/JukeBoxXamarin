@@ -42,7 +42,7 @@
                     <Entry 
                         Grid.Column="1" 
                         Grid.Row="0" 
-                        Placeholder="{i18n:Translate FirstNamePlaceHolder}" 
+                        Placeholder="{i18n:Translate FirstNamePlaceHolder}" PlaceholderColor="Gray"
                         TextColor="White" 
                         Text="{Binding User.FirstName, Mode=TwoWay}">
                     </Entry>
@@ -56,7 +56,7 @@
                     <Entry 
                         Grid.Column="1" 
                         Grid.Row="1" 
-                        Placeholder="{i18n:Translate LastNamePlaceHolder}" 
+                        Placeholder="{i18n:Translate LastNamePlaceHolder}" PlaceholderColor="Gray"
                         TextColor="White" 
                         Text="{Binding User.LastName, Mode=TwoWay}">
                     </Entry>
@@ -71,7 +71,7 @@
                         Keyboard="Email" 
                         Grid.Column="1" 
                         Grid.Row="2" 
-                        Placeholder="{i18n:Translate EmailPlaceHolder}" 
+                        Placeholder="{i18n:Translate EmailPlaceHolder}" PlaceholderColor="Gray"
                         TextColor="White" 
                         Text="{Binding User.Email, Mode=TwoWay}">
                     </Entry>
@@ -86,7 +86,7 @@
                         Grid.Column="1" 
                         Grid.Row="3" 
                         Keyboard="Telephone" 
-                        Placeholder="{i18n:Translate PhonePlaceHolder}" 
+                        Placeholder="{i18n:Translate PhonePlaceHolder}" PlaceholderColor="Gray"
                         TextColor="White" 
                         Text="{Binding User.Telephone, Mode=TwoWay}">
                     </Entry>

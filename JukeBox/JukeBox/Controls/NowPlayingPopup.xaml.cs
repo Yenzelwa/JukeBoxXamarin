@@ -46,7 +46,7 @@ namespace JukeBox.Controls
 
         private async void ClosePopup(object sender, EventArgs e)
         {
-            ((CachedImage)sender).Opacity = 0.6;
+            //((CachedImage)sender).Opacity = 0.6;
             //await Navigation.PopPopupAsync(true);
             await Navigation.PopAllPopupAsync(true);
         }

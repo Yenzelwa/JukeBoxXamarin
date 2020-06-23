@@ -14,6 +14,7 @@ using System.Linq;
 using DLToolkit.Forms.Controls;
 using Xamarin.Forms.Xaml;
 using JukeBox.Infrastructure;
+using FFImageLoading.Forms;
 
 namespace JukeBox.Views
 {
@@ -29,7 +30,7 @@ namespace JukeBox.Views
         {
             InitializeComponent();
             GetMovies();
-            
+            CachedImage.FixedOnMeasureBehavior = true;
 
 
         }

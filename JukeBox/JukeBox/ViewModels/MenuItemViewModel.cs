@@ -46,10 +46,8 @@
                 }
                 else if (this.PageName == "Home")
                 {
-                    var PlaylistItems = new ObservableCollection<PlaylistItem>();
-                    PlaylistItems.Add(new PlaylistItem(
-                    new Playlist { Title = "Home", IsDynamic = false }));
-                    LandingTabbedPage page = new LandingTabbedPage(PlaylistItems[0]);
+
+                    LandingTabbedPage page = new LandingTabbedPage();
                     (App.Current.MainPage as MasterDetailPage).Detail.Navigation.PushAsync(page);
 
                 }

@@ -45,7 +45,7 @@
                     <Entry 
                         Grid.Column="1" 
                         Grid.Row="0" 
-                        Placeholder="{i18n:Translate FirstNamePlaceHolder}" 
+                        Placeholder="{i18n:Translate FirstNamePlaceHolder}"  PlaceholderColor="Gray"
                         TextColor="White" 
                         Text="{Binding FirstName, Mode=TwoWay}">
                     </Entry>
@@ -59,7 +59,7 @@
                     <Entry 
                         Grid.Column="1" 
                         Grid.Row="1" 
-                        Placeholder="{i18n:Translate LastNamePlaceHolder}" 
+                        Placeholder="{i18n:Translate LastNamePlaceHolder}" PlaceholderColor="Gray"
                         TextColor="White" 
                         Text="{Binding LastName, Mode=TwoWay}">
                     </Entry>
@@ -74,7 +74,7 @@
                         Keyboard="Email" 
                         Grid.Column="1" 
                         Grid.Row="2" 
-                        Placeholder="{i18n:Translate EmailPlaceHolder}" 
+                        Placeholder="{i18n:Translate EmailPlaceHolder}" PlaceholderColor="Gray"
                         TextColor="White" 
                         Text="{Binding Email, Mode=TwoWay}">
                     </Entry>
@@ -89,7 +89,7 @@
                         Grid.Column="1" 
                         Grid.Row="3" 
                         Keyboard="Telephone" 
-                        Placeholder="{i18n:Translate PhonePlaceHolder}" 
+                        Placeholder="{i18n:Translate PhonePlaceHolder}" PlaceholderColor="Gray"
                         TextColor="White" 
                         Text="{Binding Telephone, Mode=TwoWay}">
                     </Entry>
@@ -104,14 +104,14 @@
                         Grid.Column="1" 
                         Grid.Row="4" 
                         IsPassword="true" 
-                        Placeholder="{i18n:Translate PasswordPlaceHolder}" 
+                        Placeholder="{i18n:Translate PasswordPlaceHolder}" PlaceholderColor="Gray"
                         TextColor="White" 
                         Text="{Binding Password, Mode=TwoWay}">
                     </Entry>
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="5" 
-                        Text="{i18n:Translate ConfirmLabel}" 
+                        Text="Confirm Password" 
                         TextColor="White" 
                         VerticalOptions="Center">
                     </Label>
@@ -119,7 +119,7 @@
                         Grid.Column="1" 
                         Grid.Row="5" 
                         IsPassword="true" 
-                        Placeholder="{i18n:Translate ConfirmPlaceHolder}" 
+                        Placeholder="{i18n:Translate ConfirmPlaceHolder}" PlaceholderColor="Gray"
                         TextColor="White" 
                         Text="{Binding Confirm, Mode=TwoWay}">
                     </Entry>
@@ -128,7 +128,7 @@
                     IsRunning="{Binding IsRunning, Mode=TwoWay}">
                 </ActivityIndicator>
                 <Button 
-                   
+                    BackgroundColor="#f5deb3"
                     
                     Command="{Binding RegisterCommand}" 
                     IsEnabled="{Binding IsEnabled, Mode=TwoWay}" 

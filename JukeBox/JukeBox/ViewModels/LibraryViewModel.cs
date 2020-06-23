@@ -15,7 +15,7 @@ using System;
 
 namespace JukeBox.ViewModels
 {
-   public class LibraryViewModel: BaseViewModel
+    public class LibraryViewModel : BaseViewModel
     {
 
         #region Services
@@ -24,6 +24,7 @@ namespace JukeBox.ViewModels
 
         #region Attributes
         private bool isRunning;
+        private bool isRunningRefresh;
         public bool isEnabled;
         #endregion
 
@@ -37,6 +38,12 @@ namespace JukeBox.ViewModels
                 _library = value;
                 OnPropertyChanged(nameof(Library));
             }
+        }
+
+        public bool IsRunningRefresh
+        {
+            get { return this.isRunningRefresh; }
+            set { SetValue(ref this.isRunningRefresh, value); }
         }
 
 
@@ -67,7 +74,13 @@ namespace JukeBox.ViewModels
         #endregion
 
 
-
+        public ICommand RefreshLibraryCommand
+        {
+            get
+            {
+                return new RelayCommand(RefreshLibrary);
+            }
+        }
 
         private async void GetLibrary(int filter)
         {
@@ -97,15 +110,15 @@ namespace JukeBox.ViewModels
             var main = MainViewModel.GetInstance();
             var client = 0;
             if (main.User != null)
-            { 
-            var id = Convert.ToInt32(main.Token.UserName);
-            client = id > 0 ? id: 0;
-           }
-            var response = await BLL.Library.Library.GetLibrary(filter , client );
+            {
+                var id = Convert.ToInt32(main.Token.UserName);
+                client = id > 0 ? id : 0;
+            }
+            var response = await BLL.Library.Library.GetLibrary(filter, client);
 
 
 
-            if (response !=null)
+            if (response != null)
             {
                 //if(response.ResponseObject ==null && String.IsNullOrWhiteSpace(response.ResponseMessage))
                 //{
@@ -119,7 +132,7 @@ namespace JukeBox.ViewModels
                 //    //}
                 //    return;
                 //}
-                this.IsRunning = false; 
+                this.IsRunning = false;
                 this.Library = response.ResponseObject;
 
             }
@@ -136,10 +149,45 @@ namespace JukeBox.ViewModels
                 return;
             }
 
-           
+
 
 
         }
+        private async void RefreshLibrary()
+        {
+            this.isRunningRefresh = true;
+            var checkConnetion = await this.apiService.CheckConnection();
+            if (!checkConnetion.IsSuccess)
+            {
+                this.isRunningRefresh = false;
+                return;
+            }
+            var main = MainViewModel.GetInstance();
+            var client = 0;
+            if (main.User != null)
+            {
+                var id = Convert.ToInt32(main.Token.UserName);
+                client = id > 0 ? id : 0;
+            }
+            var response = await BLL.Library.Library.GetLibrary(0, client);
 
+
+            if (response != null)
+            {
+
+                this.isRunningRefresh = false;
+                this.Library = response.ResponseObject;
+
+            }
+            else
+            {
+                this.isRunningRefresh = false;
+                return;
+            }
+
+        }
     }
 }
+
+    
+

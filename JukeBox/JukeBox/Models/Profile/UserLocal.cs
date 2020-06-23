@@ -24,7 +24,8 @@ namespace JukeBox.Models.Profile
 
         public string Password { get; set; }
         public decimal? BalanceAvailable { get; set; }
-        public string BalanceAvailableFormat => string.Format("R {0}", System.Math.Round(BalanceAvailable ?? 0, 2));
+        public string BalanceAvailableFormat { get; set; }
+
 
         public string ImageFullPath
         {

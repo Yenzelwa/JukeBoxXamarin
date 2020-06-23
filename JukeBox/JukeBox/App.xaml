@@ -8,7 +8,7 @@
              x:Class="JukeBox.App">
     <Application.Resources>
 
-        <Color x:Key="XamBlue">#03A9F4</Color>
+        <Color x:Key="XamBlue">#0D0E1A</Color>
         <infra:InstanceLocator x:Key="Locator"/>
 
          <!--Parameters--> 

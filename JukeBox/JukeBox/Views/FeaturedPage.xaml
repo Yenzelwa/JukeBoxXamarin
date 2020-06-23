@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:dlcontrols="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
              xmlns:renderedViews="clr-namespace:Sharpnado.Presentation.Forms.RenderedViews;assembly=Sharpnado.Presentation.Forms"
-             xmlns:controls="clr-namespace:JukeBox.RenderedViews" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:controls="clr-namespace:JukeBox.RenderedViews" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:controls1="clr-namespace:Refractored.XamForms.PullToRefresh;assembly=Refractored.XamForms.PullToRefresh"
              x:Class="JukeBox.Views.FeaturedPage" 
              x:Name="BrowseFeaturedPage"
              Title="Store"
@@ -29,7 +29,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions >
-                        <SearchBar x:Name="searchBar" Grid.Row="0"   CancelButtonColor="Wheat"  TextColor="White"  TextChanged="SearchBar_TextChanged"/>
+                        <SearchBar x:Name="searchBar" Grid.Row="0"   FontSize="Small"  BackgroundColor="White" CancelButtonColor="Gray"  TextColor="Gray" Placeholder="Songs, Albums, Artists"  TextChanged="SearchBar_TextChanged"/>
                         <controls:TLScrollView  x:Name="genreList" HorizontalScrollBarVisibility="Never"  Grid.Row="1"
 				Orientation="Horizontal" 
 				ItemsSource="{Binding LibraryType ,Mode=TwoWay}" 
@@ -48,7 +48,65 @@
                     </Grid>
                 </Frame>
             </StackLayout>
-            
+            <!--<controls1:PullToRefreshLayout Grid.Row="1" BindingContext="{Binding LibraryModel}"
+      IsPullToRefreshEnabled="True"
+                RefreshCommand="{Binding RefreshLibraryCommand}"
+      IsRefreshing="{Binding isRunningRefresh ,Mode=TwoWay}"
+      RefreshColor="Blue">
+                        <ScrollView>
+
+                            <StackLayout    x:Name="SLMovies" Grid.Row="1"  AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,0,0" BackgroundColor="#232323">
+                    <StackLayout IsVisible="{Binding IsRunning, Mode=TwoWay}" Padding="12" Grid.Row="1" 
+                     AbsoluteLayout.LayoutFlags="PositionProportional"
+                     AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1">
+
+                        <ActivityIndicator IsRunning="{Binding IsRunning, Mode=TwoWay}" Color ="#80000000"/>
+
+                        <Label Text="Loading..." HorizontalOptions="Center" TextColor="Red"/>
+
+                    </StackLayout>
+                    <ListView x:Name="MovieListView"  CachingStrategy="RecycleElement"  Grid.Row="1" HasUnevenRows="True" SeparatorVisibility="Default"  BackgroundColor="#232323" 
+                  SeparatorColor="Black" ItemsSource="{Binding Library,Mode=TwoWay}" ItemSelected="MovieListView_OnItemSelected">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout>
+                                        <Frame Padding="0" BackgroundColor="#232323">
+                                            <Grid BackgroundColor="#232323">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="0.4*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                --><!--<Image Source="{Binding CoverFilePath}" Grid.Column="0"  WidthRequest="250" HeightRequest="60"/>--><!--
+                                                <ffimageloading:CachedImage Grid.Column="0" CacheDuration="12000" DownsampleToViewSize="true"
+                                                    x:Name="ImgDetail"  
+                                                    Source="{Binding CoverFilePath}"
+                                                   HeightRequest="120"
+                                                    WidthRequest="330"
+                                                    VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                                                </ffimageloading:CachedImage>
+                                                    <StackLayout Grid.Column="1"  HeightRequest="120"
+                                                    WidthRequest="330">
+                                                    <Label Text="{Binding Artist ,Mode=TwoWay}"  TextColor="White" FontAttributes="Bold"/>
+                                                    <Label Text="{Binding ShowTime}" TextColor="Gray"/>
+                                                    <Label Text="{Binding Type} " TextColor="Gray"/>
+                                                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                                        <Label Text="{Binding Name}" TextColor="Gray" WidthRequest="480" />
+                                                        <Label HorizontalOptions="EndAndExpand"  WidthRequest="120"  TextColor="White" Text="{Binding PriceFormat } "/>
+                                                    </StackLayout>
+                                                </StackLayout>
+                                            </Grid>
+                                        </Frame>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                </StackLayout>
+                    </ScrollView>
+                </controls1:PullToRefreshLayout>-->
             <StackLayout   BindingContext="{Binding LibraryModel}" x:Name="SLMovies" Grid.Row="1"  AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,0,0" BackgroundColor="#232323">
                 <StackLayout IsVisible="{Binding IsRunning, Mode=TwoWay}" Padding="12" Grid.Row="1" 
                      AbsoluteLayout.LayoutFlags="PositionProportional"
@@ -59,7 +117,7 @@
                     <Label Text="Loading..." HorizontalOptions="Center" TextColor="Red"/>
 
                 </StackLayout>
-                <ListView x:Name="MovieListView" Grid.Row="1" HasUnevenRows="True" SeparatorVisibility="Default"  BackgroundColor="#232323" 
+                <ListView x:Name="MovieListView" Grid.Row="1" HasUnevenRows="True" SeparatorVisibility="Default"  BackgroundColor="#232323"  CachingStrategy="RecycleElement"
                   SeparatorColor="Gray" ItemsSource="{Binding Library,Mode=TwoWay}" ItemSelected="MovieListView_OnItemSelected">
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -73,20 +131,21 @@
                                             </Grid.ColumnDefinitions>
 
                                             <!--<Image Source="{Binding CoverFilePath}" Grid.Column="0"  WidthRequest="250" HeightRequest="60"/>-->
-                                            <ffimageloading:CachedImage Grid.Column="0"
+                                            <ffimageloading:CachedImage Grid.Column="0" CacheDuration="12000" DownsampleToViewSize="true"
                                                     x:Name="ImgDetail"  
                                                     Source="{Binding CoverFilePath}"
-                                                   HeightRequest="130"
-                                                    WidthRequest="300"
+                                                   HeightRequest="120"
+                                                    WidthRequest="330"
                                                     VerticalOptions="Center" HorizontalOptions="FillAndExpand">
                                             </ffimageloading:CachedImage>
-                                            <StackLayout Grid.Column="1">
+                                            <StackLayout Grid.Column="1"  HeightRequest="120"
+                                                    WidthRequest="330">
                                                 <Label Text="{Binding Artist ,Mode=TwoWay}"  TextColor="White" FontAttributes="Bold"/>
                                                 <Label Text="{Binding ShowTime}" TextColor="Gray"/>
                                                 <Label Text="{Binding Type} " TextColor="Gray"/>
                                                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                                                    <Label Text="{Binding Name}" TextColor="Gray"/>
-                                                    <Label HorizontalOptions="EndAndExpand"  TextColor="White" Text="{Binding PriceFormat } "/>
+                                                    <Label Text="{Binding Name}" TextColor="Gray" WidthRequest="480" />
+                                                    <Label HorizontalOptions="EndAndExpand"  WidthRequest="120"  TextColor="White" Text="{Binding PriceFormat } "/>
                                                 </StackLayout>
                                             </StackLayout>
                                         </Grid>
@@ -96,9 +155,11 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-              
+
             </StackLayout>
-       
+
+            <!--</RefreshView>-->
+
         </Grid>
     </StackLayout>
 </ContentPage>

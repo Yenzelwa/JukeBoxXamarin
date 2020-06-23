@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:JukeBox.Controls"
+             xmlns:controls="clr-namespace:JukeBox.Controls" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:controls1="clr-namespace:JukeBox.RenderedViews"
              x:Class="JukeBox.Views.PlaylistPage"
              x:Name="Playlist"
               BindingContext="{Binding Main,  Source={StaticResource Locator}}"
@@ -10,49 +10,106 @@
     <!--<ContentPage.ToolbarItems>
         <ToolbarItem Text="Queue" Clicked="ToolbarItem_Clicked"></ToolbarItem>
     </ContentPage.ToolbarItems>-->
-    <Grid  BindingContext="{Binding PlaylistViewModel ,Mode=TwoWay}">
+    <StackLayout>
+        <Grid >
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="0.2*" />
+                <RowDefinition Height="100" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
         </Grid.RowDefinitions>
+            <Frame BackgroundColor="#232323" >
+                <StackLayout Orientation="Horizontal"  Grid.Row="0"  BindingContext="{Binding PlaylistViewModel ,Mode=TwoWay}">
+
+                    <Button Text="ALBUMS" Margin="-10,10,10,0" Command="{Binding SongsAlbum}" BackgroundColor="Black"   Clicked="Button_Album"   FontSize="Small"    TextColor="White"  IsVisible="{Binding HasSongs}">
+                    </Button>
+
+                    <Button Text="SONGS"  Margin="-10,10,10,0" BackgroundColor="Black"  Clicked="Button_Songs"   FontSize="Small"    TextColor="White"  IsEnabled="{Binding HasSongs}">
+                    </Button>
+                    <Button Text="PLAYLIST" Margin="-10,10,10,0" BackgroundColor="Black"  Clicked="Button_Playlist"   FontSize="Small"    TextColor="White"  IsEnabled="{Binding HasSongs}">
+                    </Button>
 
 
-        <ListView x:Name="playlistListView" ItemsSource="{Binding Songs,Mode=TwoWay}"
-                  ItemTapped="playlistListView_ItemTapped"
-                  Grid.Row="0"
+
+                </StackLayout>
+            </Frame>
+            <StackLayout IsVisible="False" x:Name="playlistListView"  Grid.Row="1"  Margin="0,5">
+                <ScrollView  >
+                    <controls1:GridView ColumnSpacing="5"
+                               ItemsSource="{Binding PlaylistItems}"
+                               MaxColumns="4"
+                               Padding="1" 
+                               RowSpacing="1"
+                            
+                        x:Name="playGrid">
+                        <controls1:GridView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid  Padding="1,0,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Image Source="icon.png" HeightRequest="80" WidthRequest="250" Margin="0,4,0,0"  >
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer x:Name="TapPausePlay" Tapped="TapPlayDetail_OnTapped" ></TapGestureRecognizer>
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                    <Label Grid.Row="1" HorizontalOptions="CenterAndExpand" 
+                                   Text="{Binding Playlist.Title}" 
+                                   TextColor="Black" Margin="0,0,0,0" FontSize="Medium" LineBreakMode="TailTruncation"/>
+                                </Grid>
+                            </DataTemplate>
+                        </controls1:GridView.ItemTemplate>
+                    </controls1:GridView>
+                </ScrollView>
+            </StackLayout>
+
+            <StackLayout IsVisible="False" x:Name="albumListView"  Grid.Row="1"  Margin="0,5" >
+                <ScrollView  >
+                    <controls1:GridView ColumnSpacing="5"  BindingContext="{Binding PlaylistViewModel ,Mode=TwoWay}"
+                               ItemsSource="{Binding Album}"
+                               MaxColumns="4"
+                               Padding="1" 
+                               RowSpacing="1"
+                            
+                        x:Name="customGrid">
+                        <controls1:GridView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid  Padding="1,0,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Image Source="icon.png" HeightRequest="80" WidthRequest="250" Margin="0,4,0,0"  >
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer x:Name="TapPausePlay" Tapped="TapDetail_OnTapped" ></TapGestureRecognizer>
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                    <Label Grid.Row="1" HorizontalOptions="CenterAndExpand" 
+                                   Text="{Binding Name}" 
+                                   TextColor="Black" Margin="0,0,0,0" FontSize="Medium" LineBreakMode="TailTruncation"/>
+                                </Grid>
+                            </DataTemplate>
+                        </controls1:GridView.ItemTemplate>
+                    </controls1:GridView>
+                </ScrollView>
+            </StackLayout>
+
+            <ListView IsVisible="True" x:Name="SongslistListView" ItemsSource="{Binding Songs,Mode=TwoWay}"  BindingContext="{Binding PlaylistViewModel ,Mode=TwoWay}"
+                 
+                  Grid.Row="1"
                   BackgroundColor="#232323"
                   SeparatorColor="Gray">
-            <ListView.Header>
-                <StackLayout Orientation="Horizontal" BindingContext="{Binding Source={x:Reference Playlist}, Path=BindingContext}">
-                    <Label BindingContext="{Binding Source={x:Reference Playlist}, Path=BindingContext}"
-                           Text="{Binding CountText}" HorizontalOptions="StartAndExpand"
-                           FontAttributes="Bold" FontSize="Medium" HorizontalTextAlignment="Center"
-                           VerticalOptions="Center" VerticalTextAlignment="Center"
-                           Margin="10, 0, 0, 0" TextColor="White"/>
-                    <!--<Button Text="Shuffle" Clicked="Button_Clicked" BorderColor="#2287CA" BorderWidth="1" TextColor="White" BackgroundColor="Black" IsEnabled="{Binding HasSongs}">
-                        <Button.WidthRequest>
-                            <OnPlatform x:TypeArguments="x:Double" Android="-1" iOS="100"  />
-                        </Button.WidthRequest>
-                
-                    </Button>
-                    <Button Text="Add To Queue" Clicked="Button_Clicked_1" BorderColor="#2287CA" BorderWidth="1" TextColor="White" BackgroundColor="Black" IsEnabled="{Binding HasSongs}">
-                        <Button.WidthRequest>
-                            <OnPlatform x:TypeArguments="x:Double" Android="-1" iOS="100" />
-                        </Button.WidthRequest>
-     
-                    </Button>-->
-                </StackLayout>
-            </ListView.Header>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <controls:SongViewCell />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <ActivityIndicator Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center"
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:SongViewCell />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <ActivityIndicator Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" BindingContext="{Binding PlaylistViewModel ,Mode=TwoWay}"
                            IsRunning="True" IsVisible="{Binding SongsLoading}"
                            Color="#2287CA" />
-        <controls:MusicBarControl Grid.Row="1" x:Name="MusicBarController" HeightRequest="65" VerticalOptions="End"/>
+        <controls:MusicBarControl Grid.Row="2" x:Name="MusicBarController" HeightRequest="65" VerticalOptions="End"/>
     </Grid>
+        </StackLayout>
 </ContentPage>
 

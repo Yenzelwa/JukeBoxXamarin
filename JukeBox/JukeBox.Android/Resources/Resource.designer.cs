@@ -16617,23 +16617,32 @@ namespace JukeBox.Droid
 			// aapt resource value: 0x7F070147
 			public const int pause_w = 2131165511;
 			
+			// aapt resource value: 0x7F070149
+			public const int playlist = 2131165513;
+			
 			// aapt resource value: 0x7F070148
 			public const int play_w = 2131165512;
 			
-			// aapt resource value: 0x7F070149
-			public const int prev = 2131165513;
-			
 			// aapt resource value: 0x7F07014A
-			public const int tooltip_frame_dark = 2131165514;
+			public const int prev = 2131165514;
 			
 			// aapt resource value: 0x7F07014B
-			public const int tooltip_frame_light = 2131165515;
+			public const int shuffle_off = 2131165515;
 			
 			// aapt resource value: 0x7F07014C
-			public const int top_shadow = 2131165516;
+			public const int shuffle_on = 2131165516;
 			
 			// aapt resource value: 0x7F07014D
-			public const int Up = 2131165517;
+			public const int tooltip_frame_dark = 2131165517;
+			
+			// aapt resource value: 0x7F07014E
+			public const int tooltip_frame_light = 2131165518;
+			
+			// aapt resource value: 0x7F07014F
+			public const int top_shadow = 2131165519;
+			
+			// aapt resource value: 0x7F070150
+			public const int Up = 2131165520;
 			
 			static Drawable()
 			{
@@ -17856,16 +17865,31 @@ namespace JukeBox.Droid
 			public const int next = 2131492868;
 			
 			// aapt resource value: 0x7F0C0005
-			public const int no_image = 2131492869;
+			public const int next_n = 2131492869;
 			
 			// aapt resource value: 0x7F0C0006
-			public const int pause_w = 2131492870;
+			public const int no_image = 2131492870;
 			
 			// aapt resource value: 0x7F0C0007
-			public const int play_w = 2131492871;
+			public const int pause_n = 2131492871;
 			
 			// aapt resource value: 0x7F0C0008
-			public const int prev = 2131492872;
+			public const int pause_w = 2131492872;
+			
+			// aapt resource value: 0x7F0C000B
+			public const int playlist = 2131492875;
+			
+			// aapt resource value: 0x7F0C0009
+			public const int play_n = 2131492873;
+			
+			// aapt resource value: 0x7F0C000A
+			public const int play_w = 2131492874;
+			
+			// aapt resource value: 0x7F0C000C
+			public const int prev = 2131492876;
+			
+			// aapt resource value: 0x7F0C000D
+			public const int previous_n = 2131492877;
 			
 			static Mipmap()
 			{

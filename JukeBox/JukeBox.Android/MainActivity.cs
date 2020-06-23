@@ -17,7 +17,6 @@ using DLToolkit.Forms.Controls;
 using Android.Support.V4.App;
 using Android.Support.V4.Content;
 using Android.Graphics;
-using CarouselView.FormsPlugin.Android;
 using System.Collections.Generic;
 using System.Reflection;
 using FFImageLoading.Forms.Platform;
@@ -31,6 +30,8 @@ using System.Security.Cryptography;
 using Android.Support.V4.Media.Session;
 using System.Net;
 using JukeBox.Droid.FileEncryption;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform;
 
 namespace JukeBox.Droid
 {
@@ -60,13 +61,14 @@ namespace JukeBox.Droid
         //    Download("Songs", null);
             // Set Status Bar Color
             Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
-            Window.SetStatusBarColor(Color.Black);
+            Window.SetStatusBarColor(Android.Graphics.Color.Black);
             notificationManager = NotificationManagerCompat.From(this);
+          
 
 
             mediaSession = new MediaSessionCompat(this, "tag");
 
-            CarouselViewRenderer.Init();
+           // CarouselViewRenderer.();
 
             CachedImageRenderer.Init(true);
           //  RegisterReceiver(savedInstanceState, new IntentFilter("com.companyname.IncomingCall"));
@@ -86,6 +88,7 @@ namespace JukeBox.Droid
 
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, savedInstanceState);
 

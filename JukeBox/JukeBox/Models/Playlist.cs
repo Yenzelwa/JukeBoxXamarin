@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace JukeBox.Models
 {
@@ -20,7 +21,8 @@ namespace JukeBox.Models
 
         public bool HasArtwork { get { return Artwork != null && !String.IsNullOrEmpty(Artwork.ToString()); } }
 
-        public object Artwork { get; set; }
+        public object Artwork { get; set; } 
+        public ImageSource ImageSource { get; set; }
 
     }
 }

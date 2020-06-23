@@ -10,18 +10,47 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using JukeBox.Interfaces;
 using JukeBox.ViewModels;
+using JukeBox.Models;
+using System.Collections.ObjectModel;
 
 namespace JukeBox.Controls
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CreatePlaylistPopup : PopupPage
     {
-        public CreatePlaylistPopup()
+        private static INavigation _nav;
+        Song _song;
+        public CreatePlaylistPopup( Song song)
         {
             InitializeComponent();
+            _nav = Navigation;
+            _song = song;
         }
+        public static INavigation Nav
+        {
+            get
+            {
+                return _nav;
+            }
+        }
+        private async void AddToPlaylist(object sender, EventArgs e)
+        {
+          
+            var btn = ((Button)sender);
+            var playlistItem = btn.BindingContext as JukeBoxPlaylist;
+             DependencyService.Get<IPlaylistManager>().AddToPlaylist(
+                            playlistItem,
+                            _song);
+            var playlists = await DependencyService.Get<IPlaylistManager>().GetPlaylists();
+            if (playlists.Count > 0)
+            {
+                var main = MainViewModel.GetInstance();
+                main.PlaylistViewModel.JukeBoxPlaylist = playlists;
+            }
+            await Navigation.PopPopupAsync(true);
 
-        private async void CreatePlaylist(object sender, EventArgs e)
+        }
+            private async void CreatePlaylist(object sender, EventArgs e)
         {
             string title;
             if (String.IsNullOrWhiteSpace(PlaylistNameEntry.Text))
@@ -33,19 +62,26 @@ namespace JukeBox.Controls
                 title = PlaylistNameEntry.Text;
             }
 
-            if (MenuViewModel.Instance.PlaylistItems.Where(r => r.Playlist?.Title == title).Count() > 0)
+            //if (MenuViewModel.Instance.PlaylistItems.Where(r => r.Playlist?.Title == title).Count() > 0)
+            //{
+            //    int i = 1;
+            //    while (MenuViewModel.Instance.PlaylistItems.Where(q => q.Playlist?.Title == $"{title}{i}").Count() > 0)
+            //    +
+            //        i++;
+            //    }
+            //    title = $"{title}{i}";
+            //}
+
+            DependencyService.Get<IPlaylistManager>().CreatePlaylist(title , _song);
+            MenuViewModel.Instance.Refresh();
+            await Navigation.PopPopupAsync(true);
+            var playlists = await DependencyService.Get<IPlaylistManager>().GetPlaylists();
+            if (playlists.Count > 0)
             {
-                int i = 1;
-                while (MenuViewModel.Instance.PlaylistItems.Where(q => q.Playlist?.Title == $"{title}{i}").Count() > 0)
-                {
-                    i++;
-                }
-                title = $"{title}{i}";
+                var main = MainViewModel.GetInstance();
+                main.PlaylistViewModel.JukeBoxPlaylist = playlists;
             }
 
-            DependencyService.Get<IPlaylistManager>().CreatePlaylist(title);
-            MenuViewModel.Instance.Refresh();
-            await Navigation.PopAllPopupAsync(true);
         }
     }
 }
