@@ -150,7 +150,7 @@
             instance = this;
             this.Login = new LoginViewModel();
             this.LibraryModel = new LibraryViewModel(0);
-            this.LibraryPromoModel = new LibraryPromoViewModel(99);
+            this.LibraryPromoModel = new LibraryPromoViewModel();
             this.LibraryDetailModel = new LibraryDetailViewModel();
             this.LibraryTypeModel = new LibraryTypeViewModel(1);
             this.PlaylistItems = new ObservableCollection<PlaylistItem>();

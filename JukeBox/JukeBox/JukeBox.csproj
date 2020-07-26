@@ -71,6 +71,9 @@
     <Compile Update="Controls\SongViewCellAlbum.xaml.cs">
       <DependentUpon>SongViewCellAlbum.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\PromotonTypePage.xaml.cs">
+      <DependentUpon>PromotonTypePage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\MyMusicTabbedPage.xaml.cs">
       <DependentUpon>MyMusicTabbedPage.xaml</DependentUpon>
     </Compile>
@@ -135,6 +138,9 @@
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\CustomNavigationBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\PromotonTypePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\FeaturedPage.xaml">

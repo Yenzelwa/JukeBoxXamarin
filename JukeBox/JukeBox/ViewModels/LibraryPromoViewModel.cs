@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using JukeBox.Views;
 using System.ComponentModel;
 using System;
+using System.Linq;
 
 namespace JukeBox.ViewModels
 {
@@ -27,14 +28,24 @@ namespace JukeBox.ViewModels
         #endregion
 
         #region Properties
-        private ObservableCollection<ApiLibrary> _library { get; set; }
-        public ObservableCollection<ApiLibrary> Library
+        private ObservableCollection<PromotionType> _promotionType { get; set; }
+        public ObservableCollection<PromotionType> PromotionType
         {
-            get { return _library; }
+            get { return _promotionType; }
             set
             {
-                _library = value;
-                OnPropertyChanged(nameof(Library));
+                _promotionType = value;
+                OnPropertyChanged(nameof(PromotionType));
+            }
+        }
+        private ObservableCollection<PromotionResult> _promotionResult { get; set; }
+        public ObservableCollection<PromotionResult> PromotionResult
+        {
+            get { return _promotionResult; }
+            set
+            {
+                _promotionResult = value;
+                OnPropertyChanged(nameof(PromotionResult));
             }
         }
 
@@ -57,76 +68,39 @@ namespace JukeBox.ViewModels
         #endregion
 
         #region Constructors
-        public LibraryPromoViewModel(int type)
+        public LibraryPromoViewModel()
         {
             this.apiService = new ApiService();
-            this.GetLibrary(type);
-            this.GetLibraryType();
+          this.GetPromotionType();
         }
         #endregion
 
 
 
 
-        private async void GetLibrary(int filter)
+        public async void GetPromotionResult(int promotionTypeId)
         {
 
 
             this.IsRunning = true;
-            var checkConnetion = await this.apiService.CheckConnection();
-            if (!checkConnetion.IsSuccess)
-            {
-                this.IsRunning = false;
-                //if (Application.Current.MainPage != null)
-                //{
-                //    await Application.Current.MainPage.DisplayAlert(
-                //        Languages.Error,
-                //        checkConnetion.Message,
-                //        Languages.Accept);
-                //}
-                return;
-            }
-            var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
-
-            var response = await BLL.Library.Library.GetLibrary(filter,0);
-
-
-
+            var response = await BLL.Library.Library.GetPromotionResult(promotionTypeId);
             if (response != null)
             {
-
-                //if (response.ResponseObject == null && String.IsNullOrWhiteSpace(response.ResponseMessage))
-                //{
-                //    this.IsRunning = false;
-                //    //if (Application.Current.MainPage != null)
-                //    //{
-                //    //    await Application.Current.MainPage.DisplayAlert(
-                //    //        Languages.Error,
-                //    //      Languages.ConnectionError2,
-                //    //        Languages.Accept);
-                //    //}
-                //    return;
-                //}
-                this.IsRunning = false;
-                this.Library = response.ResponseObject;
-
-
+                this.PromotionResult = response.ResponseObject;
             }
-            else
+
+            this.IsRunning = false;
+        }
+        private async void GetPromotionType()
+        {
+            this.IsRunning = true;
+           
+            var response = await BLL.Library.Library.GetPromotionType();
+            if(response !=null)
             {
-                this.IsRunning = false;
-                //if (Application.Current.MainPage != null)
-                //{
-                //    await Application.Current.MainPage.DisplayAlert(
-                //        Languages.Error,
-                //        checkConnetion.Message,
-                //        Languages.Accept);
-                //}
-                return;
+                this.PromotionType = response.ResponseObject;
             }
-
-
-
+            this.IsRunning = false;
 
         }
         private async void GetLibraryType()

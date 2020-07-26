@@ -61,7 +61,7 @@ namespace JukeBox.Droid
         //    Download("Songs", null);
             // Set Status Bar Color
             Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
-            Window.SetStatusBarColor(Android.Graphics.Color.Black);
+           // Window.SetStatusBarColor(Android.Graphics.Color.Black);
             notificationManager = NotificationManagerCompat.From(this);
           
 

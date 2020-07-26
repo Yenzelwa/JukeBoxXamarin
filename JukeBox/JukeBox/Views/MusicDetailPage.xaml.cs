@@ -340,7 +340,6 @@ namespace JukeBox.Views
                 if (!song.SongDownload)
                 {
 
-
                     orderResponse = await apiService.PurchaseOrder(
                   apiSecurity,
                   "/api/library",

@@ -62,15 +62,15 @@ namespace JukeBox.Controls
                 title = PlaylistNameEntry.Text;
             }
 
-            //if (MenuViewModel.Instance.PlaylistItems.Where(r => r.Playlist?.Title == title).Count() > 0)
-            //{
-            //    int i = 1;
-            //    while (MenuViewModel.Instance.PlaylistItems.Where(q => q.Playlist?.Title == $"{title}{i}").Count() > 0)
-            //    +
-            //        i++;
-            //    }
-            //    title = $"{title}{i}";
-            //}
+            if (MainViewModel.GetInstance().PlaylistViewModel.JukeBoxPlaylist.Where(r => r.Title == title).Count() > 0)
+            {
+                int i = 1;
+                while (MainViewModel.GetInstance().PlaylistViewModel.JukeBoxPlaylist.Where(q => q.Title == $"{title}{i}").Count() > 0)
+                {
+                    i++;
+                }
+                title = $"{title}{i}";
+            }
 
             DependencyService.Get<IPlaylistManager>().CreatePlaylist(title , _song);
             MenuViewModel.Instance.Refresh();

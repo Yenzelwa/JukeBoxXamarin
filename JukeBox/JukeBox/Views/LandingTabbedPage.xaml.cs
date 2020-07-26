@@ -28,7 +28,7 @@ namespace JukeBox.Views
        
     });
             this.Children.Add(
-  new PromoPage()
+  new PromotionTypePage()
   {
       Title = "Campaign"
   });

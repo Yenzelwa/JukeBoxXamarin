@@ -1,41 +1,67 @@
-﻿using FFImageLoading.Forms;
-using JukeBox.BLL.Library;
-using JukeBox.Helpers;
+﻿using System;
 using JukeBox.Models;
-using JukeBox.Services;
 using JukeBox.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Net;
+using JukeBox.BLL.Library;
+using System.Collections.ObjectModel;
+using JukeBox.Interfaces;
+using System.Linq;
+using DLToolkit.Forms.Controls;
 using Xamarin.Forms.Xaml;
+using JukeBox.Infrastructure;
+using FFImageLoading.Forms;
+using JukeBox.Helpers;
+using JukeBox.Services;
 
 namespace JukeBox.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class PromoPage : ContentPage
+    public partial class PromotionTypePage : ContentPage
     {
         public MainViewModel Main
         {
             get;
             set;
         }
-        public PromoPage(PromotionType promotionType)
+        public PromotionTypePage()
         {
             InitializeComponent();
-            var mainViewModel = MainViewModel.GetInstance();
-            ImgPromo.Source = ImageSource.FromUri(new Uri(promotionType.PromotionImage));
-            mainViewModel.LibraryPromoModel.GetPromotionResult(promotionType.PromotionTypeId);
+
+
         }
+
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {
             var search = sender as SearchBar;
             var suggestion = MainViewModel.GetInstance().LibraryPromoModel.PromotionResult.Where(c => c.ArtistName.ToLower().Contains(search.Text.ToLower()));
 
             PromoListView.ItemsSource = suggestion;
+        }
+        private async void PromoListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+
+            if (((ListView)sender).SelectedItem == null)
+                return;
+
+            var selectedItem = e.SelectedItem as PromotionType;
+            if (selectedItem != null)
+            {
+                var mainViewModel = MainViewModel.GetInstance();
+               ImgPromo.Source = ImageSource.FromUri(new Uri(selectedItem.PromotionImage));
+                mainViewModel.LibraryPromoModel.GetPromotionResult(selectedItem.PromotionTypeId);
+                PromoTypeListView.IsVisible = false;
+                PromoListView.IsVisible = true;
+
+              //  await Navigation.PushAsync(new PromoPage(selectedItem));
+                ((ListView)sender).SelectedItem = null;
+            }
+              ((ListView)sender).SelectedItem = null;
+
         }
         private async void MovieListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
@@ -50,7 +76,7 @@ namespace JukeBox.Views
                 await Navigation.PushAsync(new MusicDetailPage(selectedItem));
                 ((ListView)sender).SelectedItem = null;
             }
-             ((ListView)sender).SelectedItem = null;
+          ((ListView)sender).SelectedItem = null;
 
         }
 
@@ -76,12 +102,12 @@ namespace JukeBox.Views
                 {
                     Customer = mainViewModel.User.UserId,
                     ClientId = promotion.ArtistId,
-                    PromotionTypeId = promotion.PromotionTypeId??0
+                    PromotionTypeId = promotion.PromotionTypeId ?? 0
                 };
                 var voteResponse = await Library.Vote(request);
-                if(voteResponse !=null)
+                if (voteResponse != null)
                 {
-                    if(voteResponse.ResponseMessage != "Success")
+                    if (voteResponse.ResponseMessage != "Success")
                     {
                         await DisplayAlert(
                        Languages.Error,
@@ -91,7 +117,7 @@ namespace JukeBox.Views
                     }
                     else
                     {
-                         mainViewModel.LibraryPromoModel.GetPromotionResult(promotion.PromotionTypeId??0);
+                        mainViewModel.LibraryPromoModel.GetPromotionResult(promotion.PromotionTypeId ?? 0);
                         var user = await apiService.GetUserByEmail(
              apiSecurity,
              "/api/account",
@@ -106,5 +132,17 @@ namespace JukeBox.Views
             }
 
         }
+
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            PromoTypeListView.IsVisible = true;
+            PromoListView.IsVisible = false;
+        }
     }
 }
+
+    
+
+
+
+
