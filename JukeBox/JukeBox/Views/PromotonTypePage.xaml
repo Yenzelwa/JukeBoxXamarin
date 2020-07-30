@@ -35,7 +35,8 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="0.4*"/>
                                                 <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.4*"/>
+                                        </Grid.ColumnDefinitions>
 
                                             <!--<Image Source="{Binding CoverFilePath}" Grid.Column="0"  WidthRequest="250" HeightRequest="60"/>-->
                                             <ffimageloading:CachedImage Grid.Column="0" CacheDuration="12000" DownsampleToViewSize="true"
@@ -119,21 +120,22 @@
                                         <StackLayout Grid.Column="1">
                                             <StackLayout   Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                                                 <Label MinimumHeightRequest="80" Text="{Binding ArtistName ,Mode=TwoWay}" Margin="0,5,0,0" WidthRequest="200" TextColor="Gray" />
-
-
-                                                <Label HorizontalOptions="EndAndExpand"  WidthRequest="120"  TextColor="Gray" Text="{Binding NumberOfVotes }" FontAttributes="Bold"/>
-                                            </StackLayout>
-                                            <StackLayout Orientation="Horizontal" VerticalOptions="End" HorizontalOptions="FillAndExpand">
-
-                                                <ProgressBar  ProgressColor="Green"  ScaleY="3"  Progress="{Binding ProgressPosition}" Margin="0,-5,0,0"  HorizontalOptions="StartAndExpand" WidthRequest="280"   >
-
-                                                </ProgressBar>
-                                                <ffimageloading:CachedImage HorizontalOptions="StartAndExpand" CacheDuration="12000" HeightRequest="30" WidthRequest="80" Margin="-20,-10,0,10" DownsampleToViewSize="true" Source="vote.png"  >
+                                                                   <ffimageloading:CachedImage HorizontalOptions="StartAndExpand" CacheDuration="12000" HeightRequest="30" WidthRequest="80" Margin="-15,0,0,0" DownsampleToViewSize="true" Source="vote.png"  >
                                                     <ffimageloading:CachedImage.GestureRecognizers>
                                                         <TapGestureRecognizer Tapped="TapGestureRecognizer_TappedAsync"></TapGestureRecognizer>
 
                                                     </ffimageloading:CachedImage.GestureRecognizers>
                                                 </ffimageloading:CachedImage>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal"  VerticalOptions="End" HorizontalOptions="FillAndExpand" Margin="0,-5,0,0" WidthRequest="3000" >
+
+                                                <ProgressBar  ProgressColor="Green"  ScaleY="3"  Progress="{Binding ProgressPosition}"  HorizontalOptions="StartAndExpand" WidthRequest="290"   >
+
+                                                </ProgressBar>
+                                                <StackLayout HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" Margin="-5,0,0,5" >
+                                                    <Label  HorizontalOptions="StartAndExpand"  TextColor="Gray" Text="20" FontAttributes="Bold"/>
+                                                </StackLayout>
+                                                
                                                 <!--<ProgressBar Progress="{Binding ProgressPosition ,Mode=TwoWay}"  ScaleY="2" ProgressColor="Green" />-->
 
                                             </StackLayout>
