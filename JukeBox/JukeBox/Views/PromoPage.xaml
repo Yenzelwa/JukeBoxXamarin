@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              x:Class="JukeBox.Views.PromoPage"
                         BackgroundColor="#232323"
-             Title="Store"
+             Title="Poll"
        BindingContext="{Binding Main, Source={StaticResource Locator}}" >
 
     <StackLayout BackgroundColor="#232323">
@@ -26,69 +26,104 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions >
                         <SearchBar x:Name="searchBar" Grid.Row="0"   FontSize="Small"  BackgroundColor="White" CancelButtonColor="Gray"  TextColor="Gray" Placeholder="Songs, Albums, Artists"  TextChanged="SearchBar_TextChanged"/>
-                        
+
                     </Grid>
                 </Frame>
-                <ffimageloading:CachedImage Grid.Column="0" CacheDuration="12000" DownsampleToViewSize="true"
-                                                    x:Name="ImgPromo"
-                                                   HeightRequest="120"
-                                                    WidthRequest="330"
-                                                    VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-                </ffimageloading:CachedImage>
             </StackLayout>
 
             <StackLayout   BindingContext="{Binding LibraryPromoModel}" x:Name="SLMovies" Grid.Row="1"  AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,0,0" BackgroundColor="#232323">
-                <StackLayout IsVisible="{Binding IsRunning, Mode=TwoWay}" Padding="12" Grid.Row="1" 
-                     AbsoluteLayout.LayoutFlags="PositionProportional"
-                     AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1">
-
-                    <!--<ActivityIndicator IsRunning="{Binding IsRunning, Mode=TwoWay}" Color ="#80000000"/>
-
-                    <Label Text="Loading..." HorizontalOptions="Center" TextColor="Red"/>-->
-
-                </StackLayout>
-                <ListView x:Name="PromoListView" Grid.Row="1" HasUnevenRows="True" SeparatorVisibility="Default"  BackgroundColor="#232323"  CachingStrategy="RecycleElement"
-                 ItemsSource="{Binding PromotionResult,Mode=TwoWay}" ItemSelected="MovieListView_OnItemSelected">
+                <ListView IsVisible="False" Grid.Row="0" x:Name="PromoCategoryListView" HasUnevenRows="True" SeparatorVisibility="Default"  BackgroundColor="#232323"  CachingStrategy="RecycleElement"
+                   ItemsSource="{Binding PromotionCategory,Mode=TwoWay}" ItemSelected="PromoCategoryListView_OnItemSelected">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <StackLayout>
+                                <StackLayout HeightRequest="80">
                                     <Frame Padding="0" BackgroundColor="#232323">
                                         <Grid BackgroundColor="#232323">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="0.1*"/>
-                                                <ColumnDefinition Width="0.1*"/>
+                                                <ColumnDefinition Width="0.4*"/>
                                                 <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="0.4*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label VerticalOptions="Center" HorizontalOptions="CenterAndExpand" Grid.Column="0" Text="{Binding PromoNumber ,Mode=TwoWay}" Margin="7,0,0,0"  TextColor="Gray" />
+
                                             <!--<Image Source="{Binding CoverFilePath}" Grid.Column="0"  WidthRequest="250" HeightRequest="60"/>-->
-                                            <ffimageloading:CachedImage Grid.Column="1" CacheDuration="12000" DownsampleToViewSize="true"
+                                            <ffimageloading:CachedImage Grid.Column="0" CacheDuration="12000" DownsampleToViewSize="true"
                                                     x:Name="ImgDetail"  
-                                                    Source="{Binding ArtistImage}"
-                                                   MinimumHeightRequest="8"
-                                                    MinimumWidthRequest="5"
+                                                    Source="{Binding CategoryImage}"
+                                                   HeightRequest="70"
+                                                    WidthRequest="330"
                                                     VerticalOptions="Center" HorizontalOptions="FillAndExpand">
                                             </ffimageloading:CachedImage>
-                                            <StackLayout Grid.Column="2">
-                                                <StackLayout   Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                                                    <Label MinimumHeightRequest="80" Text="{Binding ArtistName ,Mode=TwoWay}" Margin="0,5,0,0" WidthRequest="200" TextColor="Gray" />
-                                                   
-                            
-                                                    <Label HorizontalOptions="EndAndExpand"  WidthRequest="120"  TextColor="Gray" Text="{Binding NumberOfVotes }" FontAttributes="Bold"/>
-                                                </StackLayout>
-                                                <StackLayout Orientation="Horizontal" VerticalOptions="End" HorizontalOptions="FillAndExpand">
+                                            <StackLayout Grid.Column="1"  HeightRequest="70"
+                                                    WidthRequest="330" Margin="0,35,0,0">
+                                                <Label Text="{Binding CategoryName} " TextColor="Gray"/>
 
-                                                    <ProgressBar  ProgressColor="Green"  ScaleY="3"  Progress="{Binding ProgressPosition}" Margin="0,-5,0,0"  HorizontalOptions="StartAndExpand" WidthRequest="280"   >
-                                                        
-                                                    </ProgressBar>
-                                                    <ffimageloading:CachedImage HorizontalOptions="StartAndExpand" CacheDuration="12000" HeightRequest="30" WidthRequest="80" Margin="-20,-10,0,10" DownsampleToViewSize="true" Source="vote.png"  >
+                                            </StackLayout>
+                                        </Grid>
+                                    </Frame>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <ListView IsVisible="False"  x:Name="PromoListView" Grid.Row="0" HasUnevenRows="True" SeparatorVisibility="Default"  BackgroundColor="#232323"  CachingStrategy="RecycleElement"
+                 ItemsSource="{Binding PromotionResult,Mode=TwoWay}" ItemSelected="MovieListView_OnItemSelected">
+                    <ListView.Header>
+                        <Frame  BackgroundColor="#232323" HasShadow="True">
+                            <Grid BackgroundColor="#232323">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.6*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                               
+                                <ffimageloading:CachedImage Grid.Column="0"  Margin="-5,10,0,0" CacheDuration="12000" DownsampleToViewSize="true"
+                                                    x:Name="ImgPromo"
+                                                   HeightRequest="110"
+                                                    WidthRequest="80"
+                                                    VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                                </ffimageloading:CachedImage>
+                            </Grid>
+                        </Frame>
+                    </ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell >
+                                <StackLayout Margin="-5,0,0,0">
+                                    <Frame Padding="0" BackgroundColor="#232323">
+                                        <Grid BackgroundColor="#232323">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.2*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <ffimageloading:CachedImage Grid.Column="0" CacheDuration="12000" DownsampleToViewSize="true"
+                                                    x:Name="ImgDetail"  
+                                                    Source="{Binding ArtistImage}"
+                                                   HeightRequest="80"
+                                                   WidthRequest="130"
+                                                   Margin="-2,0,0,0"
+                                                   VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                                            </ffimageloading:CachedImage>
+                                            <StackLayout Grid.Column="1">
+                                                <StackLayout   Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                                    <Label MinimumHeightRequest="80" Text="{Binding ArtistName ,Mode=TwoWay}" Margin="0,5,0,0" WidthRequest="160" TextColor="Gray" />
+                                                    <Label  HorizontalOptions="CenterAndExpand"  TextColor="Gray" Text="{Binding NumberOfVotes}" FontAttributes="Bold" WidthRequest="80" />
+                                                    <ffimageloading:CachedImage HorizontalOptions="StartAndExpand"  HeightRequest="30" WidthRequest="100" Margin="-15,0,0,0" Source="vote.png"  >
                                                         <ffimageloading:CachedImage.GestureRecognizers>
                                                             <TapGestureRecognizer Tapped="TapGestureRecognizer_TappedAsync"></TapGestureRecognizer>
 
                                                         </ffimageloading:CachedImage.GestureRecognizers>
                                                     </ffimageloading:CachedImage>
+
+                                                </StackLayout>
+                                                <StackLayout Orientation="Horizontal"  VerticalOptions="End" HorizontalOptions="FillAndExpand" WidthRequest="3000" >
+
+                                                    <ProgressBar  ProgressColor="Green"  ScaleY="3"  Progress="{Binding ProgressPosition}"  HorizontalOptions="StartAndExpand" WidthRequest="320"   >
+
+                                                    </ProgressBar>
+
                                                     <!--<ProgressBar Progress="{Binding ProgressPosition ,Mode=TwoWay}"  ScaleY="2" ProgressColor="Green" />-->
-                                                  
+
                                                 </StackLayout>
                                             </StackLayout>
                                         </Grid>
@@ -98,85 +133,15 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                <StackLayout IsVisible="{Binding IsRunning, Mode=TwoWay}" Padding="12" Grid.Row="0" 
+                     AbsoluteLayout.LayoutFlags="PositionProportional"
+                     AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1">
 
-                <!--<ListView x:Name="PromoListView" Grid.Row="1"   BackgroundColor="#232323"  CachingStrategy="RecycleElement"
-                  ItemsSource="{Binding ArtistRanking,Mode=TwoWay}" ItemSelected="MovieListView_OnItemSelected">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <StackLayout>
-                                    <Frame Padding="0,5,0,5" BackgroundColor="#232323">
-                                        <Grid BackgroundColor="#232323">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="0.4*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
+                    <ActivityIndicator IsRunning="{Binding IsRunning, Mode=TwoWay}" Color ="#80000000"/>
 
-                                            --><!--<Image Source="{Binding CoverFilePath}" Grid.Column="0"  WidthRequest="250" HeightRequest="60"/>--><!--
-                                            <ffimageloading:CachedImage Grid.Column="0" CacheDuration="12000" DownsampleToViewSize="true"
-                                                   x:Name="ImgDetail"  
-                                                   HeightRequest="120"
-                                                    WidthRequest="330"
-                                                   Source="{Binding ArtistImage,Mode=TwoWay}"
-                                                    VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-                                            </ffimageloading:CachedImage>
-                                            <StackLayout Grid.Column="1"  HeightRequest="120"
-                                                    WidthRequest="330">
-                                                <Label Text="{Binding ArtistName ,Mode=TwoWay}"  TextColor="White" FontAttributes="Bold"/>
-                                               
-                                                <ffimageloading:CachedImage CacheDuration="12000" DownsampleToViewSize="true" Source="vote.png"  ></ffimageloading:CachedImage>
-                                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                                                    <ProgressBar Progress="{Binding ProgressPosition ,Mode=TwoWay}"  ScaleY="2" VerticalOptions="Center" ProgressColor="Green" WidthRequest="480" Grid.Column="0"/>
-                                                    <Label HorizontalOptions="EndAndExpand"  WidthRequest="120"  TextColor="White" Text="{Binding NumberOfVote } "/>
-                                                </StackLayout>
-                                            </StackLayout>
-                                        </Grid>
-                                        --><!--<Grid BackgroundColor="#232323">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-                             
-                                            <StackLayout Grid.Row="0">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="0.5*"/>
-                                                        <ColumnDefinition Width="0.5*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <ffimageloading:CachedImage Grid.Column="0" CacheDuration="12000" DownsampleToViewSize="true"
-                                                   x:Name="ImgDetail"  
-                                                   Source="{Binding ArtistImage,Mode=TwoWay}"
-                                                    VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-                                                    </ffimageloading:CachedImage>
-                                                    <Label Text="{Binding ArtistName ,Mode=TwoWay}" VerticalOptions="Center" Margin="-15,0,0,0"  Grid.Column="1" TextColor="Gray" FontSize="12"/>
-                                                </Grid>  
-                                            </StackLayout>
-                                            <StackLayout Grid.Row="1">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="0.7*"/>
-                                                        <ColumnDefinition Width="0.2*"/>
-                                                        <ColumnDefinition Width="0.3*"/>
-                                                    </Grid.ColumnDefinitions>
+                    <Label Text="Loading..." HorizontalOptions="Center" TextColor="Red"/>
 
-                                                    <ProgressBar Progress="{Binding ProgressPosition ,Mode=TwoWay}"  ScaleY="2" VerticalOptions="Center" ProgressColor="Green" Grid.Column="0"/>
-                                                    <ffimageloading:CachedImage CacheDuration="12000" DownsampleToViewSize="true" Source="vote.png"  Grid.Column="1"  ></ffimageloading:CachedImage>
-                                                    <Label Text="{Binding NumberOfVote ,Mode=TwoWay}" VerticalOptions="Center"  Grid.Column="2" TextColor="Gray" FontSize="12"/>
-                                                </Grid>
-                                            </StackLayout>
-                                                
-                                            --><!--<Image Source="{Binding CoverFilePath}" Grid.Column="0"  WidthRequest="250" HeightRequest="60"/>--><!--
-                                            
-                                            
-                                       
-                                        </Grid>--><!--
-                                    </Frame>
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>-->
-
+                </StackLayout>
             </StackLayout>
 
             <!--</RefreshView>-->

@@ -38,6 +38,16 @@ namespace JukeBox.ViewModels
                 OnPropertyChanged(nameof(PromotionType));
             }
         }
+        private ObservableCollection<PromotionCategory> _promotionCategory { get; set; }
+        public ObservableCollection<PromotionCategory> PromotionCategory
+        {
+            get { return _promotionCategory; }
+            set
+            {
+                _promotionCategory = value;
+                OnPropertyChanged(nameof(PromotionCategory));
+            }
+        }
         private ObservableCollection<PromotionResult> _promotionResult { get; set; }
         public ObservableCollection<PromotionResult> PromotionResult
         {
@@ -78,15 +88,28 @@ namespace JukeBox.ViewModels
 
 
 
-        public async void GetPromotionResult(int promotionTypeId)
+        public async void GetPromotionResult(int promotionTypeId, int promoMapId)
         {
 
 
             this.IsRunning = true;
-            var response = await BLL.Library.Library.GetPromotionResult(promotionTypeId);
+            var response = await BLL.Library.Library.GetPromotionResult(promotionTypeId, promoMapId);
             if (response != null)
             {
                 this.PromotionResult = response.ResponseObject;
+            }
+
+            this.IsRunning = false;
+        }
+        public async void GetPromotionCategory(int promotionTypeId)
+        {
+
+
+            this.IsRunning = true;
+            var response = await BLL.Library.Library.GetPromotionCategory(promotionTypeId);
+            if (response != null)
+            {
+                this.PromotionCategory = response.ResponseObject;
             }
 
             this.IsRunning = false;

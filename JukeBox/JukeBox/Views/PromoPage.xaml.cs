@@ -18,6 +18,7 @@ namespace JukeBox.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PromoPage : ContentPage
     {
+        private int promotionCategoryId = 0;
         public MainViewModel Main
         {
             get;
@@ -27,8 +28,20 @@ namespace JukeBox.Views
         {
             InitializeComponent();
             var mainViewModel = MainViewModel.GetInstance();
-            ImgPromo.Source = ImageSource.FromUri(new Uri(promotionType.PromotionImage));
-            mainViewModel.LibraryPromoModel.GetPromotionResult(promotionType.PromotionTypeId);
+            if (promotionType.HasCategory == true)
+            {
+                mainViewModel.LibraryPromoModel.GetPromotionCategory(promotionType.PromotionTypeId);
+                PromoCategoryListView.IsVisible = true;
+            }
+            else
+            {
+
+
+                ImgPromo.Source = promotionType.PromotionImage;
+                mainViewModel.LibraryPromoModel.GetPromotionResult(promotionType.PromotionTypeId, 0);
+                PromoCategoryListView.IsVisible = false;
+                PromoListView.IsVisible = true;
+            }
         }
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -53,7 +66,28 @@ namespace JukeBox.Views
              ((ListView)sender).SelectedItem = null;
 
         }
+        private async void PromoCategoryListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
 
+            if (((ListView)sender).SelectedItem == null)
+                return;
+
+            var selectedItem = e.SelectedItem as PromotionCategory;
+            if (selectedItem != null)
+            {
+                var mainViewModel = MainViewModel.GetInstance();
+                ImgPromo.Source = ImageSource.FromUri(new Uri(selectedItem.CategoryImage));
+                mainViewModel.LibraryPromoModel.GetPromotionResult(selectedItem.PromotionTypeId, selectedItem.PromotionCategoryId);
+                promotionCategoryId = selectedItem.PromotionCategoryId;
+                PromoCategoryListView.IsVisible = false;
+                PromoListView.IsVisible = true;
+
+                //  await Navigation.PushAsync(new PromoPage(selectedItem));
+                ((ListView)sender).SelectedItem = null;
+            }
+          ((ListView)sender).SelectedItem = null;
+
+        }
         private async void TapGestureRecognizer_TappedAsync(object sender, EventArgs e)
         {
             var img = ((CachedImage)sender);
@@ -76,12 +110,12 @@ namespace JukeBox.Views
                 {
                     Customer = mainViewModel.User.UserId,
                     ClientId = promotion.ArtistId,
-                    PromotionTypeId = promotion.PromotionTypeId??0
+                    PromotionTypeId = promotion.PromotionTypeId ?? 0
                 };
                 var voteResponse = await Library.Vote(request);
-                if(voteResponse !=null)
+                if (voteResponse != null)
                 {
-                    if(voteResponse.ResponseMessage != "Success")
+                    if (voteResponse.ResponseMessage != "Success")
                     {
                         await DisplayAlert(
                        Languages.Error,
@@ -91,7 +125,7 @@ namespace JukeBox.Views
                     }
                     else
                     {
-                         mainViewModel.LibraryPromoModel.GetPromotionResult(promotion.PromotionTypeId??0);
+                        mainViewModel.LibraryPromoModel.GetPromotionResult(promotion.PromotionTypeId ?? 0, promotionCategoryId);
                         var user = await apiService.GetUserByEmail(
              apiSecurity,
              "/api/account",

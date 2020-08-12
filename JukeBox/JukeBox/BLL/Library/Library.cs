@@ -136,6 +136,54 @@ namespace JukeBox.BLL.Library
                 }
             }
 
+            catch (Java.Net.UnknownHostException)
+            {
+                return null;
+            }
+            catch (Java.Net.SocketException e)
+            {
+
+                return null;
+            }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                return null;
+            }
+
+        }
+        public static async Task<PromotionCategoryResponse> GetPromotionCategory(int PromotionTypeId)
+        {
+
+            // Call asynchronous network methods in a try/catch block to handle exceptions
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite);
+                    var url = "http://www.apigagasimedia.co.za";
+                    HttpResponseMessage response = await client.GetAsync($"{url}/api/promotion/category/{PromotionTypeId}", HttpCompletionOption.ResponseHeadersRead);
+
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    if (response.StatusCode != HttpStatusCode.OK)
+                    {
+                        if (response.StatusCode != HttpStatusCode.Accepted)
+                        {
+                            //  throw new Exception(response.StatusDescription, new Exception(response.Content));
+                        }
+                    }
+                    if (responseBody.Contains("ResponseObject"))
+                    {
+                        var data = JsonConvert.DeserializeObject<PromotionCategoryResponse>(responseBody);
+                        return data;
+                    }
+                    return null;
+                }
+            }
+            catch (Java.Net.UnknownHostException)
+            {
+                return null;
+            }
 
             catch (Java.Net.SocketException e)
             {
@@ -148,7 +196,8 @@ namespace JukeBox.BLL.Library
             }
 
         }
-        public static async Task<PromotionResultResponse> GetPromotionResult(int promotionTypeId) 
+
+        public static async Task<PromotionResultResponse> GetPromotionResult(int promotionTypeId, int?promotionCategoryId) 
         {
 
 
@@ -161,7 +210,7 @@ namespace JukeBox.BLL.Library
                 {
                     client.Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite);
                     var apiSecurity = "http://www.apigagasimedia.co.za";
-                    HttpResponseMessage response = await client.GetAsync($"{apiSecurity}/api/promotion/result?promotionTypeId={promotionTypeId}", HttpCompletionOption.ResponseHeadersRead);
+                    HttpResponseMessage response = await client.GetAsync($"{apiSecurity}/api/promotion/result?promotionTypeId={promotionTypeId}&promotionCategoryId={promotionCategoryId}", HttpCompletionOption.ResponseHeadersRead);
 
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
@@ -181,7 +230,10 @@ namespace JukeBox.BLL.Library
                 }
             }
 
-
+            catch (Java.Net.UnknownHostException)
+            {
+                return null;
+            }
             catch (Java.Net.SocketException e)
             {
 

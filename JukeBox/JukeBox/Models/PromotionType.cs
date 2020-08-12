@@ -11,6 +11,7 @@ namespace JukeBox.Models
         public string PromotionTypeName { get; set; }
         public string PromotionImage { get; set; }
         public decimal? Amount { get; set; }
+        public bool? HasCategory { get;set; }
         public string AmountFormat => string.Format("Vote Costs R {0}", Math.Round(Amount ?? 0, 2));
     }
 }
