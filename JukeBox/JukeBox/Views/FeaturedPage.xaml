@@ -118,7 +118,7 @@
 
                 </StackLayout>
                 <ListView x:Name="MovieListView" Grid.Row="1" HasUnevenRows="True" SeparatorVisibility="Default"  BackgroundColor="#232323"  CachingStrategy="RecycleElement"
-                  SeparatorColor="Gray" ItemsSource="{Binding Library,Mode=TwoWay}" ItemSelected="MovieListView_OnItemSelected">
+                  IsPullToRefreshEnabled="True" SeparatorColor="Gray" ItemsSource="{Binding Library,Mode=TwoWay}" ItemSelected="MovieListView_OnItemSelected">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>

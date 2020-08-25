@@ -58,6 +58,12 @@
             return da.GetFileById(id);
             
         }
+        public PlaylistModel GetPlaylistById(int songId , int playlistNameId)
+        {
+            var da = new DataAccess();
+            return da.GetPlaylistId(songId,playlistNameId);
+            
+        }
        
         public IEnumerable<AudioLocal> GetSongById(long id)
         {

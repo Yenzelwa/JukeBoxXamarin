@@ -189,6 +189,18 @@
                 }
             }
         }
+        public PlaylistModel GetPlaylistId(int songId ,int playlistNameId)
+        {
+            lock (collisionLock)
+            {
+
+                using (var database = new SQLite.SQLiteConnection(this.dbPath))
+                {
+                    var members = (from mem in database.Table<PlaylistModel>() where mem.SongId == songId  && mem.playlistNameId == playlistNameId select mem);
+                    return members.FirstOrDefault();
+                }
+            }
+        }
         public AudioLocal GetFileById(long Id)
         {
             lock (collisionLock)

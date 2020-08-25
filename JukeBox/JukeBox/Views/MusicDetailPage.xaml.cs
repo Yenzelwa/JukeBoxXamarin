@@ -102,8 +102,6 @@ namespace JukeBox.Views
                         filePath = library.FilePath;
                         albumCover = library.CoverFilePath;
                         DownloadAlbum = library.AlbumDownload;
-
-
                         if (library != null)
                         {
                             var mainViewModel = MainViewModel.GetInstance();
@@ -121,9 +119,6 @@ namespace JukeBox.Views
                             {
                                 lblSongs.IsVisible = true;
                             }
-
-
-
                         }
                     }
                 }
@@ -158,7 +153,6 @@ namespace JukeBox.Views
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
             if (items != null)
             {
-
                 var request = new PurchaseOrderRequest
                 {
                     LibraryId = libraryId,
@@ -178,7 +172,6 @@ namespace JukeBox.Views
                     return;
                 }
                 if (!DownloadAlbum)
-
                 {
 
                     var orderResponse = await apiService.PurchaseOrder(
@@ -198,8 +191,7 @@ namespace JukeBox.Views
                                 mainViewModel.LibraryModel.Library = response.ResponseObject;
                             SongListView.IsEnabled = false;
                             Download.IsVisible = true;
-                            BtnBuy.IsEnabled = false;
-                           
+                            BtnBuy.IsEnabled = false;                         
                             foreach (var item in items)
                                 {
                                 var dataService = new DataService();
@@ -223,9 +215,7 @@ namespace JukeBox.Views
                                             dataService.Insert(song);
                                         
                                         
-                                    });
-                                
-
+                                    });                               
                             }
 
                             SongListView.IsEnabled = true;
@@ -234,8 +224,7 @@ namespace JukeBox.Views
 
                         }
                         else
-                        {
-                            
+                        {                           
                             await DisplayAlert(Languages.Error, orderResponse.ResponseMessage, Languages.Accept);
                             return;
 
@@ -264,8 +253,8 @@ namespace JukeBox.Views
                                                       LibraryId = item.Id,
                                                       albumId = libraryId,
                                                       AudioTitle = item.Name,
-                                                       ArtistName = LblArtist.Text,
-                                                       Album = LblAlbum.Text,
+                                                      ArtistName = LblArtist.Text,
+                                                      Album = LblAlbum.Text,
                                                       Genre = LblGenre.Text,
                                                       AudioData = audiobyteArray,
                                                       ArtWork = artWork
@@ -299,14 +288,6 @@ namespace JukeBox.Views
             mainViewModel.PlaylistViewModel.Songs = await DependencyService.Get<IPlaylistManager>().GetAllSongs();
             await DependencyService.Get<IMusicManager>().SetQueue(mainViewModel.PlaylistViewModel.Songs);
             mainViewModel.PlaylistViewModel.Album = await DependencyService.Get<IPlaylistManager>().GetSongsByAlbum();
-            //if (mainViewModel.PlaylistViewModel.Songs != null)
-            //{
-            //    mainViewModel.PlaylistViewModel.MusicState.HasSongs = true;
-            //    new MusicBarControl();
-            //}
-
-
-
         }
         private async void BtnSingleDownload_OnClicked(object sender, EventArgs e)
         {
@@ -324,8 +305,6 @@ namespace JukeBox.Views
                     ClientId = Convert.ToInt32(mainViewModel.Token.UserName),
                     UserId = 1
                 };
-
-
                 var checkConnetion = await apiService.CheckConnection();
                 if (!checkConnetion.IsSuccess)
                 {
@@ -399,7 +378,6 @@ namespace JukeBox.Views
                             await DisplayAlert(Languages.Error, orderResponse.ResponseMessage, Languages.Accept);
                             return;
 
-
                         }
                     }
                 }
@@ -458,18 +436,7 @@ namespace JukeBox.Views
             mainViewModel.PlaylistViewModel.Songs = await DependencyService.Get<IPlaylistManager>().GetAllSongs();
             await DependencyService.Get<IMusicManager>().SetQueue(mainViewModel.PlaylistViewModel.Songs);
             mainViewModel.PlaylistViewModel.Album = await DependencyService.Get<IPlaylistManager>().GetSongsByAlbum();
-            //if (mainViewModel.PlaylistViewModel.Songs != null)
-            //{
-            //    mainViewModel.PlaylistViewModel.MusicState.HasSongs = true;
-            //    new SongsPage();
-            //    new PlaylistsPage();
-            //    new AlbumsPage();
-            //}
-
-
-        }
-
-    
+        }   
         public  byte[] getArrayFromUrl(string url)
         {
             HttpWebRequest request = null;
@@ -550,7 +517,7 @@ namespace JukeBox.Views
                         _player?.Prepare();
                         _player?.Start();
                        
-                        await Task.Delay(2000);
+                        await Task.Delay(780000);
                     });
                     currentImg.Source = ImageSource.FromFile("pause_w.png");
                     viewControls[1].IsVisible = false;
@@ -579,8 +546,6 @@ namespace JukeBox.Views
         public async void DowloadFile(string fileName, string type, string typename)
         {
             await Task.Yield();
-
-
             await Task.Run(() =>
             {
                 var downloadManager = CrossDownloadManager.Current;
@@ -591,8 +556,6 @@ namespace JukeBox.Views
                 {
                     isDownloading = IsDownloading(file);
                 }
-
-
             });
             if (!isDownloading)
             {
@@ -696,13 +659,6 @@ namespace JukeBox.Views
         public void onSeekComplete(MediaPlayer mp)
         {
         }
-
-        //return true;
-
-        //private void Current_PlayingChanged(object sender, Plugin.MediaManager.Abstractions.EventArguments.PlayingChangedEventArgs e)
-        //{
-        //    PbAudio.Progress = e.Progress / 100;
-        //}
 
     }
 }

@@ -23,10 +23,12 @@ namespace JukeBox.Controls
     {
         private static INavigation _nav;
         private Song _song;
-        public  SongOptionsPopup(Song song)
+        private int _isPlayListNameId;
+        public  SongOptionsPopup(Song song , int playlistNameId)
         {
             if (song == null)
             {
+                _isPlayListNameId = playlistNameId;
                 return;
             }
             _song = song;
@@ -67,28 +69,40 @@ namespace JukeBox.Controls
         {
             var dataService = new DataService();
             var song = _song;
-            var audioFile =   dataService.GetFileById(song.Id);
-            if(audioFile != null)
+
+            if (_isPlayListNameId > 0)
             {
-                var playlist = dataService.GetPlaylistBySongId(song.Id);
-                if(playlist !=null)
+                var playlistByName = dataService.GetPlaylistById(song.Id, _isPlayListNameId);
+                if(playlistByName !=null) dataService.Delete(playlistByName);
+            }
+            else
+            {
+                var audioFile = dataService.GetFileById(song.Id);
+                if (audioFile != null)
                 {
-                    foreach (var play in playlist)
+                    var playlist = dataService.GetPlaylistBySongId(song.Id);
+                    if (playlist != null)
                     {
-                        dataService.Delete(play);
+                        foreach (var play in playlist)
+                        {
+                            dataService.Delete(play);
+                        }
                     }
+                    dataService.Delete(audioFile);
                 }
-                dataService.Delete(audioFile);
+            }
+                
+                
                 var mainViewModel = MainViewModel.GetInstance();
                 mainViewModel.PlaylistViewModel.Songs.Remove(song);
-
-                //mainViewModel.PlaylistItems = new ObservableCollection<PlaylistItem>();
-                //mainViewModel.PlaylistItems.Add(new PlaylistItem(
-                //new Playlist { Title = "Home", IsDynamic = false }));
-                ////  var file = DencryptFile(title + ".mp3", "");
-                //mainViewModel.PlaylistViewModel = new PlaylistViewModel(mainViewModel.PlaylistItems[0]);
-            }
             Navigation.PopPopupAsync(true);
+            //mainViewModel.PlaylistItems = new ObservableCollection<PlaylistItem>();
+            //mainViewModel.PlaylistItems.Add(new PlaylistItem(
+            //new Playlist { Title = "Home", IsDynamic = false }));
+            ////  var file = DencryptFile(title + ".mp3", "");
+            //mainViewModel.PlaylistViewModel = new PlaylistViewModel(mainViewModel.PlaylistItems[0]);
+        }
+           
         }
     }
-}
+

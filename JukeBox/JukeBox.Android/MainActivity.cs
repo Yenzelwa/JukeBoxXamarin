@@ -148,6 +148,30 @@ namespace JukeBox.Droid
             return false;
         }
 
+        // Confirm with dialog
+        public override void OnBackPressed()
+        {
+            var app = App.Current.MainPage;
+            if (app.Title =="")
+            {
+                using (var alert = new AlertDialog.Builder(this))
+                {
+                    alert.SetTitle("Confirm Exit");
+                    alert.SetMessage("Are you sure you want to exit?");
+                    alert.SetPositiveButton("Yes", (sender, args) => { FinishAffinity(); }); // inform Android that we are done with the activity
+                    alert.SetNegativeButton("No", (sender, args) => { }); // do nothing
+
+                    var dialog = alert.Create();
+                    dialog.Show();
+                }
+                return;
+            }
+            base.OnBackPressed();
+        }
+
+        // Confirm with toast + back button
+        bool _isBackPressed = false;
+        
 
         public void encrypt(string filename , string path)
         {
