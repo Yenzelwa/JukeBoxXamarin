@@ -3,12 +3,10 @@
 namespace JukeBox.Implementations
 {
     using JukeBox.Interfaces;
-    using SQLite.Net.Interop;
 
     public class Config : IConfig
     {
         private string directoryDB;
-        private ISQLitePlatform platform;
 
         public string DirectoryDB
         {
@@ -23,18 +21,18 @@ namespace JukeBox.Implementations
             }
         }
 
-        public ISQLitePlatform Platform
-        {
-            get
-            {
-                if (platform == null)
-                {
-                    platform = new SQLite.Net.Platform.XamarinAndroid.SQLitePlatformAndroid();
-                }
+        //public ISQLitePlatform Platform
+        //{
+        //    get
+        //    {
+        //        if (platform == null)
+        //        {
+        //            platform = new SQLite.Net.Platform.XamarinAndroid.SQLitePlatformAndroid();
+        //        }
 
-                return platform;
+        //        return platform;
 
-            }
-        }
+        //    }
+        //}
     }
 }

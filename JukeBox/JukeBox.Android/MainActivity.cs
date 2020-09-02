@@ -11,7 +11,6 @@ using JukeBox.Audio;
 using Android.Provider;
 using Android;
 using Android.Database;
-using Plugin.DownloadManager;
 using System.Linq;
 using DLToolkit.Forms.Controls;
 using Android.Support.V4.App;

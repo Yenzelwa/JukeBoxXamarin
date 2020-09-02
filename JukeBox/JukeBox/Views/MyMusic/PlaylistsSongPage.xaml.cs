@@ -28,6 +28,8 @@ namespace JukeBox.Views.MyMusic
             InitializeComponent();
             if (playlist != null)
             {
+                var main = MainViewModel.GetInstance();
+                main.deletePlaylist = true;
                 Title.Text = playlist.Title;
                 if(playlist.PlaylistSongs.Count > 0)
                 {

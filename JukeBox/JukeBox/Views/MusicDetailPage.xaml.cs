@@ -13,8 +13,6 @@ using JukeBox.Models;
 using JukeBox.Services;
 using JukeBox.ViewModels;
 using JukeBox.Views.MyMusic;
-using Plugin.DownloadManager;
-using Plugin.DownloadManager.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,7 +33,7 @@ namespace JukeBox.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MusicDetailPage : ContentPage
     {
-        public IDownloadFile file;
+
         bool isDownloading = true;
         private string trailorUrl;
         private PlaylistViewModel _vm;
@@ -61,16 +59,6 @@ namespace JukeBox.Views
             _player?.Dispose();
             _player = null;
             _player = new MediaPlayer();
-
-            CrossDownloadManager.Current.CollectionChanged += (sender, e) =>
-             System.Diagnostics.Debug.WriteLine(
-               "[DownloadManager]" + e.Action +
-               " -> New Items: " + (e.NewItems?.Count ?? 0) +
-               " at " + e.NewStartingIndex +
-               "|| Old Items: " + (e.OldItems?.Count ?? 0) +
-               " at " + e.OldStartingIndex
-             );
-
 
         }
         private async void GetUpComingMovie(ApiLibrary library)
@@ -543,54 +531,6 @@ namespace JukeBox.Views
 
         }
 
-        public async void DowloadFile(string fileName, string type, string typename)
-        {
-            await Task.Yield();
-            await Task.Run(() =>
-            {
-                var downloadManager = CrossDownloadManager.Current;
-                var file = downloadManager.CreateDownloadFile(fileName);
-                downloadManager.Start(file, true);
-
-                while (isDownloading)
-                {
-                    isDownloading = IsDownloading(file);
-                }
-            });
-            if (!isDownloading)
-            {
-                string name = fileName.Split('/').Last();
-                var fileEncryption = DependencyService.Get<IPlaylistManager>().EncryptFile(name, fileName);
-                var b = QueuePopup.Instance;
-                var c = SliderControl.Instance;
-                var main = MainViewModel.GetInstance();
-                main.PlaylistViewModel.Songs = await DependencyService.Get<IPlaylistManager>().GetAllSongs();
-                await DependencyService.Get<IMusicManager>().SetQueue(main.PlaylistViewModel.Songs);
-                main.PlaylistViewModel.Album = await DependencyService.Get<IPlaylistManager>().GetSongsByAlbum();
-                var reload = new MusicBarControl();
-                var apiService = new ApiService();
-                var checkConnetion = await apiService.CheckConnection();
-                var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
-                var mainViewModel = MainViewModel.GetInstance();
-                var user = await apiService.GetUserByEmail(
-                  apiSecurity,
-                  "/api/account",
-                  "/customer/getcustomer",
-                  mainViewModel.Token.TokenType,
-                  mainViewModel.Token.AccessToken,
-                  mainViewModel.Token.UserName);
-                mainViewModel.Login.registerDataService(user, mainViewModel.Token);
-                var a = MusicStateViewModel.Instance;
-                mainViewModel.PlaylistItems = new ObservableCollection<PlaylistItem>();
-                mainViewModel.PlaylistItems.Add(new PlaylistItem(
-                new Playlist { Title = "Home", IsDynamic = false }));
-                //  var file = DencryptFile(title + ".mp3", "");
-                mainViewModel.PlaylistViewModel = new PlaylistViewModel(mainViewModel.PlaylistItems[0]);
-                await DisplayAlert("File Status", "File Downloaded", "OK");
-            }
-        }
-
- 
         private void createFile(string filename, Java.IO.File extStore)
         {
             Java.IO.File file = new Java.IO.File(extStore + "/" + filename + ".aes");
@@ -616,28 +556,8 @@ namespace JukeBox.Views
 
             file.Mkdirs();
         }
-        public bool IsDownloading(IDownloadFile file)
-        {
-            if (file == null) return false;
-            switch (file.Status)
-            {
-                case DownloadFileStatus.INITIALIZED:
-                case DownloadFileStatus.PAUSED:
-                case DownloadFileStatus.PENDING:
-                case DownloadFileStatus.RUNNING:
-                    return true;
-                case DownloadFileStatus.COMPLETED:
-                case DownloadFileStatus.CANCELED:
-                case DownloadFileStatus.FAILED:
-                    return false;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-        public void AbortDownloading()
-        {
-            CrossDownloadManager.Current.Abort(file);
-        }
+
+
 
         protected override void OnDisappearing()
         {

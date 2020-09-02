@@ -28,7 +28,7 @@
             }
         }
 
-       
+
 
         #region Attibrutes
         private UserLocal user;
@@ -41,10 +41,10 @@
             set;
         }
 
-        public TokenResponse Token 
-        { 
-            get; 
-            set; 
+        public TokenResponse Token
+        {
+            get;
+            set;
         }
 
         public ObservableCollection<MenuItemViewModel> Menus
@@ -59,6 +59,7 @@
             get { return this.user; }
             set { SetValue(ref this.user, value); }
         }
+        public bool deletePlaylist {get;set;}
         #endregion
 
         #region ViewModels

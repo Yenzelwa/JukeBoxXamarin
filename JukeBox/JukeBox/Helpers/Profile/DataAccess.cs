@@ -4,7 +4,7 @@
     using JukeBox.Models.Profile;
     using Models;
     using Plugin.Permissions;
-    using SQLite.Net;
+  
     using SQLiteNetExtensions.Extensions;
     using System;
     using System.Collections.Generic;
