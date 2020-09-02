@@ -29,11 +29,13 @@ namespace JukeBox.ViewModels
 
         public ulong Id { get; set; }
         public long AlbumId { get; set; }
+        public bool deletePlaylist { get; set; }
 
         private SongComparer _comparer;
         private Playlist _playlist;
         private IList<Albumlist> _albumlist;
         private IList<JukeBoxPlaylist> _jukeBoxPlaylist;
+
         public PlaylistViewModel(PlaylistItem playlistItem)
         {
             Instance = this;

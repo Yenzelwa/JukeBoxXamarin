@@ -27,6 +27,7 @@ namespace JukeBox.Controls
         {
             ((CachedImage)sender).Opacity = 0.6;
             ((CachedImage)sender).FadeTo(1);
+            var main = MainViewModel.GetInstance();
             Song song = BindingContext as Song;
             SongsPage.Nav?.PushPopupAsync(new SongOptionsPopup(song,0));
         }

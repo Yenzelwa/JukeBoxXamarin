@@ -8,6 +8,7 @@ namespace JukeBox.Models
   public  class JukeBoxPlaylist
     {
         public ulong Id { get; set; }
+        public bool deletePlaylist {  get; set;}
 
         public string Title { get; set; }
 

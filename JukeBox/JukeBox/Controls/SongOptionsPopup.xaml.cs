@@ -68,12 +68,13 @@ namespace JukeBox.Controls
         private void DeleteSong(object sender, EventArgs e)
         {
             var dataService = new DataService();
+            var mainViewModel = MainViewModel.GetInstance();
             var song = _song;
 
-            if (_isPlayListNameId > 0)
+            if (mainViewModel.DeletePlaylist)
             {
-                var playlistByName = dataService.GetPlaylistById(song.Id, _isPlayListNameId);
-                if(playlistByName !=null) dataService.Delete(playlistByName);
+                var playlistByName = dataService.GetPlaylistById(song.Id, mainViewModel.PlaylistId);
+                if (playlistByName !=null) dataService.Delete(playlistByName);
             }
             else
             {
@@ -93,9 +94,9 @@ namespace JukeBox.Controls
             }
                 
                 
-                var mainViewModel = MainViewModel.GetInstance();
+                
                 mainViewModel.PlaylistViewModel.Songs.Remove(song);
-            Navigation.PopPopupAsync(true);
+                Navigation.PopPopupAsync(true);
             //mainViewModel.PlaylistItems = new ObservableCollection<PlaylistItem>();
             //mainViewModel.PlaylistItems.Add(new PlaylistItem(
             //new Playlist { Title = "Home", IsDynamic = false }));

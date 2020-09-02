@@ -40,6 +40,16 @@
             get;
             set;
         }
+        public int PlaylistId
+        {
+            get;
+            set;
+        }
+        public bool DeletePlaylist
+        {
+            get;
+            set;
+        }
 
         public TokenResponse Token 
         { 
