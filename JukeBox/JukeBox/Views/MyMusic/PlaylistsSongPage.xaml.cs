@@ -33,7 +33,9 @@ namespace JukeBox.Views.MyMusic
                 Title.Text = playlist.Title;
                 if(playlist.PlaylistSongs.Count > 0)
                 {
-
+                    var main = MainViewModel.GetInstance();
+                    main.PlaylistId = (int)playlist.Id;
+                    main.DeletePlaylist = true;
                     Artist.Text = playlist.PlaylistSongs[0].Artist;
                     img.Source = ImageSource.FromStream(() => new MemoryStream(playlist.PlaylistSongs[0].Artwork));
                 }

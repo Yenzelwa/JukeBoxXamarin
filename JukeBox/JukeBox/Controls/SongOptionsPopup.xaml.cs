@@ -71,10 +71,10 @@ namespace JukeBox.Controls
             var mainViewModel = MainViewModel.GetInstance();
             var song = _song;
 
-            if (mainViewModel.deletePlaylist)
+            if (mainViewModel.DeletePlaylist)
             {
-                var playlistByName = dataService.GetPlaylistById(song.Id, _isPlayListNameId);
-                if(playlistByName !=null) dataService.Delete(playlistByName);
+                var playlistByName = dataService.GetPlaylistById(song.Id, mainViewModel.PlaylistId);
+                if (playlistByName !=null) dataService.Delete(playlistByName);
             }
             else
             {
@@ -92,6 +92,8 @@ namespace JukeBox.Controls
                     dataService.Delete(audioFile);
                 }
             }
+                
+                
                 
                 mainViewModel.PlaylistViewModel.Songs.Remove(song);
                 Navigation.PopPopupAsync(true);
