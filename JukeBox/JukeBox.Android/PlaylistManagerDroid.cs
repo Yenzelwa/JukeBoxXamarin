@@ -554,10 +554,18 @@ namespace JukeBox
                                 
                             }                    
                         }
-                       // playlist.ImageSource = ImageSource.FromFile("playlist.png");
+                      
                         playlists.Add(playlist);
-                        playlist.Artwork = playlist.PlaylistSongs[0].Artwork;
-                        playlist.ImageSource = ImageSource.FromStream(() => new MemoryStream(playlist.PlaylistSongs[0].Artwork));
+                        if(playlist.PlaylistSongs.Count > 0)
+                        {
+                            playlist.Artwork = playlist.PlaylistSongs[0].Artwork;
+                            playlist.ImageSource = ImageSource.FromStream(() => new MemoryStream(playlist.PlaylistSongs[0].Artwork));
+                        }
+                        else
+                        {
+                            playlist.ImageSource = ImageSource.FromFile("playlist.png");
+                        }
+                       
                     }
                 }
                 return playlists;

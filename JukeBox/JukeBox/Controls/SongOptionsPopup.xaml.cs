@@ -65,7 +65,7 @@ namespace JukeBox.Controls
             SongsPage.Nav?.PushPopupAsync(new CreatePlaylistPopup(_song),true);
 
         }
-        private void DeleteSong(object sender, EventArgs e)
+        private async void DeleteSong(object sender, EventArgs e)
         {
             var dataService = new DataService();
             var mainViewModel = MainViewModel.GetInstance();
@@ -91,17 +91,21 @@ namespace JukeBox.Controls
                     }
                     dataService.Delete(audioFile);
                 }
+
+                mainViewModel.PlaylistViewModel.Songs.Remove(song);
             }
                 
                 
                 
-                mainViewModel.PlaylistViewModel.Songs.Remove(song);
-                Navigation.PopPopupAsync(true);
-            //mainViewModel.PlaylistItems = new ObservableCollection<PlaylistItem>();
-            //mainViewModel.PlaylistItems.Add(new PlaylistItem(
-            //new Playlist { Title = "Home", IsDynamic = false }));
-            ////  var file = DencryptFile(title + ".mp3", "");
-            //mainViewModel.PlaylistViewModel = new PlaylistViewModel(mainViewModel.PlaylistItems[0]);
+                
+            var playlists = await DependencyService.Get<IPlaylistManager>().GetPlaylists();
+            if (playlists.Count > 0)
+            {
+                var main = MainViewModel.GetInstance();
+                main.PlaylistViewModel.JukeBoxPlaylist = playlists;
+                main.PlaylistViewModel.PlaylistSongs = await DependencyService.Get<IPlaylistManager>().GetAllSongs();
+            }
+           await Navigation.PopPopupAsync(true);
         }
            
         }

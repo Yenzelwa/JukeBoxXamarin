@@ -524,9 +524,9 @@ namespace JukeBox.Droid
         }
         protected override void OnDestroy()
         {
-            notificationManager.CancelAll();
-            System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
-            base.OnDestroy();
+           // notificationManager.CancelAll();
+            //System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
+          base.OnDestroy();
         }
         public override bool OnOptionsItemSelected(IMenuItem item)
         {

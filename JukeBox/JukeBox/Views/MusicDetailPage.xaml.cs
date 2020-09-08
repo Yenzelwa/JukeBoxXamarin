@@ -505,7 +505,7 @@ namespace JukeBox.Views
                         _player?.Prepare();
                         _player?.Start();
                        
-                        await Task.Delay(780000);
+                        await Task.Delay(2000);
                     });
                     currentImg.Source = ImageSource.FromFile("pause_w.png");
                     viewControls[1].IsVisible = false;
@@ -515,7 +515,7 @@ namespace JukeBox.Views
 
                 Device.StartTimer(TimeSpan.FromSeconds(2), () =>
                 {
-                    if (_player != null && _player.CurrentPosition > 30000)
+                    if (_player != null && _player.CurrentPosition > 100000)
                     {
                         _player.Stop();
                         _player.Reset();

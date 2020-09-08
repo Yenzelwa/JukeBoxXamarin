@@ -26,10 +26,10 @@ namespace JukeBox.Views.MyMusic
             InitializeComponent();
            // this.BindingContext = MusicStateViewModel.Instance;
            // Carousel.Position = MusicStateViewModel.Instance.QueuePos;
-            if (albumlist != null)
+            if (albumlist != null && albumlist.AlbumsSongs.Count > 0)
             {
                 Title.Text = albumlist.Name;
-                Artist.Text = albumlist.AlbumsSongs[0].Artist;
+                Artist.Text =  albumlist.AlbumsSongs[0].Artist;
                 img.Source = albumlist.ImageSource;
             }
              
